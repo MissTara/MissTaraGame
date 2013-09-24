@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<DataManager xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <Weapons>
+      <ItemWeapon>
+         <ItemID>1</ItemID>
+         <ItemName>Ultimate Justice</ItemName>
+         <ItemDescription>Justice shall be done.</ItemDescription>
+         <ItemPrice>1</ItemPrice>
+         <Icon>5</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Lightning</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>2</ItemID>
+         <ItemName>Ash Bringer</ItemName>
+         <ItemDescription>Ashes to ashes!</ItemDescription>
+         <ItemPrice>2</ItemPrice>
+         <Icon>1</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Fire</Element>
+         <BaseDamage>100</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>3</ItemID>
+         <ItemName>Infinity Edge</ItemName>
+         <ItemDescription>When the sun is at its peak, the pool blends in with the shimmering heat, looking as if its waters run off into infinity.</ItemDescription>
+         <ItemPrice>3</ItemPrice>
+         <Icon>6</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>4</ItemID>
+         <ItemName>Sword</ItemName>
+         <ItemDescription>When the sun is at its peak, the pool blends in with the shimmering heat, looking as if its waters run off into infinity.</ItemDescription>
+         <ItemPrice>3</ItemPrice>
+         <Icon>6</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>1000</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>5</ItemID>
+         <ItemName>Ward</ItemName>
+         <ItemDescription>When the sun is at its peak, the pool blends in with the shimmering heat, looking as if its waters run off into infinity.</ItemDescription>
+         <ItemPrice>3000</ItemPrice>
+         <Icon>6</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>6</ItemID>
+         <ItemName>Cookie</ItemName>
+         <ItemDescription>When the sun is at its peak, the pool blends in with the shimmering heat, looking as if its waters run off into infinity.</ItemDescription>
+         <ItemPrice>3000</ItemPrice>
+         <Icon>6</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>7</ItemID>
+         <ItemName>Razer Mouse</ItemName>
+         <ItemDescription>When the sun is at its peak, the pool blends in with the shimmering heat, looking as if its waters run off into infinity.</ItemDescription>
+         <ItemPrice>3000</ItemPrice>
+         <Icon>6</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>8</ItemID>
+         <ItemName>Logitech Mouse</ItemName>
+         <ItemDescription>When the sun is at its peak, the pool blends in with the shimmering heat, looking as if its waters run off into infinity.</ItemDescription>
+         <ItemPrice>3000</ItemPrice>
+         <Icon>6</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+   </Weapons>
+   <Armours>
+      <ItemArmour>
+         <ItemID>85</ItemID>
+         <ItemName>Cloth Armor</ItemName>
+         <ItemDescription>A basic defender.</ItemDescription>
+         <ItemPrice>10</ItemPrice>
+         <Element>Earth</Element>
+         <BaseArmour>10</BaseArmour>
+		 <Icon>5</Icon>
+      </ItemArmour>
+      <ItemArmour>
+         <ItemID>55</ItemID>
+         <ItemName>Cloth Armor</ItemName>
+         <ItemDescription>A basic defender.</ItemDescription>
+         <ItemPrice>10</ItemPrice>
+         <Element>Earth</Element>
+         <BaseArmour>10</BaseArmour>
+		 <Icon>3</Icon>
+      </ItemArmour>
+      <ItemArmour>
+         <ItemID>45</ItemID>
+         <ItemName>Cloth Armor</ItemName>
+         <ItemDescription>A basic defender.</ItemDescription>
+         <ItemPrice>10</ItemPrice>
+         <Element>Earth</Element>
+         <BaseArmour>10</BaseArmour>
+      </ItemArmour>
+   </Armours>
+   <Misc>
+		<ItemMisc>	
+		<ItemID>1</ItemID>
+         <ItemName>grenades</ItemName>
+         <ItemDescription>A basic grenade.</ItemDescription>
+         <ItemPrice>10</ItemPrice>
+         <Element>Earth</Element>
+         <BaseAmount>10</BaseAmount>
+		 <Icon>5</Icon>
+		</ItemMisc>
+		
+		<ItemMisc>	
+		<ItemID>2</ItemID>
+         <ItemName>cds</ItemName>
+         <ItemDescription>A basic cd.</ItemDescription>
+         <ItemPrice>10</ItemPrice>
+         <Element>Fire</Element>
+         <BaseAmount>100</BaseAmount>
+		 <Icon>5</Icon>
+		</ItemMisc>
+	</Misc>
+   <Enemies>
+      <EnemyProperties>
+         <Name>Alien</Name>
+         <CanSearch>true</CanSearch>
+         <CanMove>true</CanMove>
+         <Speed>20</Speed>
+         <TurningSpeed>10</TurningSpeed>
+         <EndReachedDistance>3</EndReachedDistance>
+         <DetectRange>10</DetectRange>
+         <CanAttack>true</CanAttack>
+         <MaxHP>200</MaxHP>
+         <Element>Tech</Element>
+         <FactionSelf>
+            <Factions>alien</Factions>
+         </FactionSelf>
+         <FactionHostile>
+            <Factions>human</Factions>
+         </FactionHostile>
+         <BaseArmour>0</BaseArmour>
+         <BaseAttack>10</BaseAttack>
+         <Mass>1</Mass>
+      </EnemyProperties>
+   </Enemies>
+</DataManager>

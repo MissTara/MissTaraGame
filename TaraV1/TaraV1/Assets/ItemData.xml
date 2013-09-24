@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<DataManager xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <Weapons>
+      <ItemWeapon>
+         <ItemID>0</ItemID>
+         <ItemName>Ultimate Justice</ItemName>
+         <ItemDescription>Justice shall be done.</ItemDescription>
+         <ItemPrice>0</ItemPrice>
+         <Icon>5</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+      <ItemWeapon>
+         <ItemID>0</ItemID>
+         <ItemName>Ash Bringer</ItemName>
+         <ItemDescription>Ashes to ashes!</ItemDescription>
+         <ItemPrice>0</ItemPrice>
+         <Icon>1</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+	  <ItemWeapon>
+         <ItemID>0</ItemID>
+         <ItemName>Infinity Edge</ItemName>
+         <ItemDescription>When the sun is at its peak, the pool blends in with the shimmering heat, looking as if its waters run off into infinity.</ItemDescription>
+         <ItemPrice>0</ItemPrice>
+         <Icon>6</Icon>
+         <audioAttack>096-Attack08</audioAttack>
+         <Element>Earth</Element>
+         <BaseDamage>10</BaseDamage>
+         <AttackInterval>1</AttackInterval>
+         <BounceBack>
+            <x>0</x>
+            <y>10</y>
+            <z>-10</z>
+         </BounceBack>
+      </ItemWeapon>
+   </Weapons>
+   <Armour />
+</DataManager>
