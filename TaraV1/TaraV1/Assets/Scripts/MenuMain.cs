@@ -183,44 +183,50 @@ protected override void OnGUI (){
 		}
 		}
 		
-		if (MiscBool == true){
-		int column = 0;
+		if (MiscBool == true)
+        {
+		    int column = 0;
 			if (GameManager.userData.ownedMisc.Contains(GameManager.dataManager.Misc[currentItemIndex].ItemID))
-			funcText = "Use";
-		else
-			funcText = "Buy";
+			    funcText = "Use";
+		    else
+			    funcText = "Buy";
 			
-			if (GUI.Button(new Rect(700,680,200,100), funcText,menuText)){
-			if (funcText == "Buy")
-			{
-				if (GameManager.userData.purchase(GameManager.dataManager.Misc[currentItemIndex].ItemPrice)){
-					GameManager.userData.ownedMisc.Add(GameManager.dataManager.Misc[currentItemIndex].ItemID);
-					utiliSL.SaveGameData();
-					print("Item Purchased");
-				}
-			}
-			else if (funcText == "Equip"){
-			}
-		}
+			if (GUI.Button(new Rect(700,680,200,100), funcText,menuText))
+            {
+			    if (funcText == "Buy")
+			    {
+				    if (GameManager.userData.purchase(GameManager.dataManager.Misc[currentItemIndex].ItemPrice))
+                    {
+					    GameManager.userData.ownedMisc.Add(GameManager.dataManager.Misc[currentItemIndex].ItemID);
+					    utiliSL.SaveGameData();
+					    print("Item Purchased");
+				    }
+			    }
+			    else if (funcText == "Equip")
+                {
+			    }
+		    }
 			
 			
-			for (int i = 0; i < GameManager.dataManager.Misc.Count;i++){
+			for (int i = 0; i < GameManager.dataManager.Misc.Count;i++)
+            {
 				
-			String text = "Buy Now";
-			if (GameManager.userData.ownedMisc.Contains(GameManager.dataManager.Misc[i].ItemID))
-				text = "";
-				/*
-			if (UnitPlayer.Get().Misc.ItemID == GameManager.dataManager.Misc[i].ItemID)
-				text = "Equipped";
-			*/
-			GUIContent guiC = new GUIContent(text,utiliRM.tex_WeaponIcons[GameManager.dataManager.Misc[i].Icon]);
+			    String text = "Buy Now";
+			    if (GameManager.userData.ownedMisc.Contains(GameManager.dataManager.Misc[i].ItemID))
+				    text = "";
+				    /*
+			    if (UnitPlayer.Get().Misc.ItemID == GameManager.dataManager.Misc[i].ItemID)
+				    text = "Equipped";
+			    */
+			    GUIContent guiC = new GUIContent(text,utiliRM.tex_WeaponIcons[GameManager.dataManager.Misc[i].Icon]);
 			
-			if(GUI.Button(new Rect(800 + column * 96 + column * 20,300 + 120 * (int)(i / 4),110,110), guiC, IconAvailable)){
-				currentItemIndex = i;
-			}
-			column++;
-			column  %= 4;
-		}
+			    if(GUI.Button(new Rect(800 + column * 96 + column * 20,300 + 120 * (int)(i / 4),110,110), guiC, IconAvailable))
+                {
+				    currentItemIndex = i;
+			    }
+			    column++;
+			    column  %= 4;
+		    }
 		}
 		
 	
