@@ -153,7 +153,6 @@
      <Compile Include="Assets\Scripts\script_HUD.cs" />
      <Compile Include="Assets\Scripts\script_vcontroller.cs" />
      <Compile Include="Assets\test.cs" />
-     <Compile Include="Assets\tmp\ai.cs" />
      <None Include="Assets\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh2.shader" />
      <None Include="Assets\SaveData.xml" />
      <None Include="Assets\AstarPathfindingProject\Plugins\DotNetZip\License.txt" />
