@@ -74,4 +74,14 @@ public class UserData{
 			
 		}
 	}
+
+    public void useMisc(int id)
+    {
+        UnitPlayer player = UnitPlayer.Get();
+        ItemMisc misc = GameManager.dataManager.getMiscById(id);
+        if (misc != null)
+        {
+            player.CurHP += 100;
+        }
+    }
 }

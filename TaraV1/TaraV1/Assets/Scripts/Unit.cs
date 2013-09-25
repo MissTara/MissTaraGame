@@ -58,6 +58,19 @@ public class Unit : MonoBehaviour {
 		get {return _BaseDamage; }
 		set {_BaseDamage = value;}
 	}
+
+    public void gainHealth(int gainAmountOfHealth)
+    {
+        if (this._CurHP + gainAmountOfHealth > this.MaxHP)
+        {
+            int healhToMax = this.MaxHP - gainAmountOfHealth;
+            this._CurHP += healhToMax;
+        }
+        else
+        {
+            this._CurHP += gainAmountOfHealth;
+        }
+    }
 	protected int _BaseDamage 	= 1;
 	private float lastAttackTime;
 	

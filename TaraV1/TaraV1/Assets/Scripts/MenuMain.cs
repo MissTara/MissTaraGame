@@ -202,8 +202,12 @@ protected override void OnGUI (){
 					    print("Item Purchased");
 				    }
 			    }
-			    else if (funcText == "Equip")
+			    else if (funcText == "Use")
                 {
+                    if (UnitPlayer.Get().CurHP < UnitPlayer.Get().MaxHP)
+                    {
+                        //UnitPlayer.Get().gainHealth
+                    }
 			    }
 		    }
 			
