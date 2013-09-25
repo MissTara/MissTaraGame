@@ -17,5 +17,5 @@ public class AssetDestuction : MonoBehaviour {
 		Destroy(this.gameObject);
 		Resources.UnloadUnusedAssets();
 		print("INVISIBLE!");		
+		}
 	}
-}

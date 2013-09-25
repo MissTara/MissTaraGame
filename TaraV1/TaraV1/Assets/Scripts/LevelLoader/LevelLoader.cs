@@ -42,7 +42,7 @@ public class LevelLoader : MonoBehaviour
             planes = GeometryUtility.CalculateFrustumPlanes(camera);
             foreach (GameObject building in buildings)
             {
-                if (!building.gameObject.activeSelf && building.gameObject.transform.localPosition.z < camera.gameObject.transform.localPosition.z)
+                if (camera.gameObject.transform.localPosition.z < building.gameObject.transform.localPosition.z)
                 {
                     
                     Debug.Log(building.name + " has been detected!");
