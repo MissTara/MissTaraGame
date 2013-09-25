@@ -149,7 +149,7 @@ protected override void OnGUI (){
 		else
 			funcText = "Buy";
 			
-			if (GUI.Button(new Rect(700,680,200,100), funcText,menuText)){
+			if (GUI.Button(new Rect(700,650,200,100), funcText,menuText)){
 			if (funcText == "Buy")
 			{
 				if (GameManager.userData.purchase(GameManager.dataManager.Armours[currentItemIndex].ItemPrice)){
@@ -175,7 +175,7 @@ protected override void OnGUI (){
 			
 			GUIContent guiC = new GUIContent(text,utiliRM.tex_WeaponIcons[GameManager.dataManager.Armours[i].Icon]);
 			
-			if(GUI.Button(new Rect(800 + column * 96 + column * 20,300 + 120 * (int)(i / 4),110,110), guiC, IconAvailable)){
+			if(GUI.Button(new Rect(800 + column * 96 + column * 40,375 + 120 * (int)(i / 4),110,110), guiC, IconAvailable)){
 				currentItemIndex = i;
 			}
 			column++;
@@ -191,7 +191,7 @@ protected override void OnGUI (){
 		    else
 			    funcText = "Buy";
 			
-			if (GUI.Button(new Rect(700,680,200,100), funcText,menuText))
+			if (GUI.Button(new Rect(700,650,200,100), funcText,menuText))
             {
 			    if (funcText == "Buy")
 			    {
@@ -224,7 +224,7 @@ protected override void OnGUI (){
 			    */
 			    GUIContent guiC = new GUIContent(text,utiliRM.tex_WeaponIcons[GameManager.dataManager.Misc[i].Icon]);
 			
-			    if(GUI.Button(new Rect(800 + column * 96 + column * 20,300 + 120 * (int)(i / 4),110,110), guiC, IconAvailable))
+			    if(GUI.Button(new Rect(800 + column * 96 + column * 40,375 + 120 * (int)(i / 4),110,110), guiC, IconAvailable))
                 {
 				    currentItemIndex = i;
 			    }
