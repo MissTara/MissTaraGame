@@ -10,6 +10,7 @@ using System.Collections;
 public class AIStates : MonoBehaviour
 {
 	//hey, lookit me
+	//this is a test
     public enum states { Idle, Run, Death, Attack, Hit };
     public bool hitted = false;
     AIPathCustom AIPathing;
