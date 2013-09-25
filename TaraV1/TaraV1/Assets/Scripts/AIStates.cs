@@ -9,7 +9,7 @@ using System.Collections;
 
 public class AIStates : MonoBehaviour
 {
-
+	//hey, lookit me
     public enum states { Idle, Run, Death, Attack, Hit };
     public bool hitted = false;
     AIPathCustom AIPathing;
