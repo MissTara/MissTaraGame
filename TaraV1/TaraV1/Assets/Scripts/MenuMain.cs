@@ -206,7 +206,7 @@ protected override void OnGUI (){
                 {
                     if (UnitPlayer.Get().CurHP < UnitPlayer.Get().MaxHP)
                     {
-                        //UnitPlayer.Get().gainHealth
+                        // add health to player UnitPlayer.Get().gainHealth
                     }
 			    }
 		    }

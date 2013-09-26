@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// made by Dexter
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -44,13 +46,10 @@ public class LevelLoader : MonoBehaviour
             {
                 if (camera.gameObject.transform.localPosition.z < building.gameObject.transform.localPosition.z)
                 {
-                    
-                    Debug.Log(building.name + " has been detected!");
                     building.gameObject.SetActive(true);
                 }
                 if (GeometryUtility.TestPlanesAABB(planes, building.collider.bounds) == false)
                 {
-                    Debug.Log("Nothing has been detected");
                     building.gameObject.SetActive(false);
                     //DestroyImmediate(building.gameObject, true);
                 }

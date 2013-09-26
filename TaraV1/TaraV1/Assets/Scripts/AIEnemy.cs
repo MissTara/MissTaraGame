@@ -66,4 +66,5 @@ public class AIEnemy : MonoBehaviour {
 			atkDealTime = Time.realtimeSinceStartup;
 		}
 	}
+
 }

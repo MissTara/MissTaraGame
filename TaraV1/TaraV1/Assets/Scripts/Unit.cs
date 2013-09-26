@@ -59,6 +59,8 @@ public class Unit : MonoBehaviour {
 		set {_BaseDamage = value;}
 	}
 
+    
+
     public void gainHealth(int gainAmountOfHealth)
     {
         if (this._CurHP + gainAmountOfHealth > this.MaxHP)

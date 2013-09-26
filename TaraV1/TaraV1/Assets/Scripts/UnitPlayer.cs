@@ -22,7 +22,9 @@ public class UnitPlayer : Unit,ICombat {
         Attack2,
         Attack2Combo,
         AttackComboLoop,
-        AttackComboEnd
+        AttackComboEnd,
+        SpecialAttack,
+        SpecialAttackEnd
     };
     public states PlayerState = states.Idle1;
 	private static UnitPlayer m_Instance = null;
@@ -54,6 +56,7 @@ public class UnitPlayer : Unit,ICombat {
 	public Transform particleJump;   //Deprecated
 	public Transform playerAvatar;
 	public GameObject playerMesh;
+    public float SpecialAttackDamage = 1000;
 	public float speedMomentumDecay = 0.9f;
 	private Animator animator;
 	private float attackTriggerTime;
@@ -69,6 +72,7 @@ public class UnitPlayer : Unit,ICombat {
     private string callBackAnimation = "";
 	private string callBackRun = "";
     private bool atkButtonDown = false;
+    private bool specialAtkButtonDown = false;
 	public ColliderWeapon wepFistRight, wepFistLeft, wepHead;
 	// Use this for initialization
 	void Awake(){
@@ -96,6 +100,7 @@ public class UnitPlayer : Unit,ICombat {
 			UpdatePlayerRotation();
 			UpdatePlayerMovement();
 			UpdatePlayerAttack();
+            UpdatePlayerSpecialAttack();
         }
 		UpdateShooting();
         UpdateState();
@@ -126,6 +131,17 @@ public class UnitPlayer : Unit,ICombat {
 		cameraSelf.transform.TransformDirection(move);
 		move.y = 0;
 	}
+    private void UpdatePlayerSpecialAttack()
+    {
+        if ((Input.GetKey(KeyCode.X) || script_vcontroller.isATK()) && !specialAtkButtonDown)
+        {
+            Debug.Log("Special Attack");
+            specialAtkButtonDown = true;
+            StartCoroutine(EnemyDanceCutscene());
+
+        }
+    }
+
 	private void UpdatePlayerRotation(){
 		if (move != Vector3.zero)
 			targetForward = new Vector3(move.x, 0f, move.z);
@@ -151,6 +167,7 @@ public class UnitPlayer : Unit,ICombat {
         {
             _isAttacking = false;
             lastComboDelay += Time.deltaTime;
+
             if ((Input.GetKey(KeyCode.Z) || script_vcontroller.isATK()) && !atkButtonDown)
             {
                 atkButtonDown = true;
@@ -207,12 +224,26 @@ public class UnitPlayer : Unit,ICombat {
             }
         }
 	}
+
+    IEnumerator EnemyDanceCutscene()
+    {
+        foreach (GameObject enemy in GameManager.Get().objEnemies)
+        {
+            enemy.gameObject.SendMessage("KillMe", SendMessageOptions.DontRequireReceiver);
+
+        }
+
+        yield return new WaitForSeconds(5.0f);
+        specialAtkButtonDown = false;
+    }
+
     private void FixedUpdate() {
         
     }
     private void UpdateState() {
         if (isAttacking)
             PlayerState = states.Idle2;
+
     }
 	private void UpdateAnimation(){
         if (move != Vector3.zero)

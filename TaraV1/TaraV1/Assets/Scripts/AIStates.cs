@@ -10,7 +10,7 @@ using System.Collections;
 public class AIStates : MonoBehaviour
 {
 
-    public enum states { Idle, Run, Death, Attack, Hit };
+    public enum states { Idle, Run, Death, Attack, Hit, Dance };
     public bool hitted = false;
     AIPathCustom AIPathing;
     CharacterController controller;
@@ -85,6 +85,21 @@ public class AIStates : MonoBehaviour
                     animation.Play("Death2");
                 Debug.Log(states.Death.ToString());
                 died = true;
+            }
+        }
+        else if (EnemyState == states.Dance)
+        {
+            if (!died)
+            {
+                Debug.Log("I am dancing");
+                animation.Play("CriticalHit");
+
+                if (!animation.IsPlaying("CriticalHit"))
+                {
+                    animation.Stop();
+                    animation.Play("Death1");
+                    died = true;
+                }
             }
         }
 

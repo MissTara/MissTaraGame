@@ -1,6 +1,6 @@
 /* AIPathCustom.cs
  * Author: http://arongranberg.com/
- * Last Modified By: Luke Jingwei Sun
+ * Last Modified By: Dexter
  * Description: 
  * A Star path finding for aliens
  * */ 
@@ -642,6 +642,33 @@ public class AIPathCustom : MonoBehaviour, ICombat
 			}
 		}
 	}
+
+    public virtual void KillMe()
+    {
+        if (gameObject.tag == "Alien")
+        {
+            Debug.Log("let me dead");
+            
+            this.Dance();
+        }
+    }
+
+    public void Dance()
+    {
+        canSearch = false;
+        canMove = false;
+        AnimControl.EnemyState = AIStates.states.Dance;
+        StartCoroutine("PlayDance");
+    }
+
+    IEnumerator PlayDance()
+    {
+        yield return new WaitForSeconds(3.0f);
+        this._CurHP = 0;
+        this.dead = true;
+        this.Die();
+    }
+
 	public void Die(){
 		dead = true;
 		AnimControl.EnemyState = AIStates.states.Death;

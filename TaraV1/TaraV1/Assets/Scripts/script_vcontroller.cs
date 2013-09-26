@@ -64,6 +64,7 @@ public class script_vcontroller : MonoBehaviour {
 	private float atkButtonId = -1;
 	private bool atkButtonDown = false;
 	private static bool atkButtonPressed = false;
+    private static bool specialAtkButtonPressed = false;
 	// Use this for initialization
 	void Start () {
 		if (joystick == null){
@@ -250,6 +251,20 @@ public class script_vcontroller : MonoBehaviour {
 			return false;
 		}
 	}
+
+    public static bool isSpecialAtk()
+    {
+        if (specialAtkButtonPressed)
+        {
+            specialAtkButtonPressed = false;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 	public float getOffsetHorizontal(){
 		if (Input.GetAxis("Horizontal") != 0)
 			return Input.GetAxis("Horizontal");
