@@ -15,6 +15,7 @@ using System;
 using UnityEngine;
 public class ColliderPickup : MonoBehaviour
 {
+	
 	public Transform particlePickedup;	// The particle effect plays while it is triggered
 	public Transform particleStandBy;	// The default particle effect that keeps playing while stading by
 	public bool StaticItem = false;		// A static item does not disappear after interacting with the player such as killzone
@@ -25,6 +26,8 @@ public class ColliderPickup : MonoBehaviour
 	public bool playPickupSE = true;	// If it is true, a Sound Effect(if provided) will be played when interacting with the player
 	public AudioClip audioPickupSE;		// The Sound Effect for pick up
 	
+	public GameObject spawner;
+	public int spawnNum;
 	public bool Active{
 		set { 
 			_Active = value; 
@@ -49,6 +52,7 @@ public class ColliderPickup : MonoBehaviour
 			PickUp();
 		}
 		
+		
 	}
 	void OnTriggerStay(Collider other){
 		if (Magnetic && other.tag == "MagCollider"){
@@ -70,7 +74,10 @@ public class ColliderPickup : MonoBehaviour
 		if (isDestorying && !StaticItem)
 			return;
 		isDestorying = true;
-		GameManager.getItem(ItemID);
+		if (ItemID < 100)
+		     GameManager.getItem(ItemID,null,spawnNum);
+		else
+		     GameManager.getItem(ItemID,spawner,spawnNum);	
 
 		if (!Activated){
 			if (particlePickedup != null)
@@ -85,5 +92,6 @@ public class ColliderPickup : MonoBehaviour
 			renderer.enabled = false;
 			Destroy (gameObject, audioPickupSE.length);
 		}
+		
 	}
 }

@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MenuMain.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraController.cs">
     <Files>
       <File FileName="Assets\Scripts\MenuMain.cs" Line="194" Column="35" />
+      <File FileName="Assets\Scripts\CameraController.cs" Line="123" Column="4" />
+      <File FileName="Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="414" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

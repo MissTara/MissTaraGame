@@ -36,7 +36,9 @@ public class CameraController : MonoBehaviour {
 	}
 	private Rect fadeBox = new Rect(0,0,Screen.width,Screen.height);
 	/*===============*/
-	
+
+    	private float oldZ;
+
 	public float x = 0.0f;
 	public float y = 0.0f;
 	public bool debug = false;
@@ -56,6 +58,7 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cameraTarget = GameManager.Get().objPlayer.transform;
+        oldZ = cameraSelf.position.z;
 		Vector2 angles = cameraTarget.eulerAngles;
 		x = angles.y - 30;
 		y = angles.x;
@@ -109,15 +112,39 @@ public class CameraController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void LateUpdate () {
+        oldZ = cameraSelf.position.z;
 		if (GameManager.isPaused)
 			return;
 		Vector3 dstPos = new Vector3(cameraSelf.position.x,cameraTarget.position.y,cameraTarget.position.z);
-		if (Vector3.Distance(cameraSelf.position, dstPos) > 0.5f && !Locked)
-			cameraSelf.position = Vector3.Lerp(cameraSelf.position,dstPos, Time.deltaTime * 10);//new Vector3(cameraSelf.position.x,cameraTarget.position.y,cameraTarget.position.z);//Vector3.Lerp(cameraSelf.position,cameraTarget.position, 5 * Time.deltaTime);
-		if (Locked)
-			this.transform.forward = Vector3.Lerp(this.transform.forward, cameraTarget.position - this.transform.position, Time.deltaTime);
-		else
-			this.transform.forward = Vector3.Lerp(this.transform.forward, oriRotation, Time.deltaTime * 10);
-		
+        if (Vector3.Distance(cameraSelf.position, dstPos) > 0.5f && !Locked)
+        {
+            cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 10);
+			//Uncomment when you've added 4 walls around the player
+			
+			/*if(!GameManager.isPaused && (cameraTarget.position.z - oldZ) < 0.0f && !Locked){	// If the camera has moved, move the player boundary with it, but stop if the camera gets locked
+				GameObject tmp = GameObject.Find("testwallF");
+				tmp.transform.position = new Vector3(tmp.transform.position.x,tmp.transform.position.y,tmp.transform.position.z+(((cameraTarget.position.z - oldZ)* Time.deltaTime)*10));
+				tmp = GameObject.Find("testwallB");
+				tmp.transform.position = new Vector3(tmp.transform.position.x,tmp.transform.position.y,tmp.transform.position.z+(((cameraTarget.position.z - oldZ)* Time.deltaTime)*10));
+				tmp = GameObject.Find("testwallL");
+				tmp.transform.position = new Vector3(tmp.transform.position.x,tmp.transform.position.y,tmp.transform.position.z+(((cameraTarget.position.z - oldZ)* Time.deltaTime)*10));
+				tmp = GameObject.Find("testwallR");
+				tmp.transform.position = new Vector3(tmp.transform.position.x,tmp.transform.position.y,tmp.transform.position.z+(((cameraTarget.position.z - oldZ)* Time.deltaTime)*10));
+			}
+			*/
+			
+			
+            if (cameraSelf.position.z > oldZ)
+            {
+                //oldZ = cameraTarget.position.z;
+                cameraSelf.position = new Vector3(cameraSelf.position.x, cameraSelf.position.y, oldZ);
+                //Debug.Log(oldZ);
+            }
+            //cameraSelf.position = new Vector3(cameraSelf.position.x, cameraTarget.position.y, cameraTarget.position.z);
+            //cameraSelf.position = Vector3.Lerp(cameraSelf.position, cameraTarget.position, 5 * Time.deltaTime);
+        }
+        if (Locked){} else{
+            this.transform.forward = Vector3.Lerp(this.transform.forward, oriRotation, Time.deltaTime * 10);
+		}
 	}
 }

@@ -14,13 +14,17 @@ public class GameManager : MonoBehaviour
 	//static script_player m_Player, m_weapon;
 	//static script_camera m_Camera;
 	public static UnitPlayer MainPlayer;				// Deprecated
-	public static float checkPointX = 0f, checkPointY = 0f, checkPointZ = 0f; // Stores the last check point
-	private static bool _isPaused = false;				// if the game is paused
+    public static GameObject spawns;
+    private static int spawnamount = 1;
+    public static float checkPointX = 0f, checkPointY = 0f, checkPointZ = 0f; // Stores the last check point
+    private static bool isSpawn = false;
+	public static bool _isPaused = false;				// if the game is paused
 	public static bool isDebugging = true;				// if the game is on debug mode
 	public static bool useGyroScope = true;				// Deprecated
-	public static bool useSwipe = true;					// Deprecated
+	public static bool useSwipe = true;				// Deprecated
 	public static DataManager dataManager;				// Game database
-	public static UserData userData;					// Current user data
+	public static UserData userData;				// Current user data
+	public static int enemyCount = 0;				// Holder for camera lock enemy spawn
 	public static bool isPaused{
 		get {return _isPaused;}
 		set {
@@ -36,7 +40,7 @@ public class GameManager : MonoBehaviour
 		return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 	}
 	// Item event database
-	public static void getItem(int itemID){
+	public static void getItem(int itemID, GameObject spawner, int spawnNum){
 		switch(itemID){
 		case 0:
 			break;
@@ -60,16 +64,25 @@ public class GameManager : MonoBehaviour
 		case 100:					// Load a script which creates two invisible walls
 			if (CommandScript.Get() != null){
 				List<CommandScript.BasicCommand> bCmd = new List<CommandScript.BasicCommand>();
-				bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall01"));
-				bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall02"));
-				bCmd.Add(new CommandScript.BasicCommand ("AddMessage","You just touched a trigger box"));
-				bCmd.Add(new CommandScript.BasicCommand ("AddMessage","Now There are two invisible walls are created|3"));
-				bCmd.Add(new CommandScript.BasicCommand ("AddMessage","This is a sample for the script system|3"));
-				bCmd.Add(new CommandScript.BasicCommand ("AddMessage","For details please refer to GameManager|4"));
-				bCmd.Add(new CommandScript.BasicCommand ("ShowMessage",""));
-				//bCmd.Add(new CommandScript.BasicCommand ("LockCamera",""));
+				//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall01"));
+				//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall02"));
+				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","You just touched a trigger box"));
+				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","Now There are two invisible walls are created|3"));
+				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","This is a sample for the script system|3"));
+				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","For details please refer to GameManager|4"));
+				//bCmd.Add(new CommandScript.BasicCommand ("ShowMessage",""));
+				bCmd.Add(new CommandScript.BasicCommand ("LockCamera",""));
 				CommandScript.Get().InterpreteCommands(bCmd);
 			}
+            		isSpawn = true;
+			spawns = spawner;
+			spawnamount = spawnNum;
+			break;
+			
+		case 101: //Attempt at making enemies spawn while the camera can still move. Not working.
+			isSpawn = true;
+			spawns = spawner;
+			spawnamount = spawnNum;
 			break;
 		}
 	}
@@ -151,6 +164,7 @@ public class GameManager : MonoBehaviour
 			BaseAttack = 1;
 			Mass = 3;
 		}
+		
 	}
 	void Awake(){
 		RM = ResourceManager.Get();
@@ -169,7 +183,7 @@ public class GameManager : MonoBehaviour
 		//CreateGround();
 		//CreatePlayer();
 		CreateLight();
-		CreateEnemy();
+		//CreateEnemy();
 	}
 	void CreateMenu(){
 		Instantiate(RM.preMenu);
@@ -212,11 +226,18 @@ public class GameManager : MonoBehaviour
 		
 	}
 	void Update(){
-		// Spawn Enemy
-		if (objEnemies.Count < 5 && Time.realtimeSinceStartup - oldTimer > 2){
-			CreateEnemy(new Vector3(UnityEngine.Random.Range(-4f,4f),1,UnityEngine.Random.Range(-4f,4f)),GameManager.dataManager.Enemies[0],Quaternion.identity);
-			oldTimer = Time.realtimeSinceStartup;
+		// Spawn Enemy if you're allowed to
+		if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 2 && isSpawn == true && enemyCount != spawnamount){
+			//CreateEnemy(new Vector3(UnityEngine.Random.Range(-4f,4f),1,UnityEngine.Random.Range(-4f,4f)),GameManager.dataManager.Enemies[0],Quaternion.identity);
+           		CreateEnemy(spawns.transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
+			enemyCount++;
+            		oldTimer = Time.realtimeSinceStartup;
 		}
-
+		if (enemyCount == spawnamount && objEnemies.Count == 0 && isSpawn){ 	//Check if the max number of enemies have spawned and are all dead
+			objEnemies.Clear();						//If so, unlock the camera and stop any more spawning
+			CommandScript.Get().InterpreteSingle(new CommandScript.BasicCommand ("UnlockCamera",""));
+			isSpawn = false;
+			enemyCount = 0;
+		}
 	}
 }
