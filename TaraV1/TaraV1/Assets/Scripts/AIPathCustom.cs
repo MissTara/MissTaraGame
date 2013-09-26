@@ -646,11 +646,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
     public virtual void KillMe()
     {
         if (gameObject.tag == "Alien")
-        {
-            Debug.Log("let me dead");
-            
             this.Dance();
-        }
     }
 
     public void Dance()
