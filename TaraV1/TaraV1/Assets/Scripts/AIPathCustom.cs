@@ -681,6 +681,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 		GameManager.Get ().objEnemies.Remove(this.gameObject);
 		this.gameObject.SetActive(false);
 		controller.enabled = false;
+        Destroy(this.gameObject);
 	}
 	public void EnemyUpdate(){
 		if (dead && !AnimControl.animation.isPlaying)

@@ -217,5 +217,6 @@ public class GameManager : MonoBehaviour
 			CreateEnemy(new Vector3(UnityEngine.Random.Range(-4f,4f),1,UnityEngine.Random.Range(-4f,4f)),GameManager.dataManager.Enemies[0],Quaternion.identity);
 			oldTimer = Time.realtimeSinceStartup;
 		}
+
 	}
 }

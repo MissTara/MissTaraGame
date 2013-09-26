@@ -1,6 +1,6 @@
 /* AIStates.cs
  * Author: Alfred Lai
- * Last Modified By: Alfred Lai
+ * Last Modified By: Dexter
  * Description: 
  * Provides states for enemy and plays different animations depends on different states.
  * */
