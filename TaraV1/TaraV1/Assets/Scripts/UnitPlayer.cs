@@ -26,6 +26,10 @@ public class UnitPlayer : Unit,ICombat {
         SpecialAttack,
         SpecialAttackEnd
     };
+
+    //to show enemies are in the camera variable
+    protected Plane[] planes;
+
     public states PlayerState = states.Idle1;
 	private static UnitPlayer m_Instance = null;
     public static UnitPlayer Get()
@@ -227,12 +231,15 @@ public class UnitPlayer : Unit,ICombat {
 
     IEnumerator EnemyDanceCutscene()
     {
+        planes = GeometryUtility.CalculateFrustumPlanes(LevelLoader.Get().camera);
         foreach (GameObject enemy in GameManager.Get().objEnemies)
         {
-            enemy.gameObject.SendMessage("KillMe", SendMessageOptions.DontRequireReceiver);
-
+            if (GeometryUtility.TestPlanesAABB(planes, enemy.collider.bounds) == true)
+            {
+                enemy.gameObject.SendMessage("KillMe", SendMessageOptions.DontRequireReceiver);
+            }
         }
-
+        
         yield return new WaitForSeconds(5.0f);
         specialAtkButtonDown = false;
     }
