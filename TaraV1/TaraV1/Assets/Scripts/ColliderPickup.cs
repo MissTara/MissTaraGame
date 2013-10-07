@@ -26,7 +26,7 @@ public class ColliderPickup : MonoBehaviour
 	public bool playPickupSE = true;	// If it is true, a Sound Effect(if provided) will be played when interacting with the player
 	public AudioClip audioPickupSE;		// The Sound Effect for pick up
 	
-	public GameObject spawner;
+	public GameObject[] spawner = new GameObject[2];
 	public int spawnNum;
 	public bool Active{
 		set { 

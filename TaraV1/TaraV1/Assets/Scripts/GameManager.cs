@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour
 	//static script_player m_Player, m_weapon;
 	//static script_camera m_Camera;
 	public static UnitPlayer MainPlayer;				// Deprecated
-    public static GameObject spawns;
+    public static GameObject[] spawns = new GameObject[2];
     private static int spawnamount = 1;
     public static float checkPointX = 0f, checkPointY = 0f, checkPointZ = 0f; // Stores the last check point
-    private static bool isSpawn = false;
+    private static bool isSpawn, multiSpawn = false;
 	public static bool _isPaused = false;				// if the game is paused
 	public static bool isDebugging = true;				// if the game is on debug mode
 	public static bool useGyroScope = true;				// Deprecated
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 		return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 	}
 	// Item event database
-	public static void getItem(int itemID, GameObject spawner, int spawnNum){
+	public static void getItem(int itemID, GameObject[] spawner, int spawnNum){
 		switch(itemID){
 		case 0:
 			break;
@@ -74,14 +74,16 @@ public class GameManager : MonoBehaviour
 				bCmd.Add(new CommandScript.BasicCommand ("LockCamera",""));
 				CommandScript.Get().InterpreteCommands(bCmd);
 			}
-            		isSpawn = true;
-			spawns = spawner;
+            isSpawn = true;
+			spawns[0] = spawner[0];
 			spawnamount = spawnNum;
 			break;
 			
 		case 101: //Attempt at making enemies spawn while the camera can still move. Not working.
 			isSpawn = true;
-			spawns = spawner;
+			multiSpawn = true;
+			spawns[0] = spawner[0];
+			spawns[1] = spawner[1];
 			spawnamount = spawnNum;
 			break;
 		}
@@ -227,16 +229,24 @@ public class GameManager : MonoBehaviour
 	}
 	void Update(){
 		// Spawn Enemy if you're allowed to
-		if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 2 && isSpawn == true && enemyCount != spawnamount){
+		if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 1 && isSpawn == true && enemyCount != spawnamount && multiSpawn){
+			CreateEnemy(spawns[0].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
+			if (enemyCount+1 != spawnamount){
+				CreateEnemy(spawns[1].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
+				enemyCount+=2;
+			} else enemyCount++;			
+            oldTimer = Time.realtimeSinceStartup;
+		}else if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 2 && isSpawn == true && enemyCount != spawnamount){
 			//CreateEnemy(new Vector3(UnityEngine.Random.Range(-4f,4f),1,UnityEngine.Random.Range(-4f,4f)),GameManager.dataManager.Enemies[0],Quaternion.identity);
-           		CreateEnemy(spawns.transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
+           	CreateEnemy(spawns[0].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
 			enemyCount++;
-            		oldTimer = Time.realtimeSinceStartup;
+            oldTimer = Time.realtimeSinceStartup;
 		}
 		if (enemyCount == spawnamount && objEnemies.Count == 0 && isSpawn){ 	//Check if the max number of enemies have spawned and are all dead
 			objEnemies.Clear();						//If so, unlock the camera and stop any more spawning
 			CommandScript.Get().InterpreteSingle(new CommandScript.BasicCommand ("UnlockCamera",""));
 			isSpawn = false;
+			if (multiSpawn) multiSpawn = false;
 			enemyCount = 0;
 		}
 	}
