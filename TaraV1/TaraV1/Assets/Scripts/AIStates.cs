@@ -127,31 +127,35 @@ public class AIStates : MonoBehaviour
         if (batAtt && Time.time >= delay + batdelay && !died)
         {
             EnemyState = states.Run;
-            //AIPathing.canMove = true;
+            AIPathing.canMove = true;
             AIPathing.canSearch = true;
             Debug.Log(EnemyState);
             batAtt = false;
         }
 
         if (EnemyState == states.Idle && !batAtt)
-            animation.Play("Fly");
+            animation.Play("FlyIdle");
         else if (EnemyState == states.Run && !batAtt)
             animation.Play("Fly");
         else if (EnemyState == states.Attack && !batAtt)
         {
-            //AIPathing.canMove = false;
+            AIPathing.canMove = false;
             AIPathing.canSearch = false;
             delay = Time.time;
             dir = player.position - transform.position; // calculate the target direction...
             batAtt = true;
             animation.Play("FlyAttack");
-            animation.PlayQueued("FlyAttackMid");
-            animation.PlayQueued("FlyAttackMiss");
-            animation.PlayQueued("Fly");
+			animation.PlayQueued("FlyAttackMid");
         }
+		else if (EnemyState == states.Attack && batAtt){
+			
+			//Code for hitting goes here
+            //animation.PlayQueued("FlyAttackMiss");
+            //animation.PlayQueued("Fly");
+		}
         else if (EnemyState == states.Death)
         {
-            controller.height = 0.1f;
+            controller.height = 0.7f;
             controller.center = new Vector3(0, 0.1f, 0);
             if (!died)
             {

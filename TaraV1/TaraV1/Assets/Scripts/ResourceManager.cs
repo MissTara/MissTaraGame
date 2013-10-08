@@ -32,7 +32,7 @@ tex_Controller_JMP,
 	public Texture [] tex_WeaponIcons;
 	public AudioClip se_PlayerJump, se_AttackOn, se_Attack;
 	
-	public GameObject preEnemyAlien,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
+	public GameObject preEnemyAlien,preEnemyBat,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
 	preMenu,preKillZone,preJoyStick, preNoteQuarter,preNoteHalf, preNoteSharp, preNoteTreble,preNoteWhole,preBullet;
 	public GameObject particleAttack, particleExplosion;
 
