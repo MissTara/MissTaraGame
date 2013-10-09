@@ -28,7 +28,7 @@ public class UnitPlayer : Unit,ICombat {
     };
 
     //to show enemies are in the camera variable
-    protected Plane[] planes;
+    protected Plane[] enemyPlanes;
 
     public states PlayerState = states.Idle1;
 	private static UnitPlayer m_Instance = null;
@@ -41,7 +41,8 @@ public class UnitPlayer : Unit,ICombat {
 	public bool 	isControllable 	= true;				// If the unit is controllable
 	[HideInInspector]
 	public float attackAnimationTime = 1.2f;
-	[HideInInspector]
+    [HideInInspector]
+
 	public bool _isAttacking = false;
 	public bool isAttacking{
 		get { return _isAttacking; }
@@ -125,10 +126,13 @@ public class UnitPlayer : Unit,ICombat {
 			offsetVer *= speedMomentumDecay;
 
 		}
-		if (canWalk && _isAttacking == false)
-			move = new Vector3(offsetHor, 0f, offsetVer);
-		else
-			move = Vector3.zero;
+
+        if (canWalk && _isAttacking == false && !IsSpecialAttack())
+        {
+            move = new Vector3(offsetHor, 0f, offsetVer);
+        }
+        else
+            move = Vector3.zero;
 		move.Normalize();
 		move =  Camera.mainCamera.transform.TransformDirection(move);
 		GameObject cameraSelf = GameObject.Find("CameraSelf");
@@ -137,13 +141,34 @@ public class UnitPlayer : Unit,ICombat {
 	}
     private void UpdatePlayerSpecialAttack()
     {
-        if ((Input.GetKey(KeyCode.X) || script_vcontroller.isATK()) && !specialAtkButtonDown)
+        if (!isPlayingSpecialAnimation() && IsSpecialAttack() == false)
         {
-            Debug.Log("Special Attack");
-            specialAtkButtonDown = true;
-            StartCoroutine(EnemyDanceCutscene());
+            if ((Input.GetKey(KeyCode.X) || script_vcontroller.isATK()) && !specialAtkButtonDown)
+            {
+                Debug.Log("Special Attack");
+                specialAtkButtonDown = true;
+                StartCoroutine(EnemyDanceCutscene());
 
+            }
+
+            if (specialAtkButtonDown)
+            {
+                playerMesh.animation.Stop();
+                playerMesh.animation.Play("SpecialMove");
+
+                if (!isPlayingSpecialAnimation())
+                {
+                    playerMesh.animation.Stop();
+                    playerMesh.animation.Play("Idle");
+                }
+            }
         }
+
+    }
+
+    public bool IsSpecialAttack()
+    {
+        return this.specialAtkButtonDown;
     }
 
 	private void UpdatePlayerRotation(){
@@ -163,8 +188,13 @@ public class UnitPlayer : Unit,ICombat {
 		}
 		run = Input.GetKey(KeyCode.LeftShift);
 	}
+    private bool isPlayingSpecialAnimation()
+    {
+        return playerMesh.animation.IsPlaying("SpecialMove");
+    }
+
     private bool isPlayingAttackAnimation() {
-        return playerMesh.animation.IsPlaying("Swipe1") || playerMesh.animation.IsPlaying("Swipe2") || playerMesh.animation.IsPlaying("SwipeCombo1") || playerMesh.animation.IsPlaying("SwipeCombo2") || playerMesh.animation.IsPlaying("SwipeComboEnd") || playerMesh.animation.IsPlaying("SwipeComboLoop") || playerMesh.animation.IsPlaying("SwipeCombo3End");
+        return playerMesh.animation.IsPlaying("Attack1") || playerMesh.animation.IsPlaying("Attack2") || playerMesh.animation.IsPlaying("Attack3");
     }
 	private void UpdatePlayerAttack(){
         if (!isPlayingAttackAnimation())
@@ -179,30 +209,30 @@ public class UnitPlayer : Unit,ICombat {
                 switch (comboCount)
                 {
                     case 0:
-                        playerMesh.animation.Play("Swipe1");
+                        playerMesh.animation.Play("Attack1");
                         break;
                     case 1:
-                        playerMesh.animation.Play("SwipeCombo1");
-                        callBackAnimation = "Swipe2";
+                        playerMesh.animation.Play("Attack1");
+                        callBackAnimation = "Attack1";
                         break;
                     case 2:
-                        playerMesh.animation.Play("SwipeCombo2");
-                        callBackAnimation = "SwipeComboEnd";
+                        playerMesh.animation.Play("Attack2");
+                        callBackAnimation = "Attack2";
                         break;
                     case 3:
-                        playerMesh.animation.Play("SwipeComboLoop");
-                        callBackAnimation = "Swipe2";
+                        playerMesh.animation.Play("Attack3");
+                        callBackAnimation = "Attack3";
                         break;
                     default:
                         if (comboCount % 2 == 0)
                         {
-                            playerMesh.animation.Play("SwipeCombo2");
-                            callBackAnimation = "SwipeComboEnd";
+                            playerMesh.animation.Play("Attack1");
+                            callBackAnimation = "Attack1";
                         }
                         else
                         {
-                            playerMesh.animation.Play("SwipeComboLoop");
-                            callBackAnimation = "Swipe2";
+                            playerMesh.animation.Play("Attack2");
+                            callBackAnimation = "Attack2";
                         }
                         break;
                 }
@@ -211,7 +241,7 @@ public class UnitPlayer : Unit,ICombat {
         }
         else
             _isAttacking = true;
-		if (playerMesh.animation.IsPlaying("SwipeComboEnd")){
+		if (playerMesh.animation.IsPlaying("Attack3")){
 		}
 		else
 			wepHead.enabled = false;
@@ -231,10 +261,10 @@ public class UnitPlayer : Unit,ICombat {
 
     IEnumerator EnemyDanceCutscene()
     {
-        planes = GeometryUtility.CalculateFrustumPlanes(LevelLoader.Get().camera);
+        enemyPlanes = GeometryUtility.CalculateFrustumPlanes(LevelLoader.Get().camera);
         foreach (GameObject enemy in GameManager.Get().objEnemies)
         {
-            if (GeometryUtility.TestPlanesAABB(planes, enemy.collider.bounds) == true)
+            if (GeometryUtility.TestPlanesAABB(enemyPlanes, enemy.collider.bounds) == true)
             {
                 enemy.gameObject.SendMessage("KillMe", SendMessageOptions.DontRequireReceiver);
             }
@@ -255,11 +285,11 @@ public class UnitPlayer : Unit,ICombat {
 	private void UpdateAnimation(){
         if (move != Vector3.zero)
         {
-            if (!isPlayingAttackAnimation() && callBackAnimation == "") {
+            if (!isPlayingAttackAnimation() && callBackAnimation == "" && !isPlayingSpecialAnimation()) {
                 playerMesh.animation.Play("Run");
             }
         }
-        else if (!isPlayingAttackAnimation() && callBackAnimation == "")
+        else if (!isPlayingAttackAnimation() && callBackAnimation == "" && !isPlayingSpecialAnimation())
         {
             playerMesh.animation.Play("Idle");
         }
@@ -271,6 +301,7 @@ public class UnitPlayer : Unit,ICombat {
 	public void hurt(ItemWeapon weapon)
 	// When player get hurt
 	{
+
 		int BaseAttack = weapon.BaseDamage;
 		BattleCore.elements Ele = weapon.Element;
 		PopoutNum pop = PopoutNum.Get();
