@@ -28,6 +28,8 @@ public class ColliderPickup : MonoBehaviour
 	
 	public GameObject[] spawner = new GameObject[2];
 	public int spawnNum;
+    private ParticleEmitter emitter;   // set if there is an emitter attached on the children
+
 	public bool Active{
 		set { 
 			_Active = value; 
@@ -41,8 +43,18 @@ public class ColliderPickup : MonoBehaviour
 	private float degree = 0f;
 	private bool isDestorying = false;
 	void Start(){
-		if (particleStandBy != null)
-			Instantiate(particleStandBy, this.transform.position, this.transform.rotation);
+        if (particleStandBy != null)
+        {
+            Instantiate(particleStandBy, this.transform.position, this.transform.rotation);
+
+            emitter = particleStandBy.Find("SparkleParticlesSecondary").GetComponent(typeof(ParticleEmitter)) as ParticleEmitter;
+
+            if (emitter != null)
+            {
+                emitter.emit = true;
+            }
+        }
+
 	}
 	void OnTriggerEnter(Collider other){
 		if (!Active)
@@ -62,12 +74,23 @@ public class ColliderPickup : MonoBehaviour
 	void Update(){
 		if (!Active)
 			return;
-		if (AutoRotate){
-			if(degree > 720)
-				degree = 0;
-			degree += 120 * Time.deltaTime;
-			transform.rotation = Quaternion.Euler(new Vector3(0,degree,0));
-		}
+        if (AutoRotate)
+        {
+            if (degree > 720)
+                degree = 0;
+            degree += 120 * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(new Vector3(0, degree, 0));
+        }
+
+        if (isDestorying)
+        {
+            if (emitter != null)
+            {
+                emitter.emit = false;
+            }
+
+            Destroy(this.gameObject);
+        }
 	}
 	void PickUp(){
 		DebugScreen.Get().addMsg("Picked Up");

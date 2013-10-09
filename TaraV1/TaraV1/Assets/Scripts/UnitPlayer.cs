@@ -125,7 +125,7 @@ public class UnitPlayer : Unit,ICombat {
 			offsetVer *= speedMomentumDecay;
 
 		}
-		if (canWalk)
+		if (canWalk && _isAttacking == false)
 			move = new Vector3(offsetHor, 0f, offsetVer);
 		else
 			move = Vector3.zero;
