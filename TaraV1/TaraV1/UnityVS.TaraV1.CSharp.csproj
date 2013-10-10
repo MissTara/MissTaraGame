@@ -157,6 +157,7 @@
     <Compile Include="Assets\Scripts\ItemMisc.cs" />
     <Compile Include="Assets\Scripts\ItemWeapon.cs" />
     <Compile Include="Assets\Scripts\LevelLoader\LevelLoader.cs" />
+    <Compile Include="Assets\Scripts\LevelSwitch.cs" />
     <Compile Include="Assets\Scripts\MenuMain.cs" />
     <Compile Include="Assets\Scripts\Menuselect1.cs" />
     <Compile Include="Assets\Scripts\Message.cs" />
