@@ -189,7 +189,7 @@
       <EndReachedDistance>3</EndReachedDistance>
       <DetectRange>10</DetectRange>
       <CanAttack>true</CanAttack>
-      <MaxHP>200</MaxHP>
+      <MaxHP>2</MaxHP>
       <Element>Tech</Element>
       <FactionSelf>
         <Factions>alien</Factions>

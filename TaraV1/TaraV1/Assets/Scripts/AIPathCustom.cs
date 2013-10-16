@@ -573,7 +573,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 	public float detectRange = 5;
 	public bool canAttack = true;
 	public bool dead = false;
-	public int MaxHP = 10;
+	public int MaxHP = 2;
 	private int _CurHP = 0;
 	public BattleCore.elements Element = BattleCore.elements.None;
 	
@@ -645,7 +645,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 
     public virtual void KillMe()
     {
-        if (gameObject.tag == "Alien")
+        if (gameObject.tag == "Alien" || gameObject.tag == "Bat")
             this.Dance();
     }
 

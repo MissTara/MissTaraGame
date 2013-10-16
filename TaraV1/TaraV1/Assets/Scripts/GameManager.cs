@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
 			EndReachedDistance = 2f;
 			DetectRange = 10;
 			CanAttack = true;
-			MaxHP = 20;
+			MaxHP = 2;
 			Element = BattleCore.elements.Earth;
 			FactionSelf = new List<BattleCore.Factions>();
 			FactionSelf.Add( BattleCore.Factions.alien );
@@ -185,7 +185,7 @@ public class GameManager : MonoBehaviour
 		//CreateGround();
 		//CreatePlayer();
 		CreateLight();
-		//CreateEnemy();
+		
 	}
 	void CreateMenu(){
 		Instantiate(RM.preMenu);
@@ -211,7 +211,8 @@ public class GameManager : MonoBehaviour
 		CreateEnemy(new Vector3(4,1,4),tEnemyProp,Quaternion.identity);
 	}
 	void CreateEnemy(Vector3 position,EnemyProperties enemyProp,Quaternion rotation){
-		GameObject enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
+		GameObject enemy;
+		enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
 		if (enemy != null){
 			AIPathCustom ai = enemy.GetComponent<AIPathCustom>();
 			ai.ApplyProperties(enemyProp);

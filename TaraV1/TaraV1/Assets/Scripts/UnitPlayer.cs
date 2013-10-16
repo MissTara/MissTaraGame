@@ -301,7 +301,6 @@ public class UnitPlayer : Unit,ICombat {
 	public void hurt(ItemWeapon weapon)
 	// When player get hurt
 	{
-
 		int BaseAttack = weapon.BaseDamage;
 		BattleCore.elements Ele = weapon.Element;
 		PopoutNum pop = PopoutNum.Get();
@@ -313,8 +312,6 @@ public class UnitPlayer : Unit,ICombat {
 		transparency = 0.5f;
 		if (CurHP == 0){
 			// Death
-			//animator.SetBool("Attack", false);
-			//animator.SetBool("idle2ToDeath",true);
 			GameManager.GameOver();
 			CameraController.Get().fadeIn = false;
 			CameraController.Get().fadeOut = true;

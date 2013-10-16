@@ -184,12 +184,12 @@
          <Name>Alien</Name>
          <CanSearch>true</CanSearch>
          <CanMove>true</CanMove>
-         <Speed>20</Speed>
+         <Speed>10</Speed>
          <TurningSpeed>10</TurningSpeed>
          <EndReachedDistance>3</EndReachedDistance>
          <DetectRange>10</DetectRange>
          <CanAttack>true</CanAttack>
-         <MaxHP>200</MaxHP>
+         <MaxHP>2</MaxHP>
          <Element>Tech</Element>
          <FactionSelf>
             <Factions>alien</Factions>

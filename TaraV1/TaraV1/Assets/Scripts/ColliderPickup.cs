@@ -105,9 +105,10 @@ public class ColliderPickup : MonoBehaviour
 		if (!Activated){
 			if (particlePickedup != null)
 				Instantiate(particlePickedup, this.transform.position, this.transform.rotation);
-					if (audioPickupSE != null && playPickupSE){
-			audio.PlayOneShot(audioPickupSE);
-		}
+			if (audioPickupSE != null && playPickupSE)
+				audio.PlayOneShot(audioPickupSE);
+			//if (particleStandBy !=null)
+				//Destroy(particleStandBy);
 			Activated = true;
 		}
 		

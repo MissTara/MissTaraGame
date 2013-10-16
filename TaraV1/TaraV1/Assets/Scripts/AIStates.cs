@@ -19,19 +19,28 @@ public class AIStates : MonoBehaviour
     protected bool died, batAtt = false;
     protected float delay, timer;
     public float delayer = 5.0f;
-    protected float batdelay = 5.0f;
+    protected float batdelay = 3.4f;
 
     public Transform player;
     private float speed = 1.0f;
     private Vector3 dir;
+	
+	private GameManager GM;
+	private UnitEnemy tmp;				//Holder for the Bat's UnitEnemy script
+	private Vector3 speedSwoop;			//Speed for the attack of the bat
+	bool swoop,batWait = false;			//For the bat only
 
     void Start()
     {
         EnemyState = states.Idle;
-        //PlayState(states.idle);
         delay = Time.time;
         AIPathing = GetComponent<AIPathCustom>();
         controller = GetComponent<CharacterController>();
+		GM= GameManager.Get();
+		if (gameObject.tag == "Bat"){
+			player = GM.objPlayer.transform;
+			tmp = GetComponent<UnitEnemy>();
+		}
     }
 
     void Update()
@@ -126,46 +135,89 @@ public class AIStates : MonoBehaviour
     {
         if (batAtt && Time.time >= delay + batdelay && !died)
         {
+			StopCoroutine("batAttack");
             EnemyState = states.Run;
-            AIPathing.canMove = true;
+            animation.Play("BatFly");
+			AIPathing.canMove = true;
             AIPathing.canSearch = true;
-            Debug.Log(EnemyState);
+            tmp.enabled= true;
+			speedSwoop = new Vector3(0.0f,0.0f,0.0f);
             batAtt = false;
+			swoop = false;
+			batWait = true;
+			StartCoroutine("attackDelay");
         }
 
         if (EnemyState == states.Idle && !batAtt)
-            animation.Play("FlyIdle");
+            animation.PlayQueued("BatFly");
         else if (EnemyState == states.Run && !batAtt)
-            animation.Play("Fly");
-        else if (EnemyState == states.Attack && !batAtt)
+            animation.PlayQueued("BatFly");
+        else if (EnemyState == states.Attack && !batAtt && !batWait)
         {
             AIPathing.canMove = false;
             AIPathing.canSearch = false;
             delay = Time.time;
             dir = player.position - transform.position; // calculate the target direction...
-            batAtt = true;
-            animation.Play("FlyAttack");
-			animation.PlayQueued("FlyAttackMid");
+            speedSwoop = new Vector3(dir.x*0.06f,-0.1f,dir.z*0.06f);
+			this.transform.LookAt(new Vector3(GM.objPlayer.transform.position.x,this.transform.position.y,GM.objPlayer.transform.position.z));	//Look in the direction of the player
+			tmp.enabled = false;
+			batAtt = true;
+			swoop = true;
         }
-		else if (EnemyState == states.Attack && batAtt){
-			
-			//Code for hitting goes here
-            //animation.PlayQueued("FlyAttackMiss");
-            //animation.PlayQueued("Fly");
+		else if (EnemyState == states.Attack && batAtt && !died){
+			AIPathing.canMove = false;
+			AIPathing.canSearch = false;
+			animation.Play("BatAttack");
+			StartCoroutine("batAttack");			
+		}
+		else if (EnemyState == states.Dance){
+			if (!died)
+            {
+			   batAtt = false;
+			   StopCoroutine("batAttack");
+			   speedSwoop = new Vector3(0.0f,0.0f,0.0f);
+               animation.Play("BatDance");
+               if (!animation.IsPlaying("BatDance"))
+               {
+                   EnemyState = states.Death;
+               }
+			}
 		}
         else if (EnemyState == states.Death)
         {
-            controller.height = 0.7f;
-            controller.center = new Vector3(0, 0.1f, 0);
             if (!died)
             {
+				
                 animation.Stop();
-                animation.Play("BatDeath");
-                died = true;
+                animation.Play("BatDead");
+				StopCoroutine("batAttack");
+				if (!tmp.enabled)
+					tmp.enabled = true;
+				speedSwoop = new Vector3(0.0f,0.0f,0.0f);
+				controller.center = new Vector3(0, 0.03f, 0);
+				this.GetComponent<CharacterController>().stepOffset = 0.03f;
+				died = true;
             }
         }
         else
-            controller.Move(dir * speed * Time.deltaTime);
-        //transform.Translate(dir * speed * Time.deltaTime, Space.World);
+			controller.Move(dir * speed * Time.deltaTime);
+		
+		if (hitted && !died){
+			animation.Play("BatHit");
+			hitted = false;
+		}
     }
+	
+	IEnumerator batAttack(){
+		yield return new WaitForSeconds(1.9f);					//Delay for the bat to attack
+		if (swoop && !died && EnemyState != states.Dance){
+			this.transform.position += speedSwoop;
+			speedSwoop.y += 0.15f*Time.deltaTime;
+		}		
+	}
+	
+	IEnumerator attackDelay(){
+		yield return new WaitForSeconds(1.0f);
+		batWait = false;
+	}
 }

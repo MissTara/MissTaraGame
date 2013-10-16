@@ -35,7 +35,7 @@ public class Unit : MonoBehaviour {
 		set { _Weapon = value; }
 	}
 	public ItemArmour Armour;
-	protected int _CurHP		= 0;				// The default current HP which is equal to the maximum
+	public int _CurHP		= 0;				// The default current HP which is equal to the maximum
 	public int CurHP{								// The current HP which should between 0 and the maximum HP inclusive
 		get {return _CurHP;}
 		set	{
@@ -139,7 +139,7 @@ public class Unit : MonoBehaviour {
 			move *= speedRun;
 		else
 			move *= speedMove;
-		if (!controller.isGrounded){
+		if (!controller.isGrounded && this.tag != "Bat"){
 			move *= 0.8f;
 			gravity += Physics.gravity * Time.deltaTime;
 		}
