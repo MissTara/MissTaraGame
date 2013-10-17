@@ -15,13 +15,22 @@ public class LevelLoader : MonoBehaviour
     //public float initialPositionBuilding = 40;
     public List<GameObject> buildings;
     [System.NonSerialized] public bool levelLoaded = false;
+    [System.NonSerialized]
+    public GameObject mainPlayer;
 
     #endregion
-
-
+    
 	protected Plane[] planes;
 
     private static LevelLoader m_Instance = null;
+
+    public bool isPlayerCreated()
+    {
+        if (mainPlayer == null)
+            return false;
+        else
+            return true;
+    }
 
     public static LevelLoader Get()
     {
@@ -41,18 +50,31 @@ public class LevelLoader : MonoBehaviour
     {
         if (GameManager.isPaused == false)
         {
-            planes = GeometryUtility.CalculateFrustumPlanes(camera);
-            foreach (GameObject building in buildings)
+            if (isPlayerCreated())
             {
-                if (camera.gameObject.transform.localPosition.z < building.gameObject.transform.localPosition.z)
+                planes = GeometryUtility.CalculateFrustumPlanes(camera);
+                foreach (GameObject building in buildings)
                 {
-                    building.gameObject.SetActive(true);
+                    if (camera.gameObject.transform.localPosition.z < building.gameObject.transform.localPosition.z)
+                    {
+                        building.gameObject.SetActive(true);
+                    }
+                    if (GeometryUtility.TestPlanesAABB(planes, building.collider.bounds) == false)
+                    {
+                        building.gameObject.SetActive(false);
+                        //DestroyImmediate(building.gameObject, true);
+                    }
                 }
-                if (GeometryUtility.TestPlanesAABB(planes, building.collider.bounds) == false)
+
+                foreach (GameObject enemy in GameManager.Get().objEnemies)
                 {
-                    building.gameObject.SetActive(false);
-                    //DestroyImmediate(building.gameObject, true);
+                    enemy.GetComponent<AIPathCustom>().target = mainPlayer.transform;
                 }
+            }
+            else
+            {
+                mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+                CameraController.Get().cameraTarget = mainPlayer.transform;
             }
         }
 	}
