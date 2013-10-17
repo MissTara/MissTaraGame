@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour
 	}
 	void CreateEnemy(Vector3 position,EnemyProperties enemyProp,Quaternion rotation){
 		GameObject enemy;
-		enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
+		enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
 		if (enemy != null){
 			AIPathCustom ai = enemy.GetComponent<AIPathCustom>();
 			ai.ApplyProperties(enemyProp);

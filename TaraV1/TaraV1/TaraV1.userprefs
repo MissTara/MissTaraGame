@@ -1,18 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitPlayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ColliderWeapon.cs">
     <Files>
-      <File FileName="Assets\Scripts\CameraController.cs" Line="26" Column="39" />
-      <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIEnemy.cs" Line="57" Column="43" />
-      <File FileName="Assets\Scripts\AIStates.cs" Line="43" Column="4" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="215" Column="37" />
       <File FileName="Assets\Scripts\AIPathCustom.cs" Line="1" Column="1" />
       <File FileName="Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Unit.cs" Line="192" Column="3" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ICombat.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="312" Column="23" />
+      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\BattleCore.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ResourceManager.cs" Line="27" Column="2" />
+      <File FileName="Assets\Scripts\ResourceManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LevelLoader\LevelLoader.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ColliderWeapon.cs" Line="32" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

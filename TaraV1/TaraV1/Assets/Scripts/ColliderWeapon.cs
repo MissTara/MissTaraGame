@@ -12,9 +12,7 @@ public class ColliderWeapon : MonoBehaviour {
 	public GameObject self;
 	public ICombat combatSelf;
 	// Use this for initialization
-	void Start () {
-		
-		
+	void Start () {		
 		if (self == null){
 			print("ColliderWeapon.Start->Self not found");
 			this.enabled = false;
@@ -25,9 +23,7 @@ public class ColliderWeapon : MonoBehaviour {
 			print ("ColliderWeapon.Start->combatSelf Interface not found");
 			this.enabled = false;
 			return;
-		}
-		
-		
+		}		
 	}
 	// Update is called once per frame
 	void Update () {
