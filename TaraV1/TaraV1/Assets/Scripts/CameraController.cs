@@ -57,7 +57,7 @@ public class CameraController : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-		cameraTarget = GameManager.Get().objPlayer.transform;
+		//cameraTarget = GameManager.Get().objPlayer.transform;
         oldZ = cameraSelf.position.z;
 		Vector2 angles = cameraTarget.eulerAngles;
 		x = angles.y - 30;
@@ -143,8 +143,10 @@ public class CameraController : MonoBehaviour {
             //cameraSelf.position = new Vector3(cameraSelf.position.x, cameraTarget.position.y, cameraTarget.position.z);
             //cameraSelf.position = Vector3.Lerp(cameraSelf.position, cameraTarget.position, 5 * Time.deltaTime);
         }
-        if (Locked){} else{
+        if (Locked) { }
+        else
+        {
             this.transform.forward = Vector3.Lerp(this.transform.forward, oriRotation, Time.deltaTime * 10);
-		}
+        }
 	}
 }
