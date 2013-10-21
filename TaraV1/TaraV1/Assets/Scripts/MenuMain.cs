@@ -70,7 +70,7 @@ protected override void OnGUI (){
 		
 		
 		
-		if (GUI.Button(new Rect(700,250,200,100), "Weapons",menuText)){
+		if (GUI.Button(new Rect(780,250,150,100), "Weapons",menuText)){
 			WeaponBool = true;
 			ArmourBool = false;
 			MiscBool = false;
@@ -78,14 +78,14 @@ protected override void OnGUI (){
 			currentItemIndex = 0;
 		}
 		
-		if (GUI.Button(new Rect(925,250,200,100), "Armour",menuText)){
+		if (GUI.Button(new Rect(955,250,150,100), "Armour",menuText)){
 			WeaponBool = false;
 			ArmourBool = true;
 			MiscBool = false;
 			currentItemIndex = 0;
 		}
 		
-		if (GUI.Button(new Rect(1150,250,200,100), "Misc",menuText)){
+		if (GUI.Button(new Rect(1130,250,150,100), "Misc",menuText)){
 			WeaponBool = false;
 			ArmourBool = false;
 			MiscBool = true;
@@ -93,10 +93,10 @@ protected override void OnGUI (){
 			
 		}
 		
-		if (GUI.Button(new Rect(925,650,200,100), "Back To Title",menuText)){
+		if (GUI.Button(new Rect(955,625,150,100), "Back To Title",menuText)){
 			Application.LoadLevel(0);
 		}
-		if (GUI.Button(new Rect(1150,650,200,100),"Resume",menuText)){
+		if (GUI.Button(new Rect(1130,625,150,100),"Resume",menuText)){
 			GameManager.isPaused = false;
 			this.show = false;
 		};
@@ -108,7 +108,7 @@ protected override void OnGUI (){
 		else
 			funcText = "Buy";
 			
-			if (GUI.Button(new Rect(700,650,200,100), funcText,menuText)){
+			if (GUI.Button(new Rect(780,625,150,100), funcText,menuText)){
 			if (funcText == "Buy")
 			{
 				if (GameManager.userData.purchase(GameManager.dataManager.Weapons[currentItemIndex].ItemPrice)){
@@ -149,7 +149,7 @@ protected override void OnGUI (){
 		else
 			funcText = "Buy";
 			
-			if (GUI.Button(new Rect(700,650,200,100), funcText,menuText)){
+			if (GUI.Button(new Rect(700,650,150,100), funcText,menuText)){
 			if (funcText == "Buy")
 			{
 				if (GameManager.userData.purchase(GameManager.dataManager.Armours[currentItemIndex].ItemPrice)){
@@ -191,7 +191,7 @@ protected override void OnGUI (){
 		    else
 			    funcText = "Buy";
 			
-			if (GUI.Button(new Rect(700,650,200,100), funcText,menuText))
+			if (GUI.Button(new Rect(700,650,150,100), funcText,menuText))
             {
 			    if (funcText == "Buy")
 			    {
@@ -234,9 +234,9 @@ protected override void OnGUI (){
 		}
 		
 	
-		GUI.Label(new Rect(700,210,300,200),"Currency:" + GameManager.userData.currency, infoText);
-		GUI.Label(new Rect(700,0,300,100),GameManager.dataManager.Weapons[currentItemIndex].ItemName, infoText);
-		GUI.Label(new Rect(700,50,600,100),GameManager.dataManager.Weapons[currentItemIndex].ItemDescription, infoText);
+		GUI.Label(new Rect(750,210,300,200),"Currency:" + GameManager.userData.currency, infoText);
+		GUI.Label(new Rect(750,50,300,100),GameManager.dataManager.Weapons[currentItemIndex].ItemName, infoText);
+		GUI.Label(new Rect(750,100,600,100),GameManager.dataManager.Weapons[currentItemIndex].ItemDescription, infoText);
 		GUI.Label(new Rect(950,210,300,200),"Price:" + GameManager.dataManager.Weapons[currentItemIndex].ItemPrice, infoText);
 		base.OnDraw ();
 	}
@@ -245,7 +245,7 @@ protected override void OnGUI (){
 	// Update is called once per frame
 	void Update () {
 		Vector3 vTmp = new Vector3(1,1,1);
-		vTmp = vTmp + Camera.mainCamera.transform.forward;
+		//vTmp = vTmp + Camera.mainCamera.transform.forward;
 		
 	}
 	
