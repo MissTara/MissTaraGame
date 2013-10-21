@@ -1,17 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ColliderWeapon.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\GameManager.cs" Line="215" Column="37" />
-      <File FileName="Assets\Scripts\AIPathCustom.cs" Line="1" Column="1" />
-      <File FileName="Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Unit.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ICombat.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\BattleCore.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ResourceManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LevelLoader\LevelLoader.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ColliderWeapon.cs" Line="32" Column="30" />
+      <File FileName="Assets\Scripts\AIPathCustom.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
