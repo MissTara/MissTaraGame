@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour
 	//static script_player m_Player, m_weapon;
 	//static script_camera m_Camera;
 	public static UnitPlayer MainPlayer;				// Deprecated
-    public static GameObject[] spawns = new GameObject[2];
+    public static GameObject[] spawns,enemies;
     private static int spawnamount = 1;
     public static float checkPointX = 0f, checkPointY = 0f, checkPointZ = 0f; // Stores the last check point
-    private static bool isSpawn, multiSpawn = false;
+    private static bool isSpawn, multiSpawn = false;	// for spawning and multispawning
 	public static bool _isPaused = false;				// if the game is paused
 	public static bool isDebugging = true;				// if the game is on debug mode
 	public static bool useGyroScope = true;				// Deprecated
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 		return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 	}
 	// Item event database
-	public static void getItem(int itemID, GameObject[] spawner, int spawnNum){
+	public static void getItem(int itemID, int spawnNum){
 		switch(itemID){
 		case 0:
 			break;
@@ -61,6 +61,10 @@ public class GameManager : MonoBehaviour
 			if(cutScene != null)
 				cutScene.dbg_LoadCutScenes();
 			break;
+		}
+	}
+	public static void getItem(int itemID, GameObject[] spawner,GameObject[] enemy, int spawnNum){
+		switch(itemID){
 		case 100:					// Load a script which creates two invisible walls
 			if (CommandScript.Get() != null){
 				List<CommandScript.BasicCommand> bCmd = new List<CommandScript.BasicCommand>();
@@ -75,13 +79,19 @@ public class GameManager : MonoBehaviour
 				CommandScript.Get().InterpreteCommands(bCmd);
 			}
             isSpawn = true;
+			enemies = new GameObject[spawnNum];
+			Array.Copy(enemy,enemies,spawnNum);
+			spawns = new GameObject[spawner.Length];
 			spawns[0] = spawner[0];
 			spawnamount = spawnNum;
 			break;
 			
-		case 101: //Attempt at making enemies spawn while the camera can still move. Not working.
+		case 101:
 			isSpawn = true;
 			multiSpawn = true;
+			enemies = new GameObject[spawnNum];
+			Array.Copy(enemy,enemies,spawnNum);
+			spawns = new GameObject[spawner.Length];
 			spawns[0] = spawner[0];
 			spawns[1] = spawner[1];
 			spawnamount = spawnNum;
@@ -208,11 +218,17 @@ public class GameManager : MonoBehaviour
 	}
 	void CreateEnemy(){
 		EnemyProperties tEnemyProp = new EnemyProperties(true);
-		CreateEnemy(new Vector3(4,1,4),tEnemyProp,Quaternion.identity);
+		//CreateEnemy(new Vector3(4,1,4),tEnemyProp,Quaternion.identity);
 	}
-	void CreateEnemy(Vector3 position,EnemyProperties enemyProp,Quaternion rotation){
+	void CreateEnemy(Vector3 position,EnemyProperties enemyProp,Quaternion rotation,GameObject mob){
 		GameObject enemy;
-		enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
+		if (mob.tag == "Alien")
+			enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
+		else if (mob.tag == "Bat")
+			enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
+		else 
+			enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
+		
 		if (enemy != null){
 			AIPathCustom ai = enemy.GetComponent<AIPathCustom>();
 			ai.ApplyProperties(enemyProp);
@@ -231,15 +247,16 @@ public class GameManager : MonoBehaviour
 	void Update(){
 		// Spawn Enemy if you're allowed to
 		if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 1 && isSpawn == true && enemyCount != spawnamount && multiSpawn){
-			CreateEnemy(spawns[0].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
-			if (enemyCount+1 != spawnamount){
-				CreateEnemy(spawns[1].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
-				enemyCount+=2;
-			} else enemyCount++;			
+			CreateEnemy(spawns[0].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity,enemies[enemyCount]);
+			enemyCount++;
+			if (enemyCount != spawnamount){
+				CreateEnemy(spawns[1].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity,enemies[enemyCount]);
+				enemyCount++;
+			}			
             oldTimer = Time.realtimeSinceStartup;
 		}else if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 2 && isSpawn == true && enemyCount != spawnamount){
 			//CreateEnemy(new Vector3(UnityEngine.Random.Range(-4f,4f),1,UnityEngine.Random.Range(-4f,4f)),GameManager.dataManager.Enemies[0],Quaternion.identity);
-           	CreateEnemy(spawns[0].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity);
+           	CreateEnemy(spawns[0].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity, enemies[enemyCount]);
 			enemyCount++;
             oldTimer = Time.realtimeSinceStartup;
 		}

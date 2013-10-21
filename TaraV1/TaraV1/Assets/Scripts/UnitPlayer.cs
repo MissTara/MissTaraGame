@@ -159,7 +159,7 @@ public class UnitPlayer : Unit,ICombat {
                 if (!isPlayingSpecialAnimation())
                 {
                     playerMesh.animation.Stop();
-                    playerMesh.animation.Play("Idle");
+                    playerMesh.animation.Play("TaraIdle");
                 }
             }
         }
@@ -291,7 +291,7 @@ public class UnitPlayer : Unit,ICombat {
         }
         else if (!isPlayingAttackAnimation() && callBackAnimation == "" && !isPlayingSpecialAnimation())
         {
-            playerMesh.animation.Play("Idle");
+            playerMesh.animation.Play("TaraIdle");
         }
 		if (callBackRun != ""){
 			playerMesh.animation.Play(callBackRun);

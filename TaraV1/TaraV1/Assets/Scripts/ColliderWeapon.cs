@@ -32,6 +32,7 @@ public class ColliderWeapon : MonoBehaviour {
 	void Attack(Collider other){
 		if (combatSelf == null)
 			return;
+		//combatSelf.isAttacking && self.GetComponent<AIStates>() || 
 		if (combatSelf.isAttacking){
 			//Unit pOther = other.GetComponent<Unit>();
 			//AIPathCustom pOther = other.GetComponent<AIPathCustom>();

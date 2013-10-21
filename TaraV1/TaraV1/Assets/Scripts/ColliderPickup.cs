@@ -26,7 +26,7 @@ public class ColliderPickup : MonoBehaviour
 	public bool playPickupSE = true;	// If it is true, a Sound Effect(if provided) will be played when interacting with the player
 	public AudioClip audioPickupSE;		// The Sound Effect for pick up
 	
-	public GameObject[] spawner = new GameObject[2];
+	public GameObject[] spawner, mobSpawn;
 	public int spawnNum;
     private ParticleEmitter emitter;   // set if there is an emitter attached on the children
 
@@ -54,6 +54,12 @@ public class ColliderPickup : MonoBehaviour
                 emitter.emit = true;
             }
         }
+		
+		if (spawnNum != mobSpawn.Length){
+			print("Mob array does not match the enemy spawn count.");
+			this.enabled = false;
+			return;
+		}
 
 	}
 	void OnTriggerEnter(Collider other){
@@ -98,9 +104,9 @@ public class ColliderPickup : MonoBehaviour
 			return;
 		isDestorying = true;
 		if (ItemID < 100)
-		     GameManager.getItem(ItemID,null,spawnNum);
+		     GameManager.getItem(ItemID,spawnNum);
 		else
-		     GameManager.getItem(ItemID,spawner,spawnNum);	
+		     GameManager.getItem(ItemID,spawner,mobSpawn,spawnNum);	
 
 		if (!Activated){
 			if (particlePickedup != null)

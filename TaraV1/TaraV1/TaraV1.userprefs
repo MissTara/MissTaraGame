@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MenuMain.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LevelSwitch.cs">
     <Files>
       <File FileName="Assets\Scripts\MenuMain.cs" Line="96" Column="34" />
+      <File FileName="Assets\Scripts\ColliderPickup.cs" Line="107" Column="1" />
+      <File FileName="Assets\Scripts\LevelSwitch.cs" Line="89" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

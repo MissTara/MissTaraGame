@@ -13,7 +13,8 @@ public class script_HUD : MonoBehaviour {
 	private Texture texCharPortrait, texHPBG, texHP, texGrenadeIcon;
 	Rect rectCharPortrait, rectSrcCharPortrait, rectHPBG, rectSrcHPBG, rectHP, rectSrcHP, rectGrenadeIcon;
 	// HP Flow
-	float intHPFlow = 0, intHPRange;
+	float intHPFlow, intHPRange;
+	public float range = 0.0f;
 	// Use this for initialization
 	void Start () {
 		// Load Textures
@@ -29,15 +30,13 @@ public class script_HUD : MonoBehaviour {
 		rectCharPortrait = new Rect(10,10, texCharPortrait.width / 4, texCharPortrait.height / 4);
 		rectSrcCharPortrait = new Rect(0,0, 1, 1);
 		//rectSrcCharPortrait = new Rect(0,0, 0.2f, 1);
-		rectHPBG = new Rect(130, 30, texHPBG.width * 0.5f, texHPBG.height * 0.5f * 5);
+		rectHPBG = new Rect(130, 20, texHPBG.width * 0.5f, 40.0f);
 		rectSrcHPBG = new Rect(0, 0, 1, 0.5f);
-		rectHP = new Rect(130, 30, texHP.width * 0.5f, texHP.height * 0.5f * 5);
+		rectHP = new Rect(130, 20, texHP.width * 0.5f, 40.0f);
 		rectSrcHP = new Rect(0, 0.5f, 1, 0.5f);
-		rectGrenadeIcon = new Rect(130, 55, texGrenadeIcon.width, texGrenadeIcon.height);
-		
+		rectGrenadeIcon = new Rect(130, 55, texGrenadeIcon.width, texGrenadeIcon.height);	
 	}
 	void OnGUI(){
-
 		if (GameManager.isPaused)
 			return;
 		// Draw The Pause Button
@@ -47,10 +46,16 @@ public class script_HUD : MonoBehaviour {
 		}
 		//GUI.DrawTexture(rectCharPortrait,texCharPortrait);
 		GUI.DrawTextureWithTexCoords(rectCharPortrait,texCharPortrait,rectSrcCharPortrait);
-		GUI.DrawTextureWithTexCoords(rectHPBG,texHPBG, rectSrcHPBG);
-		GUI.DrawTextureWithTexCoords(rectHP,texHP,rectSrcHP);
+		//GUI.DrawTextureWithTexCoords(rectHPBG,texHPBG, rectSrcHPBG);
+		//GUI.DrawTextureWithTexCoords(rectHP,texHP,rectSrcHP);
+		
 		GUI.DrawTexture(rectGrenadeIcon, texGrenadeIcon);
 		GUI.Label(new Rect(130,80,100,100),"Coins:" + GameManager.userData.currency);
+				
+		//rectHP.height * 0.5f * 3 (old height)
+		GUI.BeginGroup(new Rect(130,20,rectHP.width, 40.0f));
+		GUI.DrawTexture(new Rect(-rectHP.width * range, 0.0f, rectHP.width, 40.0f),texHP);
+		GUI.EndGroup();
 	}
 	// Update is called once per frame
 	void Update () {
@@ -58,17 +63,22 @@ public class script_HUD : MonoBehaviour {
 		if (GameManager.isPaused)
 			return;
 		// HP Bar flowing
-		intHPFlow += 5 * Time.deltaTime * 60;
+		/*intHPFlow += 5 * Time.deltaTime * 60;
 		if (intHPFlow >= texHP.width / 3 * 2)
 			intHPFlow = 0;
-		rectSrcHP = new Rect(intHPFlow / texHP.width, 0.5f, 1, 0.5f);
+		rectSrcHP = new Rect(intHPFlow / texHP.width, 0.5f, 1, 0.5f);*/
 		// Update the HP Bar
 		SyncPlayerStatus();
 	}
 	void SyncPlayerStatus(){
-	 	UnitPlayer player = GameObject .FindGameObjectWithTag("Player").GetComponent<UnitPlayer>();
+	 	UnitPlayer player = GameObject.FindGameObjectWithTag("Player").GetComponent<UnitPlayer>();
 		if (player != null){
-			rectHP = new Rect(130, 30, texHP.width * 0.5f / player.MaxHP * player.CurHP, texHP.height * 0.5f * 5);
+			//rectHP = new Rect(130, 30, texHP.width * 0.5f / player.MaxHP * player.CurHP, texHP.height * 0.5f * 5);
+			
+			//make range go from 0 to 1 depending on the player's HP ratio
+			range = (((float)player.CurHP / (float)player.MaxHP)-1.0f)*-1.0f;
 		}
 	}
+	
+	//40 per note IMPORTANT
 }
