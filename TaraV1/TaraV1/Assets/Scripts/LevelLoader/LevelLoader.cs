@@ -4,16 +4,17 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Level))]
+
 public class LevelLoader : MonoBehaviour
 {
 
     #region Public Variables
-    //public int howManyBuildings;
     public Camera camera;
-    
-    //public float distanceBetweenBuildings = -40;
-    //public float initialPositionBuilding = 40;
-    public List<GameObject> buildings;
+
+    public List<GameObject> levels;
+    public int loadLevel = 1;
+
     [System.NonSerialized] public bool levelLoaded = false;
     [System.NonSerialized]
     public GameObject mainPlayer;
@@ -23,10 +24,19 @@ public class LevelLoader : MonoBehaviour
 	protected Plane[] planes;
 
     private static LevelLoader m_Instance = null;
+    private GameObject levelToLoad;
 
-    public bool isPlayerCreated()
+    public bool IsPlayerCreated()
     {
         if (mainPlayer == null)
+            return false;
+        else
+            return true;
+    }
+
+    public bool IsLevelLoaded()
+    {
+        if (levelToLoad == null)
             return false;
         else
             return true;
@@ -50,19 +60,35 @@ public class LevelLoader : MonoBehaviour
     {
         if (GameManager.isPaused == false)
         {
-            if (isPlayerCreated())
+            if (IsLevelLoaded() == false)
             {
-                planes = GeometryUtility.CalculateFrustumPlanes(camera);
-                foreach (GameObject building in buildings)
+                foreach (GameObject levelNum in levels)
                 {
-                    if (camera.gameObject.transform.localPosition.z < building.gameObject.transform.localPosition.z)
+                    Level level = (Level)levelNum.GetComponent(typeof(Level));
+                    if (loadLevel == level.levelNumber)
                     {
-                        building.gameObject.SetActive(true);
+                        levelToLoad = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+                        return;
                     }
-                    if (GeometryUtility.TestPlanesAABB(planes, building.collider.bounds) == false)
+                }
+            }
+            if (IsPlayerCreated() && IsLevelLoaded())
+            {
+                
+                planes = GeometryUtility.CalculateFrustumPlanes(camera);
+                foreach (GameObject building in ((Level)levelToLoad.GetComponent(typeof(Level))).buildingsToHideForCamera)
+                {
+                    if (building != null)
                     {
-                        building.gameObject.SetActive(false);
-                        //DestroyImmediate(building.gameObject, true);
+                        if (camera.gameObject.transform.localPosition.z < building.gameObject.transform.localPosition.z)
+                        {
+                            building.gameObject.SetActive(true);
+                        }
+                        if (GeometryUtility.TestPlanesAABB(planes, building.collider.bounds) == false)
+                        {
+                            building.gameObject.SetActive(false);
+                            //DestroyImmediate(building.gameObject, true);
+                        }
                     }
                 }
 

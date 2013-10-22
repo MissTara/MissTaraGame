@@ -130,6 +130,7 @@
      <Compile Include="Assets\Scripts\ItemArmour.cs" />
      <Compile Include="Assets\Scripts\ItemMisc.cs" />
      <Compile Include="Assets\Scripts\ItemWeapon.cs" />
+     <Compile Include="Assets\Scripts\LevelLoader\Level.cs" />
      <Compile Include="Assets\Scripts\LevelLoader\LevelLoader.cs" />
      <Compile Include="Assets\Scripts\LevelSwitch.cs" />
      <Compile Include="Assets\Scripts\MPJoystick.cs" />

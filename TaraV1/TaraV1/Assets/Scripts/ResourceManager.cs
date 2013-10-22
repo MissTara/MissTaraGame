@@ -9,6 +9,8 @@
  * */
 using System;
 using UnityEngine;
+using System.Collections.Generic;
+
 public class ResourceManager : MonoBehaviour
 {
 	private static ResourceManager m_Instance = null;
@@ -37,6 +39,9 @@ tex_Controller_JMP,
 	public GameObject particleAttack, particleExplosion;
 
     public Texture[] tex_Slides;
+
+    public List<GameObject> levels;
+
 	public ResourceManager ()
 	{
         
