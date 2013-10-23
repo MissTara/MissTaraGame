@@ -7,4 +7,8 @@ public class Level : MonoBehaviour {
     public int levelNumber;
     public List<GameObject> buildingsToHideForCamera;
 
+    public Level()
+    {
+        
+    }
 }
