@@ -77,7 +77,7 @@ public class UnitPlayer : Unit,ICombat {
     private string callBackAnimation = "";
 	private string callBackRun = "";
     private bool atkButtonDown = false;
-    private bool specialAtkButtonDown = false;
+    private bool specialAtkButtonDown,invinsible = false;
 	public ColliderWeapon wepFistRight, wepFistLeft, wepHead;
 	// Use this for initialization
 	void Awake(){
@@ -111,6 +111,10 @@ public class UnitPlayer : Unit,ICombat {
         UpdateState();
         UpdateAnimation();
 		base.Update();
+		if(GetComponentInChildren<Rigidbody>().IsSleeping()){
+			GetComponentInChildren<Rigidbody>().WakeUp();	
+		}
+		
 	}
 	private void UpdateControllerInput(){
 		if (controller.isGrounded){
@@ -150,7 +154,6 @@ public class UnitPlayer : Unit,ICombat {
                 StartCoroutine(EnemyDanceCutscene());
 
             }
-
             if (specialAtkButtonDown)
             {
                 playerMesh.animation.Stop();
@@ -163,7 +166,6 @@ public class UnitPlayer : Unit,ICombat {
                 }
             }
         }
-
     }
 
     public bool IsSpecialAttack()
@@ -298,25 +300,29 @@ public class UnitPlayer : Unit,ICombat {
 			callBackRun = "";
 		}
 	}
-	public void hurt(ItemWeapon weapon)
-	// When player get hurt
-	{
-		int BaseAttack = weapon.BaseDamage;
-		BattleCore.elements Ele = weapon.Element;
-		PopoutNum pop = PopoutNum.Get();
-		int Damage = BattleCore.CalculateDamage(BaseAttack,Ele,this.Armour.BaseArmour,this.Armour.Element);
-		if (pop != null){
-			pop.popupText(this.transform.position,Damage, (int)Ele);
-		}
-		CurHP-= Damage;
-		transparency = 0.5f;
-		if (CurHP == 0){
-			// Death
-			GameManager.GameOver();
-			CameraController.Get().fadeIn = false;
-			CameraController.Get().fadeOut = true;
-			GameManager.isPaused = true;
-			dead = true;
+	public void hurt(ItemWeapon weapon){
+		// When player get hurt
+		if (!invinsible){
+			int BaseAttack = weapon.BaseDamage;
+			BattleCore.elements Ele = weapon.Element;
+			PopoutNum pop = PopoutNum.Get();
+			int Damage = BattleCore.CalculateDamage(BaseAttack,Ele,this.Armour.BaseArmour,this.Armour.Element);
+			if (pop != null){
+				pop.popupText(this.transform.position,Damage, (int)Ele);
+			}
+			CurHP-= Damage;
+			transparency = 0.5f;
+			if (CurHP == 0){
+				// Death
+				GameManager.GameOver();
+				CameraController.Get().fadeIn = false;
+				CameraController.Get().fadeOut = true;
+				GameManager.isPaused = true;
+				dead = true;
+			}else{
+				invinsible = true;
+				StartCoroutine("invinsiTime");	
+			}
 		}
 	}
 	void OnGUI(){
@@ -330,7 +336,6 @@ public class UnitPlayer : Unit,ICombat {
 	}
 	protected override void die ()
 	{
-		
 		print("Player Die");
 	}
 	public void AddImpact(Vector3 dir, float force){}
@@ -354,5 +359,13 @@ public class UnitPlayer : Unit,ICombat {
 				}
 			}
 		}
+	}
+	
+	IEnumerator invinsiTime(){
+		/* Steven:
+		 * Invinsibility time after being hit. 
+		 * */
+		yield return new WaitForSeconds(1.2f);
+		invinsible = false;	
 	}
 }

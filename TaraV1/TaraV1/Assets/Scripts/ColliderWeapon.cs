@@ -46,7 +46,7 @@ public class ColliderWeapon : MonoBehaviour {
 			}
 		}
 	}
-	void OnTriggerEnter(Collider other){
+	void OnTriggerStay(Collider other){
 		if (GameManager.isPaused)
 			return;
 		Attack(other);

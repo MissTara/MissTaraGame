@@ -64,6 +64,12 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	public static void getItem(int itemID, GameObject[] spawner,GameObject[] enemy, int spawnNum){
+		/* Steven:
+		 * For this section, we'll add in what each trigger does in a comment section.
+		 * Include what trigger in which level it is, what's being spawned, 
+		 * how many enemies will spawn, and how many spawners used.
+		 * If you want to, include the name of the spawner(s) in here.
+		 * */
 		switch(itemID){
 		case 100:					// Load a script which creates two invisible walls
 			if (CommandScript.Get() != null){
@@ -221,14 +227,18 @@ public class GameManager : MonoBehaviour
 		//CreateEnemy(new Vector3(4,1,4),tEnemyProp,Quaternion.identity);
 	}
 	void CreateEnemy(Vector3 position,EnemyProperties enemyProp,Quaternion rotation,GameObject mob){
+		/* Steven:
+		 * Used by update (below) to spawn new enemies.
+		 * */
 		GameObject enemy;
 		if (mob.tag == "Alien")
 			enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
 		else if (mob.tag == "Bat")
 			enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
-		else 
+		else if (mob.tag == "Bear")
+			enemy = Instantiate(RM.preEnemyBear,position, rotation)as GameObject;
+		else
 			enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
-		
 		if (enemy != null){
 			AIPathCustom ai = enemy.GetComponent<AIPathCustom>();
 			ai.ApplyProperties(enemyProp);
@@ -260,8 +270,11 @@ public class GameManager : MonoBehaviour
 			enemyCount++;
             oldTimer = Time.realtimeSinceStartup;
 		}
-		if (enemyCount == spawnamount && objEnemies.Count == 0 && isSpawn){ 	//Check if the max number of enemies have spawned and are all dead
-			objEnemies.Clear();						//If so, unlock the camera and stop any more spawning
+		if (enemyCount == spawnamount && objEnemies.Count == 0 && isSpawn){ 	
+			/* Steven:
+			 * Check if the max number of enemies have spawned and are all dead
+			 * If so, unlock the camera and stop any more spawning*/
+			objEnemies.Clear();						
 			CommandScript.Get().InterpreteSingle(new CommandScript.BasicCommand ("UnlockCamera",""));
 			isSpawn = false;
 			if (multiSpawn) multiSpawn = false;

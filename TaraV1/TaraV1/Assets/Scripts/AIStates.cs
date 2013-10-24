@@ -16,7 +16,7 @@ public class AIStates : MonoBehaviour
     CharacterController controller;
 
     public states EnemyState;
-    protected bool died, batAtt = false;
+    protected bool died, attacking = false;
     protected float delay, timer;
     public float delayer = 5.0f;
     protected float batdelay = 3.4f;
@@ -28,7 +28,12 @@ public class AIStates : MonoBehaviour
 	private GameManager GM;
 	private UnitEnemy tmp;				//Holder for the Bat's UnitEnemy script
 	private Vector3 speedSwoop;			//Speed for the attack of the bat
-	private bool swoop,batWait = false;			//For the bat only
+	/* Steven:
+	 * swoop is if the bat is swooping.
+	 * BatAtt is if the bat is attacking
+	 * batWait is a cooldown so the bat doesnt try to swoop in succession
+	 * */
+	private bool swoop,batAtt,batWait = false;
 
     void Start()
     {
@@ -50,6 +55,8 @@ public class AIStates : MonoBehaviour
             PlayAlien();
         else if (gameObject.tag == "Bat")
             PlayBat();
+		else if (gameObject.tag == "Bear")
+			PlayBear();
     }
 
     private void PlayAlien()
@@ -187,7 +194,6 @@ public class AIStates : MonoBehaviour
         {
             if (!died)
             {
-				
                 animation.Stop();
                 animation.Play("BatDead");
 				StopCoroutine("batAttack");
@@ -216,8 +222,60 @@ public class AIStates : MonoBehaviour
 		}		
 	}
 	
-	IEnumerator attackDelay(){
+	IEnumerator attackDelay(){				//Cooldown on the bat's attack so he doesn't swoop in quick succession
 		yield return new WaitForSeconds(1.0f);
 		batWait = false;
+	}
+	
+	
+	private void PlayBear(){				
+		if (EnemyState == states.Attack && !died)
+        {
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("BearAttack");
+	            delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("BearAttack")){
+					animation.Stop("BearAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+        }else if (EnemyState == states.Idle && !attacking)
+            animation.Play("BearIdle");
+        else if (EnemyState == states.Run && !attacking)
+            animation.Play("BearWalk");
+        else if (EnemyState == states.Death)
+        {
+            if (!died)
+            {
+                animation.Stop();
+                animation.Play("BearDead");
+                Debug.Log(states.Death.ToString());
+                died = true;
+            }
+        }
+        else if (EnemyState == states.Dance)
+        {
+            if (!died)
+            {
+                animation.Play("BearDance");
+
+                if (!animation.IsPlaying("BearDance"))
+                {
+                    EnemyState = states.Death;
+                }
+            }
+        }
+        if (hitted == true && !died)
+        {
+            animation.Play("BearHit");
+            hitted = false;
+        }
 	}
 }

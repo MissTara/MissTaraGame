@@ -645,7 +645,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 
     public virtual void KillMe()
     {
-        if (gameObject.tag == "Alien" || gameObject.tag == "Bat")
+        if (gameObject.tag == "Alien" || gameObject.tag == "Bat" || gameObject.tag == "Bear")
             this.Dance();
     }
 

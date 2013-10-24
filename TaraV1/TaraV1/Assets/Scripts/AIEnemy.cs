@@ -41,7 +41,6 @@ public class AIEnemy : MonoBehaviour {
 			}
 		}
 		
-		
 		if(!Running)
 			return;
 		float t = Time.realtimeSinceStartup;
