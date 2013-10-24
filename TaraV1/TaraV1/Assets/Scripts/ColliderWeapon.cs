@@ -27,7 +27,13 @@ public class ColliderWeapon : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-	
+		/* Steven:
+		* Apparently, the rigidbody in the player will stop triggering collisions of it stops moving (i.e, no input)
+		* This stops that*/
+		if (this.rigidbody != null)
+			if(GetComponent<Rigidbody>().IsSleeping()){
+				GetComponent<Rigidbody>().WakeUp();	
+			}		
 	}
 	void Attack(Collider other){
 		if (combatSelf == null)
@@ -51,4 +57,5 @@ public class ColliderWeapon : MonoBehaviour {
 			return;
 		Attack(other);
 	}
+
 }

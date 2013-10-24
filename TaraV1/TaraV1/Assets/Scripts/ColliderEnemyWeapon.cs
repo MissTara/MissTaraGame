@@ -12,7 +12,12 @@ public class ColliderEnemyWeapon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		/* Steven:
+		* Apparently, the rigidbody in the player will stop triggering collisions of it stops moving (i.e, no input)
+		* This stops that*/
+		if(GetComponent<Rigidbody>().IsSleeping()){
+			GetComponent<Rigidbody>().WakeUp();	
+		}		
 	}
 	void OnTriggerStay(Collider other){
 		if (other.tag == "Player"){

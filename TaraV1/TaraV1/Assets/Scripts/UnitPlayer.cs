@@ -110,11 +110,7 @@ public class UnitPlayer : Unit,ICombat {
 		UpdateShooting();
         UpdateState();
         UpdateAnimation();
-		base.Update();
-		if(GetComponentInChildren<Rigidbody>().IsSleeping()){
-			GetComponentInChildren<Rigidbody>().WakeUp();	
-		}
-		
+		base.Update();		
 	}
 	private void UpdateControllerInput(){
 		if (controller.isGrounded){
@@ -365,7 +361,7 @@ public class UnitPlayer : Unit,ICombat {
 		/* Steven:
 		 * Invinsibility time after being hit. 
 		 * */
-		yield return new WaitForSeconds(1.2f);
+		yield return new WaitForSeconds(2.0f);
 		invinsible = false;	
 	}
 }

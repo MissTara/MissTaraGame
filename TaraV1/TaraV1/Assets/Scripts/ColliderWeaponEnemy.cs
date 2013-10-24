@@ -36,9 +36,8 @@ public class ColliderWeaponEnemy : MonoBehaviour {
 			//player.CurHP -= BattleCore.CalculateDamage(ai.BaseAttack,ai.Element,player.Armour.BaseArmour,player.Armour.Element);
 		}
 	}
-	void OnTriggerEnter(Collider other){
-		if (other.tag == "Player"){
+	void OnTriggerStay(Collider other){
+		if (other.tag == "Player")
 			Attack(other);
-		}
 	}
 }
