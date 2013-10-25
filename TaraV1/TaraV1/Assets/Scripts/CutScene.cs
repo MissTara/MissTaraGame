@@ -30,7 +30,7 @@ public class CutScene : GUIBase {
 	void Start () {
 		tmpTransTime = transitionLength;
         Slides = new List<Slide>();
-		dbg_LoadCutScenes();			// [DEBUG ONLY]Load sample cut scenes
+		dbg_LoadCutScenes(0,2);			// [DEBUG ONLY]Load sample cut scenes
 	}
     protected override void OnDraw()
     {
@@ -110,12 +110,13 @@ public class CutScene : GUIBase {
 		isShow = false;
 		GameManager.isPaused = false;
 	}
-	public void dbg_LoadCutScenes()
+	public void dbg_LoadCutScenes(int from, int to, int duration = 3)
 	// For debug only
 	{
-		AddCutScene(0,3);
-		AddCutScene(1,3);
-		AddCutScene(2,3);
+        for (int it = from; it <= to; it++)
+        {
+            AddCutScene(it, duration);
+        }
 		isShow = true;
 	}
 

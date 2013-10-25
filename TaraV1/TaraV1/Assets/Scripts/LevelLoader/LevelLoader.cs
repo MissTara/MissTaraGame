@@ -11,6 +11,7 @@ public class LevelLoader : MonoBehaviour
 
     #region Public Variables
     public Camera camera;
+    public Transform cameraObject;
 
     public List<GameObject> levels;
     public int loadLevel = 1;
@@ -25,6 +26,7 @@ public class LevelLoader : MonoBehaviour
 
     private static LevelLoader m_Instance = null;
     private GameObject levelToLoad;
+    private bool boolSetNewLevel=false;
 
     public bool IsPlayerCreated()
     {
@@ -52,14 +54,25 @@ public class LevelLoader : MonoBehaviour
 
     // Use this for initialization
 	void Start () {
-        levelLoaded = false;
+        levelLoaded = true;
+        boolSetNewLevel = true;
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        if (GameManager.isPaused == false)
+        if (GameManager.isPaused == false && levelLoaded == true)
         {
+            if (boolSetNewLevel)
+            {
+                if (mainPlayer != null)
+                {
+                    mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
+                    cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
+                    boolSetNewLevel = false;
+                    return;
+                }
+            }
             if (IsLevelLoaded() == false)
             {
                 foreach (GameObject levelNum in levels)
@@ -67,7 +80,9 @@ public class LevelLoader : MonoBehaviour
                     Level level = (Level)levelNum.GetComponent(typeof(Level));
                     if (loadLevel == level.levelNumber)
                     {
-                        levelToLoad = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+                        GameObject tmpLevel;
+                        tmpLevel = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+                        levelToLoad = tmpLevel;
                         return;
                     }
                 }
@@ -92,16 +107,38 @@ public class LevelLoader : MonoBehaviour
                     }
                 }
 
-                foreach (GameObject enemy in GameManager.Get().objEnemies)
+                if (mainPlayer != null)
                 {
-                    enemy.GetComponent<AIPathCustom>().target = mainPlayer.transform;
+                    foreach (GameObject enemy in GameManager.Get().objEnemies)
+                    {
+                        enemy.GetComponent<AIPathCustom>().target = mainPlayer.transform;
+                    }
+
+                    CameraController.Get().cameraTarget = mainPlayer.transform;
                 }
             }
             else
             {
                 mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
-                CameraController.Get().cameraTarget = mainPlayer.transform;
+                mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
             }
         }
 	}
+
+    public void SetLevel(int levelNum)
+    {
+        boolSetNewLevel = true;
+        mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
+        cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
+        levelLoaded = false;
+
+        if (levelToLoad)
+        {
+            ((Level)(levelToLoad.GetComponent(typeof(Level)))).Delete();
+            levelToLoad = null;
+            levelLoaded = true;
+            loadLevel = levelNum;
+            
+        }
+    }
 }

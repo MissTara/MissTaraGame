@@ -149,4 +149,9 @@ public class CameraController : MonoBehaviour {
             this.transform.forward = Vector3.Lerp(this.transform.forward, oriRotation, Time.deltaTime * 10);
         }
 	}
+
+    public void Reset()
+    {
+        cameraSelf.localPosition = new Vector3(-27, 20, 100); 
+    }
 }

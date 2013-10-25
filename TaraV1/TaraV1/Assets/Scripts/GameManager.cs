@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 		return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 	}
 	// Item event database
-	public static void getItem(int itemID, int spawnNum){
+	public static void getItem(int itemID){
 		switch(itemID){
 		case 0:
 			break;
@@ -56,54 +56,45 @@ public class GameManager : MonoBehaviour
 		case 4:						// Kill Zone
 			KillZone();
 			break;
-		case 99:					// Load default cut scene
-			CutScene cutScene = CutScene.Get();
-			if(cutScene != null)
-				cutScene.dbg_LoadCutScenes();
-			break;
+        
 		}
 	}
-	public static void getItem(int itemID, GameObject[] spawner,GameObject[] enemy, int spawnNum){
-		/* Steven:
-		 * For this section, we'll add in what each trigger does in a comment section.
-		 * Include what trigger in which level it is, what's being spawned, 
-		 * how many enemies will spawn, and how many spawners used.
-		 * If you want to, include the name of the spawner(s) in here.
-		 * */
-		switch(itemID){
-		case 100:					// Load a script which creates two invisible walls
-			if (CommandScript.Get() != null){
-				List<CommandScript.BasicCommand> bCmd = new List<CommandScript.BasicCommand>();
-				//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall01"));
-				//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall02"));
-				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","You just touched a trigger box"));
-				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","Now There are two invisible walls are created|3"));
-				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","This is a sample for the script system|3"));
-				//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","For details please refer to GameManager|4"));
-				//bCmd.Add(new CommandScript.BasicCommand ("ShowMessage",""));
-				bCmd.Add(new CommandScript.BasicCommand ("LockCamera",""));
-				CommandScript.Get().InterpreteCommands(bCmd);
-			}
-            isSpawn = true;
-			enemies = new GameObject[spawnNum];
-			Array.Copy(enemy,enemies,spawnNum);
-			spawns = new GameObject[spawner.Length];
-			spawns[0] = spawner[0];
-			spawnamount = spawnNum;
-			break;
-			
-		case 101:
-			isSpawn = true;
-			multiSpawn = true;
-			enemies = new GameObject[spawnNum];
-			Array.Copy(enemy,enemies,spawnNum);
-			spawns = new GameObject[spawner.Length];
-			spawns[0] = spawner[0];
-			spawns[1] = spawner[1];
-			spawnamount = spawnNum;
-			break;
-		}
-	}
+
+    public static void LoadCutscene(int from, int to, int duration = 3)
+    {				
+        CutScene cutScene = CutScene.Get();
+        if (cutScene != null)
+            cutScene.dbg_LoadCutScenes(from, to, duration);
+    }
+
+    public static void LoadLevel(int levelNum)
+    {
+        LevelLoader level = LevelLoader.Get();
+        level.SetLevel(levelNum);
+    }
+
+	public static void SpawnEnemy(GameObject[] spawner,GameObject[] enemy, int spawnNum){
+		// Load a script which creates two invisible walls
+		if (CommandScript.Get() != null){
+			List<CommandScript.BasicCommand> bCmd = new List<CommandScript.BasicCommand>();
+			//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall01"));
+			//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall02"));
+			//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","You just touched a trigger box"));
+			//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","Now There are two invisible walls are created|3"));
+			//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","This is a sample for the script system|3"));
+			//bCmd.Add(new CommandScript.BasicCommand ("AddMessage","For details please refer to GameManager|4"));
+			//bCmd.Add(new CommandScript.BasicCommand ("ShowMessage",""));
+			bCmd.Add(new CommandScript.BasicCommand ("LockCamera",""));
+			CommandScript.Get().InterpreteCommands(bCmd);
+        }
+        isSpawn = true;
+        enemies = new GameObject[spawnNum];
+        Array.Copy(enemy, enemies, spawnNum);
+        spawns = new GameObject[spawner.Length];
+        spawns[0] = spawner[0];
+        spawnamount = spawnNum;
+    }
+
 	private static void getCoin(int amount)
 	// Gain money
 	{

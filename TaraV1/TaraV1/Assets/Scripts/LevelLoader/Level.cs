@@ -11,4 +11,9 @@ public class Level : MonoBehaviour {
     {
         
     }
+
+    public void Delete()
+    {
+        Destroy(this.gameObject);
+    }
 }

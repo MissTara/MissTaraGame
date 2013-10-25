@@ -71,13 +71,17 @@ public class script_HUD : MonoBehaviour {
 		SyncPlayerStatus();
 	}
 	void SyncPlayerStatus(){
-	 	UnitPlayer player = GameObject.FindGameObjectWithTag("Player").GetComponent<UnitPlayer>();
-		if (player != null){
-			//rectHP = new Rect(130, 30, texHP.width * 0.5f / player.MaxHP * player.CurHP, texHP.height * 0.5f * 5);
-			
-			//make range go from 0 to 1 depending on the player's HP ratio
-			range = (((float)player.CurHP / (float)player.MaxHP)-1.0f)*-1.0f;
-		}
+        if (LevelLoader.Get().mainPlayer != null)
+        {
+            UnitPlayer player = GameObject.FindGameObjectWithTag("Player").GetComponent<UnitPlayer>();
+            if (player != null)
+            {
+                //rectHP = new Rect(130, 30, texHP.width * 0.5f / player.MaxHP * player.CurHP, texHP.height * 0.5f * 5);
+
+                //make range go from 0 to 1 depending on the player's HP ratio
+                range = (((float)player.CurHP / (float)player.MaxHP) - 1.0f) * -1.0f;
+            }
+        }
 	}
 	
 	//40 per note IMPORTANT
