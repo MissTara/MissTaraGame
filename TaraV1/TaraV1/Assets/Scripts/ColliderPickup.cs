@@ -165,6 +165,7 @@ public class ColliderPickup : MonoBehaviour
 
             case CollideTypes.SWITCHLEVEL_WITHOUT_CUTSCENE:
                 ItemID = 102;
+                LevelLoader.Get().boolSetNewLevel = true;
                 GameManager.LoadLevel(loadingLevel);
                 break;
 
@@ -173,6 +174,7 @@ public class ColliderPickup : MonoBehaviour
                 GameManager.LoadCutscene(loadingCutsceneFrom, loadingCutsceneTo, cutscene_duration);
 
                 ItemID = 102;
+                LevelLoader.Get().boolSetNewLevel = true;
                 GameManager.LoadLevel(loadingLevel);
 
                 break;

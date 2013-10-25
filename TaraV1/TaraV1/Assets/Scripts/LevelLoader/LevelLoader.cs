@@ -26,7 +26,7 @@ public class LevelLoader : MonoBehaviour
 
     private static LevelLoader m_Instance = null;
     private GameObject levelToLoad;
-    private bool boolSetNewLevel=false;
+    public bool boolSetNewLevel=false;
 
     public bool IsPlayerCreated()
     {
@@ -61,10 +61,27 @@ public class LevelLoader : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+
         if (GameManager.isPaused == false && levelLoaded == true)
         {
             if (boolSetNewLevel)
             {
+                if (IsLevelLoaded() == false)
+                {
+                    foreach (GameObject levelNum in levels)
+                    {
+                        Level level = (Level)levelNum.GetComponent(typeof(Level));
+                        if (loadLevel == level.levelNumber)
+                        {
+                            GameObject tmpLevel;
+                            tmpLevel = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+                            levelToLoad = tmpLevel;
+
+                            return;
+                        }
+                    }
+                }
+
                 if (mainPlayer != null)
                 {
                     mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
@@ -72,22 +89,15 @@ public class LevelLoader : MonoBehaviour
                     boolSetNewLevel = false;
                     return;
                 }
-            }
-            if (IsLevelLoaded() == false)
-            {
-                foreach (GameObject levelNum in levels)
+                else
                 {
-                    Level level = (Level)levelNum.GetComponent(typeof(Level));
-                    if (loadLevel == level.levelNumber)
-                    {
-                        GameObject tmpLevel;
-                        tmpLevel = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
-                        levelToLoad = tmpLevel;
-                        return;
-                    }
+                    mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+                    mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
+                    return;
                 }
             }
-            if (IsPlayerCreated() && IsLevelLoaded())
+
+            if (IsPlayerCreated() && IsLevelLoaded() && boolSetNewLevel == false)
             {
                 
                 planes = GeometryUtility.CalculateFrustumPlanes(camera);
@@ -116,11 +126,6 @@ public class LevelLoader : MonoBehaviour
 
                     CameraController.Get().cameraTarget = mainPlayer.transform;
                 }
-            }
-            else
-            {
-                mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
-                mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
             }
         }
 	}
