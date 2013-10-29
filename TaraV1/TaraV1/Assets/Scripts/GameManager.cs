@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
             cutScene.dbg_LoadCutScenes(from, to, duration);
     }
 
-    public static void LoadLevel(int levelNum)
+    public static void LoadLevel(float levelNum)
     {
         LevelLoader level = LevelLoader.Get();
         level.SetLevel(levelNum);

@@ -47,7 +47,7 @@ public class ColliderPickup : MonoBehaviour
     public int loadingCutsceneTo;
     public int cutscene_duration = 3;
 
-    public int loadingLevel;
+    public float loadingLevel;
 
 	public bool Active{
 		set { 

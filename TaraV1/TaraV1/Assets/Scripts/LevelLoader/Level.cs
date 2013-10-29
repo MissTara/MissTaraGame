@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Level : MonoBehaviour {
 
-    public int levelNumber;
+    public float levelNumber;
     public List<GameObject> buildingsToHideForCamera;
 
     public Level()

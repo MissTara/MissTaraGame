@@ -14,7 +14,7 @@ public class LevelLoader : MonoBehaviour
     public Transform cameraObject;
 
     public List<GameObject> levels;
-    public int loadLevel = 1;
+    public float loadLevel = 1;
 
     [System.NonSerialized] public bool levelLoaded = false;
     [System.NonSerialized]
@@ -26,7 +26,7 @@ public class LevelLoader : MonoBehaviour
 
     private static LevelLoader m_Instance = null;
     private GameObject levelToLoad;
-    public bool boolSetNewLevel=false;
+    [System.NonSerialized]public bool boolSetNewLevel=false;
 
     public bool IsPlayerCreated()
     {
@@ -130,7 +130,7 @@ public class LevelLoader : MonoBehaviour
         }
 	}
 
-    public void SetLevel(int levelNum)
+    public void SetLevel(float levelNum)
     {
         boolSetNewLevel = true;
         mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
