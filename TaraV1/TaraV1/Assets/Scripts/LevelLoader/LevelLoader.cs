@@ -56,6 +56,7 @@ public class LevelLoader : MonoBehaviour
 	void Start () {
         levelLoaded = true;
         boolSetNewLevel = true;
+        
 	}
 	
 	// Update is called once per frame
