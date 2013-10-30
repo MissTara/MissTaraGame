@@ -27,7 +27,7 @@ public class AIStates : MonoBehaviour
 	
 	private GameManager GM;
 	private UnitEnemy tmp;				//Holder for the Bat's UnitEnemy script
-	private Vector3 speedSwoop;			//Speed for the attack of the bat
+	public Vector3 speedSwoop;			//Speed for the attack of the bat
 	/* Steven:
 	 * swoop is if the bat is swooping.
 	 * BatAtt is if the bat is attacking

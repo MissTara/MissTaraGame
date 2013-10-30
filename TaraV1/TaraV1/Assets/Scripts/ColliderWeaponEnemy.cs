@@ -40,4 +40,11 @@ public class ColliderWeaponEnemy : MonoBehaviour {
 		if (other.tag == "Player")
 			Attack(other);
 	}
+	
+	void OnTriggerEnter(Collider other){
+		if (other.tag == "SideWalls" && transform.parent.tag == "Bat"){
+			Vector3 tmp = transform.parent.GetComponent<AIStates>().speedSwoop;
+			transform.parent.GetComponent<AIStates>().speedSwoop -= new Vector3(tmp.x,0,tmp.z);	
+		}
+	}
 }
