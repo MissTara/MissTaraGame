@@ -11,7 +11,7 @@ public class LevelLoader : MonoBehaviour
 
     #region Public Variables
     public Camera camera;
-    public Transform cameraObject;
+    //public Transform cameraObject;
 
     public List<GameObject> levels;
     public float loadLevel = 1;
@@ -26,6 +26,7 @@ public class LevelLoader : MonoBehaviour
 
     private static LevelLoader m_Instance = null;
     private GameObject levelToLoad;
+    [System.NonSerialized]public GameObject collideWall;
     [System.NonSerialized]public bool boolSetNewLevel=false;
 
     public bool IsPlayerCreated()
@@ -78,6 +79,9 @@ public class LevelLoader : MonoBehaviour
                             tmpLevel = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
                             levelToLoad = tmpLevel;
 
+                            GameObject tmpCollideWall;
+                            tmpCollideWall = Instantiate(ResourceManager.Get().preCollideWall, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+                            collideWall = tmpCollideWall;
                             return;
                         }
                     }
@@ -86,7 +90,7 @@ public class LevelLoader : MonoBehaviour
                 if (mainPlayer != null)
                 {
                     mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
-                    cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
+                    //cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
                     boolSetNewLevel = false;
                     return;
                 }
@@ -94,6 +98,7 @@ public class LevelLoader : MonoBehaviour
                 {
                     mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
                     mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
+                    boolSetNewLevel = false;
                     return;
                 }
             }
@@ -135,12 +140,14 @@ public class LevelLoader : MonoBehaviour
     {
         boolSetNewLevel = true;
         mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
-        cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
+        CameraController.Get().Reset();
+        //cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
         levelLoaded = false;
 
         if (levelToLoad)
         {
             ((Level)(levelToLoad.GetComponent(typeof(Level)))).Delete();
+            ((Wall)(collideWall.GetComponent(typeof(Wall)))).Delete();
             levelToLoad = null;
             levelLoaded = true;
             loadLevel = levelNum;

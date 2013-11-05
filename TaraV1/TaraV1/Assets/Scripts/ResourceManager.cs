@@ -35,7 +35,7 @@ tex_Controller_JMP,
 	public AudioClip se_PlayerJump, se_AttackOn, se_Attack;
 	
 	public GameObject preEnemyAlien,preEnemyBat,preEnemyBear,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
-	preMenu,preKillZone,preJoyStick, preNoteQuarter,preNoteHalf, preNoteSharp, preNoteTreble,preNoteWhole,preBullet;
+	preMenu,preKillZone,preJoyStick, preNoteQuarter,preNoteHalf, preNoteSharp, preNoteTreble,preNoteWhole,preBullet,preCollideWall;
 	public GameObject particleAttack, particleExplosion;
 
     public Texture[] tex_Slides;

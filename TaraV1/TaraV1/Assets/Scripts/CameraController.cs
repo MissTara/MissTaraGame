@@ -112,21 +112,29 @@ public class CameraController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void LateUpdate () {
-        oldZ = cameraSelf.position.z;
-		if (GameManager.isPaused)
+        if (LevelLoader.Get().boolSetNewLevel == false)
+            oldZ = cameraSelf.position.z;
+
+		if (GameManager.isPaused && LevelLoader.Get().boolSetNewLevel == true)
 			return;
 		Vector3 dstPos = new Vector3(cameraSelf.position.x,cameraTarget.position.y,cameraTarget.position.z);
         if (Vector3.Distance(cameraSelf.position, dstPos) > 0.5f && !Locked)
         {
+            
             cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 10);
-			
-			if(!GameManager.isPaused && (cameraTarget.position.z - oldZ) < 0.0f && !Locked){	// If the camera has moved, move the player boundary with it, but stop if the camera gets locked
-				GameObject tmp = GameObject.Find("testwallF");
-				tmp.transform.position = new Vector3(tmp.transform.position.x,tmp.transform.position.y,tmp.transform.position.z+(((cameraTarget.position.z - oldZ)* Time.deltaTime)*10));
-				tmp = GameObject.Find("testwallB");
-				tmp.transform.position = new Vector3(tmp.transform.position.x,tmp.transform.position.y,tmp.transform.position.z+(((cameraTarget.position.z - oldZ)* Time.deltaTime)*10));
-			}
-			
+
+            if (!GameManager.isPaused && (cameraTarget.position.z - oldZ) < 0.0f && !Locked && LevelLoader.Get().boolSetNewLevel == false)
+            {	// If the camera has moved, move the player boundary with it, but stop if the camera gets locked
+                if (LevelLoader.Get().collideWall != null)
+                {
+                    ((Wall)(LevelLoader.Get().collideWall.GetComponent(typeof(Wall)))).Move(oldZ);
+                }
+                //GameObject tmp = GameObject.Find("testwallF");
+                //tmp.transform.position = new Vector3(tmp.transform.position.x, tmp.transform.position.y, tmp.transform.position.z + (((cameraTarget.position.z - oldZ) * Time.deltaTime) * 10));
+                //tmp = GameObject.Find("testwallB");
+                //tmp.transform.position = new Vector3(tmp.transform.position.x, tmp.transform.position.y, tmp.transform.position.z + (((cameraTarget.position.z - oldZ) * Time.deltaTime) * 10));
+            }
+
             if (cameraSelf.position.z > oldZ)
             {
                 //oldZ = cameraTarget.position.z;
@@ -145,6 +153,7 @@ public class CameraController : MonoBehaviour {
 
     public void Reset()
     {
-        cameraSelf.localPosition = new Vector3(-27, 20, 100); 
+        cameraSelf.transform.localPosition = new Vector3(-27, 0, 0);
+        oldZ = -10.0f;
     }
 }
