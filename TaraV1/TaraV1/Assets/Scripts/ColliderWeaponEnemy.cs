@@ -42,9 +42,9 @@ public class ColliderWeaponEnemy : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other){
-		if (other.tag == "SideWalls" && transform.parent.tag == "Bat"){
+		if (other.tag == "Sidewalls" && transform.parent.tag == "Bat" && transform.parent.GetComponent<AIStates>().swoop){
 			Vector3 tmp = transform.parent.GetComponent<AIStates>().speedSwoop;
-			transform.parent.GetComponent<AIStates>().speedSwoop -= new Vector3(tmp.x,0,tmp.z);	
+			transform.parent.GetComponent<AIStates>().speedSwoop = new Vector3(0.0f,tmp.y,0.0f);	
 		}
 	}
 }

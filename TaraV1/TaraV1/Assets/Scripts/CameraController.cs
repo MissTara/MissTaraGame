@@ -119,7 +119,6 @@ public class CameraController : MonoBehaviour {
         if (Vector3.Distance(cameraSelf.position, dstPos) > 0.5f && !Locked)
         {
             cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 10);
-			//Uncomment when you've added 4 walls around the player
 			
 			if(!GameManager.isPaused && (cameraTarget.position.z - oldZ) < 0.0f && !Locked){	// If the camera has moved, move the player boundary with it, but stop if the camera gets locked
 				GameObject tmp = GameObject.Find("testwallF");
@@ -128,18 +127,16 @@ public class CameraController : MonoBehaviour {
 				tmp.transform.position = new Vector3(tmp.transform.position.x,tmp.transform.position.y,tmp.transform.position.z+(((cameraTarget.position.z - oldZ)* Time.deltaTime)*10));
 			}
 			
-			
-			
             if (cameraSelf.position.z > oldZ)
             {
                 //oldZ = cameraTarget.position.z;
                 cameraSelf.position = new Vector3(cameraSelf.position.x, cameraSelf.position.y, oldZ);
                 //Debug.Log(oldZ);
             }
-            //cameraSelf.position = new Vector3(cameraSelf.position.x, cameraTarget.position.y, cameraTarget.position.z);
+            //cameraSelf.position = new Vector3(cameraSelf.position.x, cameraTarget.position.y, cameraTarget.position.z);.
             //cameraSelf.position = Vector3.Lerp(cameraSelf.position, cameraTarget.position, 5 * Time.deltaTime);
         }
-        if (Locked) { }
+        if (Locked){}
         else
         {
             this.transform.forward = Vector3.Lerp(this.transform.forward, oriRotation, Time.deltaTime * 10);

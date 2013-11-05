@@ -1,19 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ColliderWeaponEnemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CameraController.cs">
     <Files>
-      <File FileName="Assets\Scripts\AIPathCustom.cs" Line="358" Column="28" />
-      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AIPathCustom.cs" Line="415" Column="90" />
+      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="132" Column="17" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="157" Column="19" />
       <File FileName="Assets\Scripts\ColliderWeapon.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ColliderWeaponEnemy.cs" Line="39" Column="37" />
-      <File FileName="Assets\Scripts\AIStates.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraController.cs" Line="110" Column="28" />
+      <File FileName="Assets\Scripts\ColliderWeaponEnemy.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AIStates.cs" Line="331" Column="3" />
+      <File FileName="Assets\Scripts\CameraController.cs" Line="107" Column="42" />
+      <File FileName="Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="392" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Steven\Documents\GitHub\MissTaraGame\TaraV1\TaraV1\Assets\Scripts\ColliderWeaponEnemy.cs" line="46" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

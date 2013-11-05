@@ -33,7 +33,8 @@ public class AIStates : MonoBehaviour
 	 * BatAtt is if the bat is attacking
 	 * batWait is a cooldown so the bat doesnt try to swoop in succession
 	 * */
-	private bool swoop,batAtt,batWait = false;
+	public bool swoop = false;
+	private bool batAtt,batWait = false;
 
     void Start()
     {
@@ -57,6 +58,10 @@ public class AIStates : MonoBehaviour
             PlayBat();
 		else if (gameObject.tag == "Bear")
 			PlayBear();
+		else if (gameObject.tag == "Wolf")
+			PlayWolf();
+		else 
+			PlayMechBoss();
     }
 
     private void PlayAlien()
@@ -277,5 +282,79 @@ public class AIStates : MonoBehaviour
             animation.Play("BearHit");
             hitted = false;
         }
+	}
+	
+	private void PlayWolf(){
+		/* Steven:
+		 * It's the wolf for level 1 (or whichever level)
+		 * */
+		if (EnemyState == states.Attack && !died){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("WolfAttack");
+		        delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("WolfAttack")){
+					animation.Stop("WolfAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle && !attacking)
+            animation.Play("WolfIdle");
+	    else if (EnemyState == states.Run && !attacking)
+    	    animation.Play("WolfWalk");
+        else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("WolfDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("WolfDance");
+    	        if (!animation.IsPlaying("WolfDance"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (hitted == true && !died){
+           	animation.Play("WolfHit");
+            hitted = false;
+	    }	
+	}
+	
+	private void PlayMechBoss(){
+		/* Steven:
+		 * Boss of level 1.
+		 * */ 
+		
+		/*To do (ideas...for now):
+		* 
+		* Idle:
+		* That's easy...
+		* 
+		* Move mech:
+		* Either the same as the regular enemies, or have it only walk on the X or Z plane
+		* 
+		* Attack: Missiles:
+		* Random number generated, if it is the one for missiles, stand still, and launch at the player's position
+		* when it was decided
+		* (Shoot missiles up (however many), after a second or so, randomize positions in the play area for
+		* the missiles to land. Put a marker at those spots to identify where they will land)
+		* 
+		* Attack: Grabbing:
+		* Same as missiles, but with a grab. If the player is caught, I guess throw them at a wall.
+		* (I'd guess snap the player to the arm of the mech, then when it's time, choose left or right and throw)
+		* 
+		* Death:
+		* That's easy too...
+		*/
 	}
 }
