@@ -305,9 +305,9 @@ public class AIStates : MonoBehaviour
 				}
 			}
     	}
-		else if (EnemyState == states.Idle && !attacking)
+		else if (EnemyState == states.Idle)
             animation.Play("WolfIdle");
-	    else if (EnemyState == states.Run && !attacking)
+	    else if (EnemyState == states.Run)
     	    animation.Play("WolfWalk");
         else if (EnemyState == states.Death){
     	    if (!died){
@@ -324,10 +324,10 @@ public class AIStates : MonoBehaviour
           	        EnemyState = states.Death;
 	        }
 	    }
-        if (hitted == true && !died){
+        /*if (hitted == true && !died){
            	animation.Play("WolfHit");
             hitted = false;
-	    }	
+	    }*/	
 	}
 	
 	private void PlayMechBoss(){
