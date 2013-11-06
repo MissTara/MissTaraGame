@@ -26,7 +26,8 @@ using Pathfinding;
  * The #repathRate determines how often it will search for new paths, if you have fast moving targets, you might want to set it to a lower value.\n
  * The #target variable is where the AI will try to move, it can be a point on the ground where the player has clicked in an RTS for example.
  * Or it can be the player object in a zombie game.\n
- * The speed is self-explanatory, so is turningSpeed, however #slowdownDistance might require some explanation.
+ * The 
+ * is self-explanatory, so is turningSpeed, however #slowdownDistance might require some explanation.
  * It is the approximate distance from the target where the AI will start to slow down. Note that this doesn't only affect the end point of the path
  * but also any intermediate points, so be sure to set #forwardLook and #pickNextWaypointDist to a higher value than this.\n
  * #pickNextWaypointDist is simply determines within what range it will switch to target the next waypoint in the path.\n
@@ -690,7 +691,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 		this.canSearch = prop.CanSearch;
 		this.canMove = prop.CanMove;
 		this.canAttack = prop.CanAttack;
-		this.speed = prop.Speed;
+		//this.speed = prop.Speed;
 		this.turningSpeed = prop.TurningSpeed;
 		this.endReachedDistance = prop.EndReachedDistance;
 		this.detectRange = prop.DetectRange;

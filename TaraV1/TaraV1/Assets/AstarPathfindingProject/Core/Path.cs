@@ -120,7 +120,10 @@ namespace Pathfinding {
 		/** Turning radius of the character. Not used currently */
 		public int turnRadius;
 		
-		/** Speed of the character. Not used currently */
+		/** 
+         * 
+         * 
+         * of the character. Not used currently */
 		public int speed;
 		
 		/* To store additional data. Note: this is SLOW. About 10-100 times slower than using the fields above.
