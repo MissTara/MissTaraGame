@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 public class DebugScreen : MonoBehaviour {
+    public bool showDebug;
 	private static DebugScreen m_Instance = null;
     public static DebugScreen Get()
     {
@@ -22,12 +23,16 @@ public class DebugScreen : MonoBehaviour {
 		debug_msg = new List<string>();
 	}
 	void Start () {
-		
+        showDebug = false;
 	}
 	void OnGUI(){
-		for (int i = 0;i < debug_msg.Count;i++){
-			GUI.Label(new Rect(0,100 + 40 * i,1000,40),debug_msg[i]);
-		}
+        if (showDebug)
+        {
+            for (int i = 0; i < debug_msg.Count; i++)
+            {
+                GUI.Label(new Rect(0, 100 + 40 * i, 1000, 40), debug_msg[i]);
+            }
+        }
 	}
 	// Update is called once per frame
 	void Update () {

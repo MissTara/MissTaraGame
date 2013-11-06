@@ -11,6 +11,7 @@ public class LevelLoader : MonoBehaviour
 
     #region Public Variables
     public Camera camera;
+    public GUIText levelText;
     //public Transform cameraObject;
 
     public List<GameObject> levels;
@@ -26,6 +27,8 @@ public class LevelLoader : MonoBehaviour
 
     private static LevelLoader m_Instance = null;
     private GameObject levelToLoad;
+    private int levelTextNum;
+
     [System.NonSerialized]public GameObject collideWall;
     [System.NonSerialized]public bool boolSetNewLevel=false;
 
@@ -55,8 +58,10 @@ public class LevelLoader : MonoBehaviour
 
     // Use this for initialization
 	void Start () {
+        levelTextNum = (int)loadLevel;
         levelLoaded = true;
         boolSetNewLevel = true;
+        levelText.text = "Level " + levelTextNum;
         
 	}
 	
@@ -151,6 +156,8 @@ public class LevelLoader : MonoBehaviour
             levelToLoad = null;
             levelLoaded = true;
             loadLevel = levelNum;
+            levelTextNum = (int)loadLevel;
+            levelText.text = "Level " + levelTextNum;
             
         }
     }

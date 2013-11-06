@@ -40,8 +40,6 @@ tex_Controller_JMP,
 
     public Texture[] tex_Slides;
 
-    public List<GameObject> levels;
-
 	public ResourceManager ()
 	{
         
