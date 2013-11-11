@@ -60,7 +60,7 @@ public class AIStates : MonoBehaviour
 			PlayBear();
 		else if (gameObject.tag == "Wolf")
 			PlayWolf();
-		else 
+		else if (gameObject.tag == "MechBoss")
 			PlayMechBoss();
     }
 
@@ -349,12 +349,50 @@ public class AIStates : MonoBehaviour
 		* (Shoot missiles up (however many), after a second or so, randomize positions in the play area for
 		* the missiles to land. Put a marker at those spots to identify where they will land)
 		* 
-		* Attack: Grabbing:
-		* Same as missiles, but with a grab. If the player is caught, I guess throw them at a wall.
-		* (I'd guess snap the player to the arm of the mech, then when it's time, choose left or right and throw)
-		* 
 		* Death:
 		* That's easy too...
 		*/
+		if (EnemyState == states.Attack && !died){
+			if (true){ 								//Gatling attack
+				if(!attacking){
+					AIPathing.canMove = false;
+					AIPathing.canSearch = false;
+					animation.Play("MechAttack1_copy");
+					animation["MechAttack1_copy"].speed = 0.5f;
+					attacking = true;
+				}else{							
+					if(!animation.IsPlaying("MechAttack1_copy")){
+						AIPathing.canMove = true;
+						AIPathing.canSearch = true;
+						animation.Stop("MechAttack1_copy");
+						EnemyState = states.Run;
+						attacking = false;
+					}
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("MechIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("MechWalk");
+        else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("MechDead");
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+	    }
+	}
+	
+	private void mechGatlingStart(){
+		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
+		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
+	}
+	
+	private void mechGatlingStop(){
+		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
+		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
 	}
 }
