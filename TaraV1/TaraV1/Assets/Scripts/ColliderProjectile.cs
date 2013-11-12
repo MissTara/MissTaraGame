@@ -20,8 +20,8 @@ public class ColliderProjectile : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawnPos = transform.position;
-		speed = 80;
-		maxRange = 50;
+		speed = 10;
+		maxRange = 10;
 		Weapon = new ItemWeapon(BattleCore.elements.Fire , 30);
 	}
 	
@@ -59,9 +59,9 @@ public class ColliderProjectile : MonoBehaviour {
 		this.spawnPos = this.transform.position;
 		this.speed = Speed;
 		this.maxRange = MaxRange;
-		impact = transform.forward * 1000;
+		impact = transform.forward * speed;
 		isActive = true;
-		rigidbody.velocity = this.transform.TransformDirection(Vector3.forward * 100);
+		rigidbody.velocity = this.transform.TransformDirection(Vector3.forward * speed);
 	}
 	public void Dispose(){
 		Destroy(this.gameObject);	

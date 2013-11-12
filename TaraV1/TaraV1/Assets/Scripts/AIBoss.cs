@@ -147,18 +147,12 @@ public class AIBoss : MonoBehaviour
     {
         if (player != null)
         {
-            if (Vector3.Distance(this.transform.position, player.transform.position) > distanceBetweenPlayerAndEnemy)
+            if (player.GetComponent<UnitPlayer>().projectile != null)
             {
-                SpeedUp();
-            }
-            else
-            {
-                SlowDown();
-                if (player.GetComponent<UnitPlayer>().projectile != null)
+                if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0)
                 {
                     if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < distanceBetweenBulletAndEnemy)
                     {
-                        Debug.Log("Enemy Dodge");
                         if (Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0 &&
                             Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < 180)
                         {
@@ -172,7 +166,23 @@ public class AIBoss : MonoBehaviour
                         }
                     }
                 }
-                
+                else
+                {
+                    if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < -distanceBetweenBulletAndEnemy)
+                    {
+                        if (Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0 &&
+                        Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < 180)
+                        {
+                            Debug.Log("left");
+                            dodge("left");
+                        }
+                        else
+                        {
+                            Debug.Log("right");
+                            dodge("right");
+                        }
+                    }
+                }
             }
         }
     }

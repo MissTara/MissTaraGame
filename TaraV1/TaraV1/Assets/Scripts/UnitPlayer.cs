@@ -353,7 +353,7 @@ public class UnitPlayer : Unit,ICombat {
 						projectile.gameObject.transform.forward = targetForward;
 					else
 						projectile.gameObject.transform.forward = this.transform.forward;
-					projectile.Activate(60,505);
+					projectile.Activate(10,20);
 					//rigidbody.velocity = transform.forward * 2000;
 				}
 			}
