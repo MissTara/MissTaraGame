@@ -30,6 +30,9 @@ public class UnitPlayer : Unit,ICombat {
     //to show enemies are in the camera variable
     protected Plane[] enemyPlanes;
 
+    [System.NonSerialized]
+    public ColliderProjectile projectile;
+
     public states PlayerState = states.Idle1;
 	private static UnitPlayer m_Instance = null;
     public static UnitPlayer Get()
@@ -344,7 +347,7 @@ public class UnitPlayer : Unit,ICombat {
 		if ((Input.GetKeyDown(KeyCode.Space) || script_vcontroller.isJump())){
 			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), Quaternion.identity) as GameObject;
 			if (bullet != null){
-				ColliderProjectile projectile = bullet.GetComponent<ColliderProjectile>();
+				projectile = bullet.GetComponent<ColliderProjectile>();
 				if (projectile != null){
 					if (targetForward != Vector3.zero)
 						projectile.gameObject.transform.forward = targetForward;

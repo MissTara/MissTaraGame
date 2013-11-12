@@ -511,6 +511,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
             return Vector3.zero;
         }*/
 
+
         Vector3 forward = tr.forward;
         float dot = Vector3.Dot(dir.normalized, forward);
         float sp = speed * Mathf.Max(dot, minMoveScale) * slowdown;
