@@ -347,7 +347,7 @@ public class UnitPlayer : Unit,ICombat {
 		if ((Input.GetKeyDown(KeyCode.Space) || script_vcontroller.isJump())){
 			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), Quaternion.identity) as GameObject;
 			if (bullet != null){
-				projectile = bullet.GetComponent<ColliderProjectile>();
+				projectile = bullet.GetComponentInChildren<ColliderProjectile>();
 				if (projectile != null){
 					if (targetForward != Vector3.zero)
 						projectile.gameObject.transform.forward = targetForward;
