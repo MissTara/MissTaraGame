@@ -10,13 +10,13 @@ using System.Collections;
 public class AIStates : MonoBehaviour
 {
 
-    public enum states { Idle, Run, Death, Attack, Hit, Dance };
+    public enum states { Idle, Run, Death, Attack, Hit, Dance, Jump };
     public bool hitted = false;
     AIPathCustom AIPathing;
     CharacterController controller;
 
     public states EnemyState;
-    protected bool died, attacking = false;
+    [System.NonSerialized] public bool died, attacking = false;
     protected float delay, timer;
     public float delayer = 5.0f;
     protected float batdelay = 3.4f;
@@ -352,5 +352,9 @@ public class AIStates : MonoBehaviour
        	}
 	    else if (EnemyState == states.Dance){
 	    }
+        else if (EnemyState == states.Jump)
+        {
+            animation.Play("MechJump");
+        }
 	}
 }

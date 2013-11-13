@@ -27,6 +27,7 @@ public class AIBoss : MonoBehaviour
 
     #region private variables
     private bool isRotating;
+    private bool canRotate;
     private string direction;
     private float tempX;
     private float rotateSpeed = 8.0f;
@@ -36,6 +37,7 @@ public class AIBoss : MonoBehaviour
     {
         isRotating = false;
         direction = "";
+        canRotate = true;
     }
 
     // Update is called once per frame
@@ -55,7 +57,11 @@ public class AIBoss : MonoBehaviour
 
         if (player != null)
         {
-            if (player.GetComponent<UnitPlayer>().projectile != null && player.GetComponent<UnitPlayer>().projectile.isReadByBoss == false && !isRotating)
+            if (player.GetComponent<UnitPlayer>().projectile != null 
+                && player.GetComponent<UnitPlayer>().projectile.isReadByBoss == false 
+                && !isRotating
+                && this.GetComponent<AIStates>().EnemyState != AIStates.states.Death
+                && this.GetComponent<AIStates>().EnemyState != AIStates.states.Attack)
             {
                 if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0)
                 {
@@ -85,6 +91,7 @@ public class AIBoss : MonoBehaviour
 
             if (isRotating)
             {
+                this.GetComponent<AIStates>().EnemyState = AIStates.states.Jump;
                 dodge(direction);
             }
         }
@@ -92,24 +99,37 @@ public class AIBoss : MonoBehaviour
 
     void dodge(string direction)
     {
-        tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed / 3;
+        tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed / 10;
         if (tempX < dodgeAngle)
         {
-            if (direction == "left")
+            if (direction == "left" && canRotate == true)
             {
                 transform.Translate(this.GetComponent<AIPathCustom>().speed * -rotateSpeed * Time.deltaTime, 0, -this.GetComponent<AIPathCustom>().speed * Time.deltaTime);
             }
-            else
+            else if (direction == "right" && canRotate == true)
             {
                 transform.Translate(this.GetComponent<AIPathCustom>().speed * rotateSpeed * Time.deltaTime, 0, this.GetComponent<AIPathCustom>().speed * Time.deltaTime);
             }
         }
         else
         {
+            if (this.GetComponent<AIStates>().died == false)
+                this.GetComponent<AIStates>().EnemyState = AIStates.states.Run;
+            else
+                this.GetComponent<AIStates>().EnemyState = AIStates.states.Death;
             isRotating = false;
             tempX = 0;
             return;
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Wall")
+        {
+            Debug.Log("Inside Wall");
+        }
+        
+    } 
 
 }
