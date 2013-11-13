@@ -66,78 +66,46 @@ public class AIStates : MonoBehaviour
 
     private void PlayAlien()
     {
-        //Random number generator for testing
-        //Random random = new Random();
-        float randomNumber = Random.value * 100;
-        //Debug.Log(randomNumber);
-
-        //animation.Play(EnemyState.ToString());
-
         if (EnemyState == states.Idle)
-            animation.Play("Idle1");
+            animation.Play("AlienIdle");
         else if (EnemyState == states.Run)
-            animation.Play("Run2");
-        else if (EnemyState == states.Attack)
-        {
-            if (Time.time <= delay + delayer)
-            {
-                animation.PlayQueued("FightIdle");
-            }
-            else
-            {
-                if (randomNumber < 33.3f)
-                    animation.Play("Punch");
-                else if (randomNumber > 33.3f && randomNumber < 66.7f)
-                    animation.Play("Punch2");
-                else
-                    animation.Play("Punch3");
-                delay = Time.time;
-                //EnemyState = states.Idle;
-            }
+            animation.Play("AlienWalk");
+        else if (EnemyState == states.Attack){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("AlienAttack_copy");
+	            delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("AlienAttack_copy")){
+					animation.Stop("AlienAttack_copy");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
         }
-        else if (EnemyState == states.Death)
-        {
+        else if (EnemyState == states.Death){
             if (!died)
             {
-                animation.Stop();
-                if (randomNumber < 33)
-                    animation.Play("Death1");
-                else
-                    animation.Play("Death2");
-                Debug.Log(states.Death.ToString());
+                animation.Play("AlienDead");
+				animation["AlienDead"].speed = 1.5f;
                 died = true;
             }
         }
-        else if (EnemyState == states.Dance)
-        {
-            if (!died)
-            {
-                Debug.Log("I am dancing");
-                animation.Play("CriticalHit");
+        else if (EnemyState == states.Dance){
+            if (!died){
+                animation.Play("AlienDance");
 
-                if (!animation.IsPlaying("CriticalHit"))
-                {
-                    animation.Stop();
-                    animation.Play("Death1");
-                    died = true;
-                }
+                if (!animation.IsPlaying("AlienDance"))
+                    EnemyState = states.Death;
             }
         }
 
-        if (hitted == true && !died)
-        {
-            if (randomNumber < 50.0f)
-            {
-                animation["BellyHit"].layer = 1;
-                animation.Play("BellyHit");
-                animation["BellyHit"].weight = 0.7f;
-            }
-            else
-            {
-                animation["HeadHit"].layer = 1;
-                animation.Play("HeadHit");
-                animation["HeadHit"].weight = 0.7f;
-            }
+        if (hitted == true && !died){
+            animation.Play("HeadHit");
             hitted = false;
         }
     }
@@ -384,15 +352,5 @@ public class AIStates : MonoBehaviour
        	}
 	    else if (EnemyState == states.Dance){
 	    }
-	}
-	
-	private void mechGatlingStart(){
-		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
-		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
-	}
-	
-	private void mechGatlingStop(){
-		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
-		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
 	}
 }
