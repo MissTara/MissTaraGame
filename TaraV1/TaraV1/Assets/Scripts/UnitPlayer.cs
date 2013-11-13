@@ -177,7 +177,7 @@ public class UnitPlayer : Unit,ICombat {
 			targetForward = new Vector3(move.x, 0f, move.z);
 		tmpForwardDegree = Mathf.LerpAngle(CalculateDegree(transform.forward.x,transform.forward.z) / Mathf.PI * 180,CalculateDegree (targetForward.x, targetForward.z) / Mathf.PI * 180,5 *  	Time.deltaTime);
 		tmpForwardDegree = tmpForwardDegree / 180 * Mathf.PI;
-		transform.forward = new Vector3(Mathf.Cos(tmpForwardDegree) , 0f,  Mathf.Sin(tmpForwardDegree));
+        transform.forward = new Vector3(Mathf.Cos(tmpForwardDegree), 0f, Mathf.Sin(tmpForwardDegree));
 	}
 	private void UpdatePlayerMovement(){
 		// Movement
@@ -345,18 +345,12 @@ public class UnitPlayer : Unit,ICombat {
 	// Shoot System
 	{
 		if ((Input.GetKeyDown(KeyCode.Space) || script_vcontroller.isJump())){
-			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), Quaternion.identity) as GameObject;
-			if (bullet != null){
-				projectile = bullet.GetComponentInChildren<ColliderProjectile>();
-				if (projectile != null){
-					if (targetForward != Vector3.zero)
-						projectile.gameObject.transform.forward = targetForward;
-					else
-						projectile.gameObject.transform.forward = this.transform.forward;
-					projectile.Activate(10,20);
-					//rigidbody.velocity = transform.forward * 2000;
-				}
-			}
+			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), this.transform.rotation) as GameObject;
+            if (bullet != null)
+            {
+                projectile = bullet.GetComponentInChildren<ColliderProjectile>();
+                
+            }
 		}
 	}
 	

@@ -18,13 +18,18 @@ public class ColliderProjectile : MonoBehaviour {
 	public bool isActive = false;
 	private ItemWeapon Weapon;
 	private Vector3 impact = Vector3.zero;
+
+    [System.NonSerialized]
+    public float killTime;
+    public float TIME = 1;
+
 	// Use this for initialization
 	void Start () {
 		spawnPos = transform.position;
-		speed = 10;
 		maxRange = 10;
 		Weapon = new ItemWeapon(BattleCore.elements.Fire , 30);
         isReadByBoss = false;
+        killTime = TIME;
 	}
 	
 	// Update is called once per frame
@@ -33,16 +38,28 @@ public class ColliderProjectile : MonoBehaviour {
 		if (Vector3.Distance(this.transform.position, spawnPos) > maxRange){
 			Dispose();
 		}
-		if (isActive){
-			//this.transform.Translate(direction.normalized * speed * Time.deltaTime);
-			print(rigidbody);
-			if (rigidbody != null){
-				print("Force Appliedx");
-				//rigidbody.AddForce();
-				rigidbody.AddForce(impact * Time.deltaTime);
+        //if (isActive){
+        //    //this.transform.Translate(direction.normalized * speed * Time.deltaTime);
+        //    print(rigidbody);
+        //    if (rigidbody != null){
+        //        print("Force Appliedx");
+        //        //rigidbody.AddForce();
+        //        rigidbody.AddForce(impact * Time.deltaTime);
 				
-			}
-		}
+        //    }
+        //}
+
+        if (killTime <= 0)
+        {
+            Dispose();
+        }
+        else if (killTime > 0 && this.gameObject != null)
+        {
+            killTime -= Time.deltaTime;
+        }
+
+        if (this.gameObject != null)
+            transform.position += transform.up * speed * Time.deltaTime;
 	}
 	void OnTriggerStay(Collider other){
 			ICombat combatOther = other.GetComponent(typeof(ICombat)) as ICombat;
@@ -57,15 +74,15 @@ public class ColliderProjectile : MonoBehaviour {
 	void onAttack(Vector3 contactPoint){
 		Instantiate(ResourceManager.Get().particleAttack, contactPoint,Quaternion.identity);
 	}
-	public void Activate( float Speed, float MaxRange){
-		this.spawnPos = this.transform.position;
-		this.speed = Speed;
-		this.maxRange = MaxRange;
-		impact = transform.forward * speed;
-		isActive = true;
-		rigidbody.velocity = this.transform.TransformDirection(Vector3.forward * speed);
-	}
+    //public void Activate( float Speed, float MaxRange){
+    //    this.spawnPos = this.transform.position;
+    //    this.speed = Speed;
+    //    this.maxRange = MaxRange;
+    //    impact = transform.forward * speed;
+    //    isActive = true;
+    //    rigidbody.velocity = this.transform.TransformDirection(Vector3.forward * speed);
+    //}
 	public void Dispose(){
-		Destroy(this.gameObject);	
+		Destroy(this.transform.parent.gameObject);	
 	}
 }

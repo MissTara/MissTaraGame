@@ -9,17 +9,9 @@ public class AnimationTriggers : MonoBehaviour {
 	//Alien triggers
 	ColliderProjectile projectile;
 	private void AlienAttack(){
-		GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), Quaternion.identity) as GameObject;
+		GameObject bullet = Instantiate(ResourceManager.Get().preEnemyBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 4) + this.transform.TransformDirection(Vector3.forward * 3), this.transform.rotation) as GameObject;
 			if (bullet != null){
 				projectile = GetComponent<ColliderProjectile>();
-				if (projectile != null){
-					if (this.transform.forward != Vector3.zero)
-						projectile.gameObject.transform.forward = Vector3.zero;
-					else
-						projectile.gameObject.transform.forward = this.transform.forward;
-					projectile.Activate(50,600);
-					//rigidbody.velocity = transform.forward * 2000;
-				}
 			}
 	}
 	
