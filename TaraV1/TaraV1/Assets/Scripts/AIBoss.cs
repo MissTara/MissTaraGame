@@ -46,7 +46,7 @@ public class AIBoss : MonoBehaviour
             targetPlayer = GetComponent<AIPathCustom>().target;
             return;
         }
-         if (targetPlayer != null)
+        if (targetPlayer != null)
             defend(targetPlayer);
     }
 
@@ -55,49 +55,30 @@ public class AIBoss : MonoBehaviour
 
         if (player != null)
         {
-            if (player.GetComponent<UnitPlayer>().projectile != null && !isRotating)
+            if (player.GetComponent<UnitPlayer>().projectile != null && player.GetComponent<UnitPlayer>().projectile.isReadByBoss == false && !isRotating)
             {
                 if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0)
                 {
                     if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < distanceBetweenBulletAndEnemy)
                     {
-                        if (Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0 &&
-                            Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < 180)
-                        {
-                            Debug.Log("left");
-                            isRotating = true;
-                            tempX = 0;
-                            direction = "left";
-                            
-                        }
-                        else
-                        {
-                            Debug.Log("left");
-                            isRotating = true;
-                            tempX = 0;
-                            direction = "left";
-                        }
+                        Debug.Log("left");
+                        isRotating = true;
+                        tempX = 0;
+                        direction = "left";
+                        player.GetComponent<UnitPlayer>().projectile.isReadByBoss = true;
+
                     }
                 }
                 else
                 {
                     if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < -distanceBetweenBulletAndEnemy)
                     {
-                        if (Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0 &&
-                        Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < 180)
-                        {
-                            Debug.Log("right");
-                            isRotating = true;
-                            tempX = 0;
-                            direction = "right";
-                        }
-                        else
-                        {
-                            Debug.Log("right");
-                            isRotating = true;
-                            tempX = 0;
-                            direction = "right";
-                        }
+                        Debug.Log("right");
+                        isRotating = true;
+                        tempX = 0;
+                        direction = "right";
+                        player.GetComponent<UnitPlayer>().projectile.isReadByBoss = true;
+
                     }
                 }
             }
@@ -111,7 +92,7 @@ public class AIBoss : MonoBehaviour
 
     void dodge(string direction)
     {
-        tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed;
+        tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed / 3;
         if (tempX < dodgeAngle)
         {
             if (direction == "left")

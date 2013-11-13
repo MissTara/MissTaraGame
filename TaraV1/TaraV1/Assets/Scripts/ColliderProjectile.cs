@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class ColliderProjectile : MonoBehaviour {
 	Vector3 spawnPos = Vector3.zero;
+    [System.NonSerialized] public bool isReadByBoss;
 	float maxRange = 0;
 	public List<BattleCore.Factions> factionsSelf = new List<BattleCore.Factions>();
 	public List<BattleCore.Factions> factionsHostile = new List<BattleCore.Factions>();
@@ -23,6 +24,7 @@ public class ColliderProjectile : MonoBehaviour {
 		speed = 10;
 		maxRange = 10;
 		Weapon = new ItemWeapon(BattleCore.elements.Fire , 30);
+        isReadByBoss = false;
 	}
 	
 	// Update is called once per frame
