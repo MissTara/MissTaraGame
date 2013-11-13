@@ -8,12 +8,10 @@ public class AIBoss : MonoBehaviour
 
     public enum State
     {
-        Charge,
-        Backing,
         Defending,
-        Attack
     };
 
+    #region public variables
     // prefab
     [System.NonSerialized]
     public Transform targetPlayer;
@@ -21,50 +19,23 @@ public class AIBoss : MonoBehaviour
     [System.NonSerialized]
     public Transform bullet;
 
-    public Transform barrel;
-
-
-    public State bossState = new State();
-
-    public float health = 10;
-
-    public float acceleration = 2f;
-
-    public float maxSpeed = 10f;
-
-    public float minSpeed = 2f;
-
-    [System.NonSerializedAttribute]
-    public float currentSpeed = 0;
-
-    public float attackDamage = 10;
-
-    public float distanceBetweenPlayerAndEnemy = 50f;
-
     public float distanceBetweenBulletAndEnemy = 40f;
-
-    public float COOLDOWNBULLET = 10f;
-    protected float coolDownFireBullet = 0;
 
     public float dodgeAngle = 5f;
 
-    [System.NonSerializedAttribute]
-    public float hitTime;
+    #endregion
 
-    public float RETREATTIME = 1;
-
+    #region private variables
+    private bool isRotating;
+    private string direction;
+    private float tempX;
+    private float rotateSpeed = 8.0f;
+    #endregion
 
     void Awake()
     {
-
-        hitTime = RETREATTIME;
-
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        coolDownFireBullet = COOLDOWNBULLET;
+        isRotating = false;
+        direction = "";
     }
 
     // Update is called once per frame
@@ -73,81 +44,18 @@ public class AIBoss : MonoBehaviour
         if (targetPlayer == null)
         {
             targetPlayer = GetComponent<AIPathCustom>().target;
+            return;
         }
-        switch (bossState)
-        {
-            case State.Charge:
-                if (targetPlayer != null)
-                    moveAndRotate(targetPlayer);
-
-                break;
-
-            case State.Backing:
-                backing();
-                break;
-
-            case State.Defending:
-                if (targetPlayer != null)
-                    defend(targetPlayer);
-                break;
-
-            case State.Attack:
-                if (targetPlayer != null)
-                    attack(targetPlayer);
-                break;
-        }
-
-    }
-
-    //states
-    protected void attack(Transform player)
-    {
-        if (player != null)
-        {
-            Vector3 barrelFocus = player.transform.position;
-            barrelFocus.y = barrel.transform.position.y;
-
-            Vector3 enemyPos = player.transform.position;
-            enemyPos.y = 0;
-
-            transform.LookAt(enemyPos);
-
-            barrel.LookAt(barrelFocus);
-
-            if (Vector3.Distance(this.transform.position, player.transform.position) > distanceBetweenPlayerAndEnemy)
-            {
-                SpeedUp();
-            }
-            else
-            {
-                SlowDown();
-                Debug.Log("Enemy Attack");
-
-                coolDownFireBullet -= Time.deltaTime;
-
-            }
-            moveForward();
-        }
-    }
-
-    protected void backing()
-    {
-        hitTime -= Time.deltaTime;
-
-        retreating();
-
-        if (hitTime <= 0)
-        {
-            this.bossState = State.Charge;
-            hitTime = RETREATTIME;
-        }
+         if (targetPlayer != null)
+            defend(targetPlayer);
     }
 
     protected void defend(Transform player)
     {
+
         if (player != null)
         {
-            if (player.GetComponent<UnitPlayer>().projectile != null)
+            if (player.GetComponent<UnitPlayer>().projectile != null && !isRotating)
             {
                 if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0)
                 {
@@ -157,12 +65,17 @@ public class AIBoss : MonoBehaviour
                             Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < 180)
                         {
                             Debug.Log("left");
-                            dodge("left");
+                            isRotating = true;
+                            tempX = 0;
+                            direction = "left";
+                            
                         }
                         else
                         {
-                            Debug.Log("right");
-                            dodge("right");
+                            Debug.Log("left");
+                            isRotating = true;
+                            tempX = 0;
+                            direction = "left";
                         }
                     }
                 }
@@ -173,100 +86,49 @@ public class AIBoss : MonoBehaviour
                         if (Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0 &&
                         Vector3.Angle(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) < 180)
                         {
-                            Debug.Log("left");
-                            dodge("left");
+                            Debug.Log("right");
+                            isRotating = true;
+                            tempX = 0;
+                            direction = "right";
                         }
                         else
                         {
                             Debug.Log("right");
-                            dodge("right");
+                            isRotating = true;
+                            tempX = 0;
+                            direction = "right";
                         }
                     }
                 }
+            }
+
+            if (isRotating)
+            {
+                dodge(direction);
             }
         }
     }
 
     void dodge(string direction)
     {
-        if (direction.Equals("left"))
-            transform.Translate(this.GetComponent<AIPathCustom>().speed * dodgeAngle * Time.deltaTime, 0, this.GetComponent<AIPathCustom>().speed * Time.deltaTime);
-        else
-            transform.Translate(this.GetComponent<AIPathCustom>().speed * -dodgeAngle * Time.deltaTime, 0, this.GetComponent<AIPathCustom>().speed * Time.deltaTime);
-    }
-
-    protected void retreating()
-    {
-        SpeedUp();
-        moveBackward();
-    }
-
-    protected void moveAndRotate(Transform player)
-    {
-        if (player != null)
+        tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed;
+        if (tempX < dodgeAngle)
         {
-            Vector3 enemyPos = player.transform.position;
-            enemyPos.y = 0;
-
-            transform.LookAt(enemyPos);
-
-            if (Vector3.Distance(this.transform.position, player.transform.position) > distanceBetweenPlayerAndEnemy)
+            if (direction == "left")
             {
-                SpeedUp();
+                transform.Translate(this.GetComponent<AIPathCustom>().speed * -rotateSpeed * Time.deltaTime, 0, -this.GetComponent<AIPathCustom>().speed * Time.deltaTime);
             }
             else
             {
-                SlowDown();
-            }
-            moveForward();
-        }
-    }
-
-    //enemy movement
-    void moveBackward()
-    {
-        transform.Translate(0, 0, -currentSpeed * Time.deltaTime);
-    }
-
-    void moveForward()
-    {
-        this.transform.Translate(0, 0, currentSpeed * Time.deltaTime);
-    }
-
-    void SpeedUp()
-    {
-        if (currentSpeed < maxSpeed)
-        {
-            currentSpeed += acceleration * Time.deltaTime;
-
-            if (currentSpeed > maxSpeed)
-            {
-                currentSpeed = maxSpeed;
+                transform.Translate(this.GetComponent<AIPathCustom>().speed * rotateSpeed * Time.deltaTime, 0, this.GetComponent<AIPathCustom>().speed * Time.deltaTime);
             }
         }
-    }
-
-    void SlowDown()
-    {
-        if (currentSpeed > 0)
+        else
         {
-            currentSpeed -= acceleration * Time.deltaTime;
-            if (currentSpeed < minSpeed)
-                currentSpeed = minSpeed;
+            isRotating = false;
+            tempX = 0;
+            return;
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        
-        if (other.gameObject.CompareTag("Player"))
-        {
-            bossState = State.Backing;
-        }
-
-    }
-
-    void LateUpdate()
-    {
-    }
 }

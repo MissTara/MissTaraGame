@@ -696,7 +696,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 		this.turningSpeed = prop.TurningSpeed;
 		this.endReachedDistance = prop.EndReachedDistance;
 		this.detectRange = prop.DetectRange;
-		this.MaxHP = prop.MaxHP;
+		//this.MaxHP = prop.MaxHP;
 		this.CurHP = this.MaxHP;
 		this.Element = prop.Element;
 		this.FactionSelf = prop.FactionSelf;
