@@ -349,7 +349,7 @@ public class UnitPlayer : Unit,ICombat {
             if (bullet != null)
             {
                 projectile = bullet.GetComponentInChildren<ColliderProjectile>();
-                
+				//projectile.speed += 0.0;                
             }
 		}
 	}

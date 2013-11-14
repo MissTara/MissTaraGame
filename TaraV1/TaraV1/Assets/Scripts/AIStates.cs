@@ -321,7 +321,7 @@ public class AIStates : MonoBehaviour
 		* That's easy too...
 		*/
 		if (EnemyState == states.Attack && !died){
-			if (true){ 								//Gatling attack
+			if (false){ 								//Gatling attack
 				if(!attacking){
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
@@ -333,6 +333,22 @@ public class AIStates : MonoBehaviour
 						AIPathing.canMove = true;
 						AIPathing.canSearch = true;
 						animation.Stop("MechAttack1_copy");
+						EnemyState = states.Run;
+						attacking = false;
+					}
+				}
+			}else{
+				if(!attacking){
+					AIPathing.canMove = false;
+					AIPathing.canSearch = false;
+					animation.Play("MechAttack2_copy");
+					animation["MechAttack2_copy"].speed = 0.5f;
+					attacking = true;
+				}else{							
+					if(!animation.IsPlaying("MechAttack2_copy")){
+						AIPathing.canMove = true;
+						AIPathing.canSearch = true;
+						animation.Stop("MechAttack2_copy");
 						EnemyState = states.Run;
 						attacking = false;
 					}

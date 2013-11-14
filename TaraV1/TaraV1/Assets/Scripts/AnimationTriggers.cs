@@ -27,4 +27,14 @@ public class AnimationTriggers : MonoBehaviour {
 		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
 		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
 	}
+	
+	private void mechMissileAttack(){
+		Vector3[] positions = new Vector3[2];
+		for (int i = 0; i < 2; i++){
+			positions[i] = new Vector3(Random.Range(0.0f, 100.0f),0.0f,Random.Range(0.0f, 100.0f));
+			Instantiate(ResourceManager.Get().preMissileTarget,positions[i], this.transform.rotation);
+			GameObject missile = Instantiate(ResourceManager.Get().preMissile,new Vector3(positions[i].x,300.0f,positions[i].z), this.transform.rotation) as GameObject;
+			missile.rigidbody.AddForce(Vector3.down*3000.0f);
+		}
+	}
 }
