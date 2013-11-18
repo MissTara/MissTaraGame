@@ -362,6 +362,7 @@ public class AIStates : MonoBehaviour
         else if (EnemyState == states.Death){
     	    if (!died){
             	animation.Stop();
+				animation["MechDead"].speed = 0.5f;
                 animation.Play("MechDead");
     	        died = true;
         	}

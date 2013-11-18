@@ -349,7 +349,8 @@ public class UnitPlayer : Unit,ICombat {
             if (bullet != null)
             {
                 projectile = bullet.GetComponentInChildren<ColliderProjectile>();
-				//projectile.speed += 0.0;                
+				if(GetComponent<CharacterController>().velocity != Vector3.zero)
+					projectile.speed += speedMove;
             }
 		}
 	}

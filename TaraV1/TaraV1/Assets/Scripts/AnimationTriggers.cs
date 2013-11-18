@@ -33,7 +33,7 @@ public class AnimationTriggers : MonoBehaviour {
 		for (int i = 0; i < 2; i++){
 			positions[i] = new Vector3(Random.Range(0.0f, 100.0f),0.0f,Random.Range(0.0f, 100.0f));
 			Instantiate(ResourceManager.Get().preMissileTarget,positions[i], this.transform.rotation);
-			GameObject missile = Instantiate(ResourceManager.Get().preMissile,new Vector3(positions[i].x,300.0f,positions[i].z), this.transform.rotation) as GameObject;
+			GameObject missile = Instantiate(ResourceManager.Get().preMissile,new Vector3(positions[i].x,300.0f,positions[i].z),ResourceManager.Get().preMissile.transform.rotation ) as GameObject;
 			missile.rigidbody.AddForce(Vector3.down*3000.0f);
 		}
 	}

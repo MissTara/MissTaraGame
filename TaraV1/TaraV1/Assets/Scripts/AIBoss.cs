@@ -72,7 +72,6 @@ public class AIBoss : MonoBehaviour
                         tempX = 0;
                         direction = "left";
                         player.GetComponent<UnitPlayer>().projectile.isReadByBoss = true;
-
                     }
                 }
                 else
@@ -113,7 +112,7 @@ public class AIBoss : MonoBehaviour
         }
         else
         {
-            if (this.GetComponent<AIStates>().died == false)
+            if (!this.GetComponent<AIStates>().died)
                 this.GetComponent<AIStates>().EnemyState = AIStates.states.Run;
             else
                 this.GetComponent<AIStates>().EnemyState = AIStates.states.Death;
@@ -125,11 +124,12 @@ public class AIBoss : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Wall")
-        {
+        if (other.tag == "Wall"){
             Debug.Log("Inside Wall");
-        }
-        
+        }else if (other.tag == "Sidewalls" && isRotating){
+			isRotating = false;
+            tempX = 0;
+		}
     } 
 
 }
