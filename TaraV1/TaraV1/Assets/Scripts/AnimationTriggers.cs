@@ -31,7 +31,7 @@ public class AnimationTriggers : MonoBehaviour {
 	private void mechMissileAttack(){
 		Vector3[] positions = new Vector3[2];
 		for (int i = 0; i < 2; i++){
-			positions[i] = new Vector3(Random.Range(0.0f, 100.0f),0.0f,Random.Range(0.0f, 100.0f));
+			positions[i] = new Vector3(Random.Range(this.transform.position.x-20.0f, this.transform.position.x+20.0f),0.0f,Random.Range(this.transform.position.z-20.0f,this.transform.position.z+20.0f ));
 			Instantiate(ResourceManager.Get().preMissileTarget,positions[i], this.transform.rotation);
 			GameObject missile = Instantiate(ResourceManager.Get().preMissile,new Vector3(positions[i].x,300.0f,positions[i].z),ResourceManager.Get().preMissile.transform.rotation ) as GameObject;
 			missile.rigidbody.AddForce(Vector3.down*3000.0f);

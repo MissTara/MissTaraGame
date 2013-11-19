@@ -1,18 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitPlayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Missile.cs">
     <Files>
       <File FileName="Assets\Scripts\AIEnemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIStates.cs" Line="371" Column="7" />
-      <File FileName="Assets\Scripts\ColliderWeaponEnemy.cs" Line="48" Column="4" />
+      <File FileName="Assets\Scripts\AIStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ColliderWeaponEnemy.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AnimationTriggers.cs" Line="30" Column="2" />
-      <File FileName="Assets\Scripts\ColliderProjectile.cs" Line="17" Column="15" />
+      <File FileName="Assets\Scripts\AnimationTriggers.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ColliderProjectile.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\UnitEnemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIBoss.cs" Line="119" Column="32" />
-      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="352" Column="54" />
-      <File FileName="Assets\Scripts\Unit.cs" Line="155" Column="5" />
-      <File FileName="Assets\Scripts\script_vcontroller.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AIBoss.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Missile.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
