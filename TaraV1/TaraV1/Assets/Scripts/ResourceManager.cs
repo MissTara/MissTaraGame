@@ -39,6 +39,8 @@ tex_Controller_JMP,
 	preMissileTarget, preMissile;
 	public GameObject particleAttack, particleExplosion;
 
+    public GameObject bossHealthBar;
+
     public Texture[] tex_Slides;
 
 	public ResourceManager ()

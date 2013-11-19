@@ -583,8 +583,8 @@ public class AIPathCustom : MonoBehaviour, ICombat
 	public float detectRange = 5;
 	public bool canAttack = true;
 	public bool dead = false;
-	public int MaxHP = 2;
-	private int _CurHP = 0;
+	public float MaxHP = 2;
+	private float _CurHP = 0;
 	public BattleCore.elements Element = BattleCore.elements.None;
 	
 	public List<BattleCore.Factions> _factionSelf = new List<BattleCore.Factions>();
@@ -600,7 +600,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 		get { return AnimControl.EnemyState == AIStates.states.Attack; }
 		set { print("Cannot Set isAttacking of an Enemy"); }
 	}
-	public int CurHP{
+	public float CurHP{
 		get { return _CurHP; }
 		set {
 			if (value  < 0)

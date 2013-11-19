@@ -84,6 +84,11 @@ public class LevelLoader : MonoBehaviour
                             tmpLevel = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
                             levelToLoad = tmpLevel;
 
+                            if (level.GetComponent<Level>().isBossLevel)
+                                levelText.text = "BOSS BATTLE";
+                            else
+                                levelText.text = "Level " + levelTextNum;
+
                             GameObject tmpCollideWall;
                             tmpCollideWall = Instantiate(ResourceManager.Get().preCollideWall, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
                             collideWall = tmpCollideWall;

@@ -17,7 +17,7 @@ public class Unit : MonoBehaviour {
 	public bool 	canAttack		= true;				// If the unit can attack
 	public bool 	canBeAttacked	= true;				// If the unit can be attacked
 	public bool 	dead			= false;			// If the unit is dead
-	public int 		MaxHP			= 10;				// The maximum HP of the unit
+	public float 		MaxHP			= 10;				// The maximum HP of the unit
 	public float speedMove 		= 10f;				// The basic move speed of the unit
 	public float speedRun 		= 20f;				// The running speed of the unit
 	public float speedJump 		= 10f;				// The jump height(speed) of the unit
@@ -35,8 +35,9 @@ public class Unit : MonoBehaviour {
 		set { _Weapon = value; }
 	}
 	public ItemArmour Armour;
-	public int _CurHP		= 0;				// The default current HP which is equal to the maximum
-	public int CurHP{								// The current HP which should between 0 and the maximum HP inclusive
+	public float _CurHP		= 0;				// The default current HP which is equal to the maximum
+    public float CurHP
+    {								// The current HP which should between 0 and the maximum HP inclusive
 		get {return _CurHP;}
 		set	{
 			if (value < 0)
@@ -61,11 +62,11 @@ public class Unit : MonoBehaviour {
 
     
 
-    public void gainHealth(int gainAmountOfHealth)
+    public void gainHealth(float gainAmountOfHealth)
     {
         if (this._CurHP + gainAmountOfHealth > this.MaxHP)
         {
-            int healhToMax = this.MaxHP - gainAmountOfHealth;
+            float healhToMax = this.MaxHP - gainAmountOfHealth;
             this._CurHP += healhToMax;
         }
         else

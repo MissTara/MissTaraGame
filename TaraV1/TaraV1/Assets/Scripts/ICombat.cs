@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public interface ICombat
 {
-	int CurHP{
+	float CurHP{
 		get;
 		set;
 	}

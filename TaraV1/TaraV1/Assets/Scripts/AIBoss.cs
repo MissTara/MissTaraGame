@@ -5,6 +5,8 @@ using System.Collections;
 
 public class AIBoss : MonoBehaviour
 {
+    [System.NonSerialized]
+    public GameObject healthBar;
 
     public enum State
     {
@@ -31,6 +33,11 @@ public class AIBoss : MonoBehaviour
     private string direction;
     private float tempX;
     private float rotateSpeed = 4.0f;
+
+    private Vector3 worldPosition;
+    private Vector3 screenPosition;
+    private float hp;
+    private float maxHP;
     #endregion
 
     void Awake()
@@ -38,6 +45,13 @@ public class AIBoss : MonoBehaviour
         isRotating = false;
         direction = "";
         canRotate = true;
+
+        this.GetComponent<AIPathCustom>().CurHP = this.GetComponent<AIPathCustom>().MaxHP;
+
+        hp = this.GetComponent<AIPathCustom>().CurHP;
+        maxHP = this.GetComponent<AIPathCustom>().MaxHP;
+
+        healthBar = Instantiate(ResourceManager.Get().bossHealthBar, LevelLoader.Get().camera.WorldToViewportPoint(GameObject.Find("bar").transform.position), Quaternion.Euler(Vector3.zero)) as GameObject;
     }
 
     // Update is called once per frame
@@ -50,6 +64,22 @@ public class AIBoss : MonoBehaviour
         }
         if (targetPlayer != null)
             defend(targetPlayer);
+
+        if (healthBar != null)
+        {
+            screenPosition = LevelLoader.Get().camera.WorldToScreenPoint(GameObject.Find("bar").transform.position);
+            screenPosition.z = 0;
+            healthBar.transform.position = LevelLoader.Get().camera.WorldToViewportPoint(GameObject.Find("bar").transform.position);
+            hp = this.GetComponent<AIPathCustom>().CurHP;
+
+            float healthBarWidth = hp / maxHP;
+            healthBar.gameObject.transform.Find("bar").guiTexture.pixelInset = new Rect(-4f, -6f, 60 * healthBarWidth, 10);
+        }
+
+        if (healthBar != null && this.GetComponent<AIStates>().EnemyState == AIStates.states.Death)
+        {
+            Destroy(this.healthBar);
+        }
     }
 
     protected void defend(Transform player)
