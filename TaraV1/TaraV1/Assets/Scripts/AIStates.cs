@@ -360,6 +360,12 @@ public class AIStates : MonoBehaviour
 	    else if (EnemyState == states.Run)
     	    animation.Play("MechWalk");
         else if (EnemyState == states.Death){
+            if (animation.IsPlaying("MechJump"))
+            {
+                animation.Stop();
+                animation.Play("MechDead");
+            }
+
     	    if (!died){
             	animation.Stop();
 				animation["MechDead"].speed = 0.5f;

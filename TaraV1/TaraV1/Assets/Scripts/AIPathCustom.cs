@@ -236,6 +236,13 @@ public class AIPathCustom : MonoBehaviour, ICombat
         }
     }
 
+    public void SearchPathAgain()
+    {
+        Vector3 targetPosition = target.position;
+
+        seeker.StartPath(GetFeetPosition(), targetPosition);
+    }
+
     /** Is WaitForRepath running */
     private bool waitingForRepath = false;
 
@@ -258,10 +265,11 @@ public class AIPathCustom : MonoBehaviour, ICombat
     }
 
     /** Requests a path to the target */
-    public virtual void SearchPath()
+    public void SearchPath()
     {
 
         if (target == null) { Debug.LogError("Target is null, aborting all search"); canSearch = false; return; }
+        if (this.GetComponent<AIStates>().EnemyState == AIStates.states.Jump) return;
 
         lastRepath = Time.time;
         //This is where we should search to

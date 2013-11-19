@@ -30,7 +30,7 @@ public class AIBoss : MonoBehaviour
     private bool canRotate;
     private string direction;
     private float tempX;
-    private float rotateSpeed = 8.0f;
+    private float rotateSpeed = 4.0f;
     #endregion
 
     void Awake()
@@ -86,6 +86,7 @@ public class AIBoss : MonoBehaviour
 
                     }
                 }
+                
             }
 
             if (isRotating)
@@ -98,7 +99,7 @@ public class AIBoss : MonoBehaviour
 
     void dodge(string direction)
     {
-        tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed / 10;
+        tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed / 8;
         if (tempX < dodgeAngle)
         {
             if (direction == "left" && canRotate == true)
@@ -118,6 +119,8 @@ public class AIBoss : MonoBehaviour
                 this.GetComponent<AIStates>().EnemyState = AIStates.states.Death;
             isRotating = false;
             tempX = 0;
+            this.GetComponent<AIPathCustom>().target = LevelLoader.Get().mainPlayer.transform;
+            this.GetComponent<AIPathCustom>().SearchPathAgain();
             return;
         }
     }
@@ -129,6 +132,7 @@ public class AIBoss : MonoBehaviour
         }else if (other.tag == "Sidewalls" && isRotating){
 			isRotating = false;
             tempX = 0;
+            return;
 		}
     } 
 
