@@ -155,7 +155,10 @@ public class Unit : MonoBehaviour {
 				jump = false;
 			}
 		}
-		move += gravity;
+		if(this.tag == "Bat" && GetComponent<AIStates>().swoop){
+			move = Vector3.zero;
+		}else
+			move += gravity;
 		controller.Move(move * Time.deltaTime);
 		
 	}

@@ -138,7 +138,7 @@ public class AIStates : MonoBehaviour
             AIPathing.canSearch = false;
             delay = Time.time;
             dir = player.position - transform.position; // calculate the target direction...
-            speedSwoop = new Vector3(dir.x*0.06f,-0.1f,dir.z*0.06f);
+            speedSwoop = new Vector3(dir.x*0.03f,-0.1f,dir.z*0.03f);
 			this.transform.LookAt(new Vector3(GM.objPlayer.transform.position.x,this.transform.position.y,GM.objPlayer.transform.position.z));	//Look in the direction of the player
 			tmp.enabled = false;
 			batAtt = true;
@@ -280,6 +280,7 @@ public class AIStates : MonoBehaviour
         else if (EnemyState == states.Death){
     	    if (!died){
             	animation.Stop();
+				animation["WolfDead"].speed = 0.5f;
                 animation.Play("WolfDead");
 	            Debug.Log(states.Death.ToString());
     	        died = true;
@@ -292,10 +293,10 @@ public class AIStates : MonoBehaviour
           	        EnemyState = states.Death;
 	        }
 	    }
-        /*if (hitted == true && !died){
+        if (hitted == true && !died){
            	animation.Play("WolfHit");
             hitted = false;
-	    }*/	
+	    }
 	}
 	
 	private void PlayMechBoss(){

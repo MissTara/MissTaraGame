@@ -91,7 +91,8 @@ public class AIBoss : MonoBehaviour
                 && player.GetComponent<UnitPlayer>().projectile.isReadByBoss == false 
                 && !isRotating
                 && this.GetComponent<AIStates>().EnemyState != AIStates.states.Death
-                && this.GetComponent<AIStates>().EnemyState != AIStates.states.Attack)
+                && this.GetComponent<AIStates>().EnemyState != AIStates.states.Attack
+				&& (this.GetComponent<AIPathCustom>().CurHP / this.GetComponent<AIPathCustom>().MaxHP) < 0.5f)
             {
                 if (Vector3.Distance(this.transform.position, player.GetComponent<UnitPlayer>().projectile.transform.position) > 0)
                 {
@@ -157,12 +158,8 @@ public class AIBoss : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Wall"){
-            Debug.Log("Inside Wall");
-        }else if (other.tag == "Sidewalls" && isRotating){
-			isRotating = false;
-            tempX = 0;
-            return;
+    	if (other.tag == "Sidewalls" && isRotating){
+            
 		}
     } 
 
