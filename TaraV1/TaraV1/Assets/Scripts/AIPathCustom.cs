@@ -292,15 +292,21 @@ public class AIPathCustom : MonoBehaviour, ICombat
         //add it here
         //You can also create a new script which inherits from this one
         //and override the function in that script
-        if (!isIdle)
-        {
-            isIdle = true;
-            isRunning = false;
-            //Alfred Lai - animation attack
-            //AIStates.EnemyState = AIStates.states.idle;
-            AnimControl.EnemyState = AIStates.states.Attack;
-			
-        }
+		if (gameObject.tag != "Bunny"){
+	        if (!isIdle)
+    	    {
+        	    isIdle = true;
+            	isRunning = false;
+	            //Alfred Lai - animation attack
+    	        //AIStates.EnemyState = AIStates.states.idle;
+				if (gameObject.tag == "MechBoss")
+					GetComponent<AIStates>().StartCoroutine("getMechAttack");
+    	        AnimControl.EnemyState = AIStates.states.Attack;	
+	        }
+		}else{
+			isIdle = true;
+			isRunning = false;
+		}
     }
 
     public void OnDestroy()
@@ -648,6 +654,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 				print("AIPathCustom->No Popup in the scene");
 			CurHP -= damage;
 			if (CurHP == 0){
+				GameObject.Find("CameraSelf").GetComponentInChildren<script_HUD>().StartCoroutine("bunnyGuage");
 				Die();
 			}
 		}
@@ -655,7 +662,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 
     public virtual void KillMe()
     {
-        if (gameObject.tag == "Alien" || gameObject.tag == "Bat" || gameObject.tag == "Bear" || gameObject.tag == "Wolf")
+        if (gameObject.tag == "Alien" || gameObject.tag == "Bat" || gameObject.tag == "Bear" || gameObject.tag == "Wolf" || gameObject.tag == "MechBoss")
             this.Dance();
     }
 
@@ -664,7 +671,10 @@ public class AIPathCustom : MonoBehaviour, ICombat
         canSearch = false;
         canMove = false;
         AnimControl.EnemyState = AIStates.states.Dance;
-        StartCoroutine("PlayDance");
+		if (gameObject.tag != "MechBoss")
+        	StartCoroutine("PlayDance");
+		else
+			StartCoroutine("PlayDanceBoss");
     }
 
     IEnumerator PlayDance()
@@ -673,6 +683,15 @@ public class AIPathCustom : MonoBehaviour, ICombat
         this._CurHP = 0;
         this.dead = true;
         this.Die();
+    }
+	
+	IEnumerator PlayDanceBoss()
+    {
+        yield return new WaitForSeconds(9.0f);
+        this._CurHP -= 50.0f;
+		canSearch = true;
+		canMove = true;
+		AnimControl.EnemyState = AIStates.states.Run;
     }
 
 	public void Die(){

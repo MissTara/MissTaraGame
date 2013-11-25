@@ -10,11 +10,12 @@ using UnityEngine;
 using System.Collections;
 
 public class script_HUD : MonoBehaviour {
-	private Texture texCharPortrait, texHPBG, texHP, texGrenadeIcon;
-	Rect rectCharPortrait, rectSrcCharPortrait, rectHPBG, rectSrcHPBG, rectHP, rectSrcHP, rectGrenadeIcon;
+	private Texture texCharPortrait, texHP, texGrenadeIcon, texBunny, texBunnyBG;
+	Rect rectCharPortrait, rectSrcCharPortrait, rectHP, rectGrenadeIcon, rectBunny, rectBunnyBG;
 	// HP Flow
 	float intHPFlow, intHPRange;
-	public float range = 0.0f;
+	private float range = 0.0f;
+	private float rangeBunny = 1.0f;
 	// Use this for initialization
 	void Start () {
 		// Load Textures
@@ -24,17 +25,18 @@ public class script_HUD : MonoBehaviour {
 		//texGrenadeIcon = (Texture)Resources.Load("texGrenade");
 		// Calculate Positions
 		texCharPortrait = ResourceManager.Get().tex_HUD_HeadTexture;
-		texHPBG = ResourceManager.Get().tex_HUD_HPBar;
 		texHP = ResourceManager.Get().tex_HUD_HPBar;
 		texGrenadeIcon = ResourceManager.Get().tex_HUD_Grenade;
+		texBunny = ResourceManager.Get().tex_HUD_BunnyBar;
+		texBunnyBG = ResourceManager.Get().tex_HUD_BunnyBarBG;
 		rectCharPortrait = new Rect(10,10, texCharPortrait.width / 4, texCharPortrait.height / 4);
 		rectSrcCharPortrait = new Rect(0,0, 1, 1);
 		//rectSrcCharPortrait = new Rect(0,0, 0.2f, 1);
-		rectHPBG = new Rect(130, 20, texHPBG.width * 0.5f, 40.0f);
-		rectSrcHPBG = new Rect(0, 0, 1, 0.5f);
-		rectHP = new Rect(130, 20, texHP.width * 0.5f, 40.0f);
-		rectSrcHP = new Rect(0, 0.5f, 1, 0.5f);
-		rectGrenadeIcon = new Rect(130, 55, texGrenadeIcon.width, texGrenadeIcon.height);	
+		rectHP = new Rect(80, 20, texHP.width * 0.5f, 40.0f);
+		rectGrenadeIcon = new Rect(80, 110, texGrenadeIcon.width, texGrenadeIcon.height);
+		rectBunny = new Rect(80,70,texBunny.width,texBunny.height);
+		rectBunnyBG = new Rect(80,70,texBunnyBG.width, texBunnyBG.height);
+		//Bun: 204,36
 	}
 	void OnGUI(){
 		if (GameManager.isPaused)
@@ -50,10 +52,16 @@ public class script_HUD : MonoBehaviour {
 		//GUI.DrawTextureWithTexCoords(rectHP,texHP,rectSrcHP);
 		
 		GUI.DrawTexture(rectGrenadeIcon, texGrenadeIcon);
-		GUI.Label(new Rect(130,80,100,100),"Coins:" + GameManager.userData.currency);
-				
-		//rectHP.height * 0.5f * 3 (old height)
-		GUI.BeginGroup(new Rect(130,20,rectHP.width, 40.0f));
+		GUI.Label(new Rect(80,130,100,100),"Coins:" + GameManager.userData.currency);
+		
+		//Bunny bar
+		GUI.DrawTexture(rectBunnyBG,texBunnyBG);
+		GUI.BeginGroup(new Rect(80,70,rectBunny.width, 36.0f));
+		GUI.DrawTexture(new Rect(-texBunny.width * rangeBunny, 0.0f, rectBunny.width, 36.0f),texBunny);
+		GUI.EndGroup();
+
+		//Health bar
+		GUI.BeginGroup(new Rect(80,20,rectHP.width, 40.0f));
 		GUI.DrawTexture(new Rect(-rectHP.width * range, 0.0f, rectHP.width, 40.0f),texHP);
 		GUI.EndGroup();
 	}
@@ -83,6 +91,12 @@ public class script_HUD : MonoBehaviour {
             }
         }
 	}
-	
-	//40 per note IMPORTANT
+	IEnumerator bunnyGuage(){
+		if (rangeBunny-0.1f < 0.0f)
+			rangeBunny = 0.0f;	
+		else
+			rangeBunny -= 0.1f;
+		yield return new WaitForSeconds(0.1f);
+		StopCoroutine("bunnyGuage");
+	}
 }

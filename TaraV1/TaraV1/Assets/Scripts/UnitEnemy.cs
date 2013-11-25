@@ -26,6 +26,7 @@ public class UnitEnemy : Unit {
 	}
 	protected override void die ()
 	{
+		//GetComponent<script_HUD>().StartCoroutine("bunnyGuage");
 		base.die ();
 		dropItems();	
 	}

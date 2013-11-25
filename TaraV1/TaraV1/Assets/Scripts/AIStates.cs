@@ -35,6 +35,7 @@ public class AIStates : MonoBehaviour
 	 * */
 	public bool swoop = false;
 	private bool batAtt,batWait = false;
+	private int mechAttack = 0;
 
     void Start()
     {
@@ -52,7 +53,9 @@ public class AIStates : MonoBehaviour
     void Update()
     {
         //transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        if (gameObject.tag == "Alien")
+		if (gameObject.tag == "Bunny")
+			PlayBunny();
+        else if (gameObject.tag == "Alien")
             PlayAlien();
         else if (gameObject.tag == "Bat")
             PlayBat();
@@ -63,6 +66,13 @@ public class AIStates : MonoBehaviour
 		else if (gameObject.tag == "MechBoss")
 			PlayMechBoss();
     }
+	
+	private void PlayBunny(){
+		if (EnemyState == states.Idle)
+            animation.Play("BunnyIdle");
+        else if (EnemyState == states.Run)
+            animation.Play("BunnyWalk");
+	}
 
     private void PlayAlien()
     {
@@ -322,7 +332,7 @@ public class AIStates : MonoBehaviour
 		* That's easy too...
 		*/
 		if (EnemyState == states.Attack && !died){
-			if (false){ 								//Gatling attack
+			if (mechAttack == 1){ 								//Gatling attack
 				if(!attacking){
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
@@ -339,7 +349,7 @@ public class AIStates : MonoBehaviour
 					}
 				}
 			}else{
-				if(!attacking){
+				if(!attacking){									//Missile attack
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
 					animation.Play("MechAttack2_copy");
@@ -375,10 +385,18 @@ public class AIStates : MonoBehaviour
         	}
        	}
 	    else if (EnemyState == states.Dance){
+			 if (!died)
+               	animation.Play("MechDance");
 	    }
         else if (EnemyState == states.Jump)
         {
             animation.Play("MechJump");
         }
+	}
+	
+	IEnumerator getMechAttack(){
+		mechAttack = Random.Range(0,1);
+		yield return new WaitForSeconds(0.2f);
+		StopCoroutine("getMechAttack");
 	}
 }

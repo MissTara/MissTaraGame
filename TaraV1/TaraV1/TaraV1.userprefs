@@ -1,18 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIBoss.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIPathCustom.cs">
     <Files>
-      <File FileName="Assets\Scripts\AIEnemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIStates.cs" Line="161" Column="17" />
-      <File FileName="Assets\Scripts\ColliderWeaponEnemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GameManager.cs" Line="29" Column="26" />
-      <File FileName="Assets\Scripts\AnimationTriggers.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ColliderProjectile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AIBoss.cs" Line="157" Column="6" />
-      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Unit.cs" Line="156" Column="5" />
-      <File FileName="Assets\Scripts\Missile.cs" Line="19" Column="1" />
-      <File FileName="Assets\Scripts\AIPathCustom.cs" Line="62" Column="15" />
+      <File FileName="Assets\Scripts\AIStates.cs" Line="21" Column="33" />
+      <File FileName="Assets\Scripts\AIPathCustom.cs" Line="653" Column="8" />
+      <File FileName="Assets\Scripts\ColliderWeaponEnemy.cs" Line="34" Column="18" />
+      <File FileName="Assets\Scripts\ColliderProjectile.cs" Line="69" Column="19" />
+      <File FileName="Assets\Scripts\AIBoss.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="346" Column="3" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\script_HUD.cs" Line="34" Column="50" />
+      <File FileName="Assets\Scripts\ResourceManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="182" Column="28" />
+      <File FileName="Assets\Scripts\UnitEnemy.cs" Line="52" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

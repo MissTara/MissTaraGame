@@ -30,7 +30,9 @@ tex_Controller_JMP,
 	tex_Black,
 	tex_MenuBack,
 	tex_LoadingScreen,
-	tex_Credits;
+	tex_Credits,
+	tex_HUD_BunnyBar,
+	tex_HUD_BunnyBarBG;
 	public Texture [] tex_WeaponIcons;
 	public AudioClip se_PlayerJump, se_AttackOn, se_Attack;
 	

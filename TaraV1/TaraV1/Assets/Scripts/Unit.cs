@@ -194,8 +194,9 @@ public class Unit : MonoBehaviour {
 		}
 		AIEnemy AI = GetComponent<AIEnemy>();
 		
-		if (AI != null)
+		if (AI != null){
 			Destroy(AI);
+		}
 		controller.enabled = false;
 	}
 	protected virtual void revive(){
