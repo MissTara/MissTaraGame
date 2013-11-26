@@ -69,9 +69,9 @@ public class AIStates : MonoBehaviour
 	
 	private void PlayBunny(){
 		if (EnemyState == states.Idle)
-            animation.Play("BunnyIdle");
+            animation.Play("LBunnyIdle");
         else if (EnemyState == states.Run)
-            animation.Play("BunnyWalk");
+			animation.Play("LBunnyHop");
 	}
 
     private void PlayAlien()

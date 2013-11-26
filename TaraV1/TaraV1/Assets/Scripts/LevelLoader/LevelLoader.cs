@@ -20,6 +20,7 @@ public class LevelLoader : MonoBehaviour
     [System.NonSerialized] public bool levelLoaded = false;
     [System.NonSerialized]
     public GameObject mainPlayer;
+	public GameObject Bunny;
 
     #endregion
     
@@ -108,6 +109,7 @@ public class LevelLoader : MonoBehaviour
                 {
                     mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
                     mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
+					Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
                     boolSetNewLevel = false;
                     return;
                 }
