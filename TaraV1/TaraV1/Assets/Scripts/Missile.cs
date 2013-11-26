@@ -13,7 +13,7 @@ public class Missile : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if(other.tag == "Target"){
-			
+            Instantiate(ResourceManager.Get().preExplosion, this.gameObject.transform.position, this.gameObject.transform.rotation);
 			Destroy(other.gameObject);
 			Destroy(this.gameObject);
 

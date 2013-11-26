@@ -38,7 +38,7 @@ tex_Controller_JMP,
 	
 	public GameObject preBunny,preEnemyAlien,preEnemyBat,preEnemyBear,preEnemyWolf,preMechBoss,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
 	preMenu,preKillZone,preJoyStick, preNoteQuarter,preNoteHalf, preNoteSharp, preNoteTreble,preNoteWhole,preBullet,preCollideWall,preEnemyBullet,
-	preMissileTarget, preMissile;
+	preMissileTarget, preMissile, preExplosion;
 	public GameObject particleAttack, particleExplosion;
 
     public GameObject bossHealthBar;
