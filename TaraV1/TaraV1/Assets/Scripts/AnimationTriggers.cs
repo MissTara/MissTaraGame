@@ -14,8 +14,9 @@ public class AnimationTriggers : MonoBehaviour {
 				projectile = GetComponent<ColliderProjectile>();
 			}
 	}
-	
-	
+
+
+    private int missilesToFire = 2;
 	
 	//Mech's triggers
 	private void mechGatlingStart(){
@@ -29,12 +30,26 @@ public class AnimationTriggers : MonoBehaviour {
 	}
 	
 	private void mechMissileAttack(){
-		Vector3[] positions = new Vector3[2];
-		for (int i = 0; i < 2; i++){
-			positions[i] = new Vector3(Random.Range(this.transform.position.x-20.0f, this.transform.position.x+20.0f) ,-1.33f, Random.Range(this.transform.position.z-20.0f,this.transform.position.z+20.0f ));
+        int howmanyMissiles = Mathf.Clamp(missilesToFire, this.GetComponent<AIBoss>().missilesToFireMin, this.GetComponent<AIBoss>().missilesToFireMax);
+
+        Vector3[] positions = new Vector3[howmanyMissiles];
+
+        positions[0] = LevelLoader.Get().mainPlayer.transform.position;
+        positions[0].y = -1.33f;
+        Instantiate(ResourceManager.Get().preMissileTarget, positions[0], this.transform.rotation);
+        GameObject missile = Instantiate(ResourceManager.Get().preMissile, new Vector3(positions[0].x, 20.0f, positions[0].z), ResourceManager.Get().preMissile.transform.rotation) as GameObject;
+        missile.transform.localScale = missile.transform.localScale * 1.5f;
+        missile.rigidbody.AddForce(Vector3.down * 10.0f);
+
+        for (int i = 1; i < howmanyMissiles; i++)
+        {
+            positions[i] = new Vector3(Random.Range(this.transform.position.x - 15.0f, this.transform.position.x + 15.0f), -1.33f, Random.Range(this.transform.position.z - 15.0f, this.transform.position.z + 15.0f));
 			Instantiate(ResourceManager.Get().preMissileTarget,positions[i], this.transform.rotation);
-			GameObject missile = Instantiate(ResourceManager.Get().preMissile,new Vector3(positions[i].x,300.0f,positions[i].z),ResourceManager.Get().preMissile.transform.rotation ) as GameObject;
-			missile.rigidbody.AddForce(Vector3.down*3000.0f);
+			missile = Instantiate(ResourceManager.Get().preMissile,new Vector3(positions[i].x,20.0f,positions[i].z),ResourceManager.Get().preMissile.transform.rotation ) as GameObject;
+            missile.transform.localScale = missile.transform.localScale * 1.5f;
+            missile.rigidbody.AddForce(Vector3.down * 10.0f);
 		}
+
+        missilesToFire += 1;
 	}
 }

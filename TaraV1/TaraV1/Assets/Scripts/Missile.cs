@@ -7,6 +7,10 @@ using System.Collections;
 
 public class Missile : MonoBehaviour {
 
+    float amountDamage = 50.0f;
+
+    private static Missile m_Instance = null;
+
 	void OnTriggerEnter(Collider other){
 		if(other.tag == "Target"){
 			
@@ -15,6 +19,11 @@ public class Missile : MonoBehaviour {
 
 
 		}
+
+        if (other.tag == "Player")
+        {
+            ((UnitPlayer)LevelLoader.Get().mainPlayer.GetComponent(typeof(UnitPlayer))).hurt(amountDamage);
+        }
 	}
 	
 }

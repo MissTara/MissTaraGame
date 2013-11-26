@@ -324,6 +324,27 @@ public class UnitPlayer : Unit,ICombat {
 			}
 		}
 	}
+
+    public void hurt(float damage)
+    {
+        CurHP -= damage;
+        transparency = 0.5f;
+        if (CurHP == 0)
+        {
+            // Death
+            GameManager.GameOver();
+            CameraController.Get().fadeIn = false;
+            CameraController.Get().fadeOut = true;
+            GameManager.isPaused = true;
+            dead = true;
+        }
+        else
+        {
+            invinsible = true;
+            StartCoroutine("invinsiTime");
+        }
+    }
+
 	void OnGUI(){
 		if (GameManager.isPaused)
 			return;

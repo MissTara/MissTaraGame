@@ -8,6 +8,7 @@ public class AIBoss : MonoBehaviour
     [System.NonSerialized]
     public GameObject healthBar;
 
+
     public enum State
     {
         Defending,
@@ -25,6 +26,9 @@ public class AIBoss : MonoBehaviour
 
     public float dodgeAngle = 5f;
 
+    public int missilesToFireMin = 2;
+    public int missilesToFireMax = 12;
+
     #endregion
 
     #region private variables
@@ -38,10 +42,12 @@ public class AIBoss : MonoBehaviour
     private Vector3 screenPosition;
     private float hp;
     private float maxHP;
+    private bool angry;
     #endregion
 
     void Awake()
     {
+        angry = false;
         isRotating = false;
         direction = "";
         canRotate = true;
