@@ -305,7 +305,9 @@ public class AIPathCustom : MonoBehaviour, ICombat
     	        	AnimControl.EnemyState = AIStates.states.Attack;
 	        }
 		}else{
-			canMove = false;
+			isIdle = true;
+			isRunning = false;
+			AnimControl.EnemyState = AIStates.states.Idle;
 		}
     }
 
@@ -336,10 +338,6 @@ public class AIPathCustom : MonoBehaviour, ICombat
         currentWaypointIndex = 0;
         targetReached = false;
         canSearchAgain = true;
-		
-		if(gameObject.tag == "Bunny"){
-				
-		}
 
         //The next row can be used to find out if the path could be found or not
         //If it couldn't (error == true), then a message has probably been logged to the console
@@ -453,16 +451,11 @@ public class AIPathCustom : MonoBehaviour, ICombat
             {
                 //There is a "next path segment"
                 float dist = XZSqrMagnitude(vPath[currentWaypointIndex], currentPosition);
-                /** Alfred Lai - animation run*/
                 if (!isRunning)
                 {
-					if(gameObject.tag == "Bunny"){
-						AnimControl.EnemyState = AIStates.states.Idle;
-					}else{
-            	        isRunning = true;
-        	            isIdle = false;
-	                    AnimControl.EnemyState = AIStates.states.Run;
-					}
+            	    isRunning = true;
+        	        isIdle = false;
+	                AnimControl.EnemyState = AIStates.states.Run;
                 }
                 //Mathfx.DistancePointSegmentStrict (vPath[currentWaypointIndex+1],vPath[currentWaypointIndex+2],currentPosition);
                 if (dist < pickNextWaypointDist * pickNextWaypointDist)
@@ -503,21 +496,6 @@ public class AIPathCustom : MonoBehaviour, ICombat
             //Send a move request, this ensures gravity is applied
             return Vector3.zero;
         }
-		
-        /** Alfred Lai - Attempt for trigger distance */
-        /*if (currentWaypointIndex == vPath.Count - 1 && targetDist >= endTriggerDistance)
-        {
-            //if (!targetReached) { targetReached = true; OnTargetReached(); }
-
-            //Send a move request, this ensures gravity is applied
-            if (!isIdle)
-            {
-                isIdle = true;
-                isRunning = false;
-            }
-            return Vector3.zero;
-        }*/
-
 
         Vector3 forward = tr.forward;
         float dot = Vector3.Dot(dir.normalized, forward);
