@@ -263,11 +263,9 @@ public class Seeker : MonoBehaviour {
 		
 		AstarProfiler.StartProfile ("Seeker OnPathComplete");
 		
-		
 		if (p != null && p != path && sendCallbacks) {
 			return;
 		}
-		
 		
 		if (this == null || p == null || p != path)
 			return;

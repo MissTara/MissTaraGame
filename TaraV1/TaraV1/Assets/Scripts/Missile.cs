@@ -16,8 +16,6 @@ public class Missile : MonoBehaviour {
             Instantiate(ResourceManager.Get().preExplosion, this.gameObject.transform.position, this.gameObject.transform.rotation);
 			Destroy(other.gameObject);
 			Destroy(this.gameObject);
-
-
 		}
 
         if (other.tag == "Player")

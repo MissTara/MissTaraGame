@@ -144,7 +144,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 
     /** Alfred Lai - Custom animation state booleans */
     protected bool isRunning = false;
-    protected bool isIdle = true;
+    public bool isIdle = true;
 
     /** Returns if the end-of-path has been reached
      * \see targetReached */
@@ -242,7 +242,6 @@ public class AIPathCustom : MonoBehaviour, ICombat
 
         seeker.StartPath(GetFeetPosition(), targetPosition);
     }
-
     /** Is WaitForRepath running */
     private bool waitingForRepath = false;
 
@@ -297,15 +296,16 @@ public class AIPathCustom : MonoBehaviour, ICombat
     	    {
         	    isIdle = true;
             	isRunning = false;
-	            //Alfred Lai - animation attack
-    	        //AIStates.EnemyState = AIStates.states.idle;
-				if (gameObject.tag == "MechBoss")
-					GetComponent<AIStates>().StartCoroutine("getMechAttack");
-    	        AnimControl.EnemyState = AIStates.states.Attack;	
+				if (gameObject.tag == "MechBoss"){
+					if(!GetComponent<AIStates>().autoBossAttack){
+						GetComponent<AIStates>().StartCoroutine("getMechAttack");
+					 	AnimControl.EnemyState = AIStates.states.Attack;
+					}
+				}else
+    	        	AnimControl.EnemyState = AIStates.states.Attack;
 	        }
 		}else{
-			isIdle = true;
-			isRunning = false;
+			canMove = false;
 		}
     }
 
@@ -336,6 +336,10 @@ public class AIPathCustom : MonoBehaviour, ICombat
         currentWaypointIndex = 0;
         targetReached = false;
         canSearchAgain = true;
+		
+		if(gameObject.tag == "Bunny"){
+				
+		}
 
         //The next row can be used to find out if the path could be found or not
         //If it couldn't (error == true), then a message has probably been logged to the console
@@ -364,12 +368,10 @@ public class AIPathCustom : MonoBehaviour, ICombat
         {
             return tr.position - Vector3.up * controller.height * 0.5F;
         }
-
         return tr.position;
     }
 
-    public virtual void Update()
-    {
+    public virtual void Update(){
 		if (GameManager.isPaused)
 			return;
 		EnemyUpdate();
@@ -386,28 +388,19 @@ public class AIPathCustom : MonoBehaviour, ICombat
 		
 		dir += impact * Time.deltaTime;
         //Rotate towards targetDirection (filled in by CalculateVelocity)
-        if (targetDirection != Vector3.zero)
-        {
+        if (targetDirection != Vector3.zero){
             RotateTowards(targetDirection);
         }
-
-        if (navController != null)
-        {
+        if (navController != null){
             navController.SimpleMove(GetFeetPosition(), dir);
-        }
-        else if (controller != null)
-        {
+        }else if (controller != null){
             if (gameObject.tag == "Bat")
                 controller.Move(dir * Time.deltaTime);
             else
                 controller.SimpleMove(dir);
-        }
-        else if (rigid != null)
-        {
+        }else if (rigid != null){
             rigid.AddForce(dir);
-        }
-        else
-        {
+        }else{
             transform.Translate(dir * Time.deltaTime, Space.World);
         }
     }
@@ -463,10 +456,13 @@ public class AIPathCustom : MonoBehaviour, ICombat
                 /** Alfred Lai - animation run*/
                 if (!isRunning)
                 {
-                    isRunning = true;
-                    isIdle = false;
-                    //AIStates.EnemyState = AIStates.states.run;
-                    AnimControl.EnemyState = AIStates.states.Run;
+					if(gameObject.tag == "Bunny"){
+						AnimControl.EnemyState = AIStates.states.Idle;
+					}else{
+            	        isRunning = true;
+        	            isIdle = false;
+	                    AnimControl.EnemyState = AIStates.states.Run;
+					}
                 }
                 //Mathfx.DistancePointSegmentStrict (vPath[currentWaypointIndex+1],vPath[currentWaypointIndex+2],currentPosition);
                 if (dist < pickNextWaypointDist * pickNextWaypointDist)
@@ -487,9 +483,6 @@ public class AIPathCustom : MonoBehaviour, ICombat
         Vector3 dir = vPath[currentWaypointIndex] - vPath[currentWaypointIndex - 1];
         Vector3 targetPosition = CalculateTargetPoint(currentPosition, vPath[currentWaypointIndex - 1], vPath[currentWaypointIndex]);
         //vPath[currentWaypointIndex] + Vector3.ClampMagnitude (dir,forwardLook);
-
-
-
         dir = targetPosition - currentPosition;
         dir.y = 0;
         float targetDist = dir.magnitude;
@@ -529,7 +522,6 @@ public class AIPathCustom : MonoBehaviour, ICombat
         Vector3 forward = tr.forward;
         float dot = Vector3.Dot(dir.normalized, forward);
         float sp = speed * Mathf.Max(dot, minMoveScale) * slowdown;
-
 
         if (Time.deltaTime > 0)
         {
@@ -699,7 +691,6 @@ public class AIPathCustom : MonoBehaviour, ICombat
 		AnimControl.EnemyState = AIStates.states.Death;
 		canSearch = false;
 		canMove = false;
-		//AIEnemy AI = GetComponent<AIEnemy>();
 		
 	}
 	public void LateDie(){

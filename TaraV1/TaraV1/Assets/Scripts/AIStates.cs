@@ -33,9 +33,9 @@ public class AIStates : MonoBehaviour
 	 * BatAtt is if the bat is attacking
 	 * batWait is a cooldown so the bat doesnt try to swoop in succession
 	 * */
-	public bool swoop = false;
+	public bool swoop,autoBossAttack = false;
 	private bool batAtt,batWait = false;
-	private int mechAttack = 0;
+	public int mechAttack = 0;
 
     void Start()
     {
@@ -47,6 +47,8 @@ public class AIStates : MonoBehaviour
 		if (gameObject.tag == "Bat"){
 			player = GM.objPlayer.transform;
 			tmp = GetComponent<UnitEnemy>();
+		}else if (gameObject.tag == "MechBoss"){
+			StartCoroutine("bossAutoAttack");
 		}
     }
 
@@ -248,7 +250,6 @@ public class AIStates : MonoBehaviour
             if (!died)
             {
                 animation.Play("BearDance");
-
                 if (!animation.IsPlaying("BearDance"))
                 {
                     EnemyState = states.Death;
@@ -263,9 +264,6 @@ public class AIStates : MonoBehaviour
 	}
 	
 	private void PlayWolf(){
-		/* Steven:
-		 * It's the wolf for level 1 (or whichever level)
-		 * */
 		if (EnemyState == states.Attack && !died){
 			if(!attacking){					//If he isnt already attacking, start doing so
 				AIPathing.canMove = false;
@@ -339,6 +337,9 @@ public class AIStates : MonoBehaviour
 					animation.Play("MechAttack1_copy");
 					animation["MechAttack1_copy"].speed = 0.5f;
 					attacking = true;
+					StopCoroutine("bossAutoAttack");
+					if(autoBossAttack)
+						autoBossAttack = false;
 				}else{							
 					if(!animation.IsPlaying("MechAttack1_copy")){
 						AIPathing.canMove = true;
@@ -346,6 +347,7 @@ public class AIStates : MonoBehaviour
 						animation.Stop("MechAttack1_copy");
 						EnemyState = states.Run;
 						attacking = false;
+						StartCoroutine("bossAutoAttack");
 					}
 				}
 			}else{
@@ -355,6 +357,9 @@ public class AIStates : MonoBehaviour
 					animation.Play("MechAttack2_copy");
 					animation["MechAttack2_copy"].speed = 0.5f;
 					attacking = true;
+					StopCoroutine("bossAutoAttack");
+					if(autoBossAttack)
+						autoBossAttack = false;
 				}else{							
 					if(!animation.IsPlaying("MechAttack2_copy")){
 						AIPathing.canMove = true;
@@ -362,6 +367,7 @@ public class AIStates : MonoBehaviour
 						animation.Stop("MechAttack2_copy");
 						EnemyState = states.Run;
 						attacking = false;
+						StartCoroutine("bossAutoAttack");
 					}
 				}
 			}
@@ -395,8 +401,17 @@ public class AIStates : MonoBehaviour
 	}
 	
 	IEnumerator getMechAttack(){
-		mechAttack = Random.Range(0,1);
+		mechAttack = Random.Range(0,2);
 		yield return new WaitForSeconds(0.2f);
 		StopCoroutine("getMechAttack");
+	}
+	
+	IEnumerator bossAutoAttack(){
+		yield return new WaitForSeconds(8.0f);
+		if(!autoBossAttack){
+			autoBossAttack = true;
+			EnemyState = states.Attack;
+		}
+		autoBossAttack = false;
 	}
 }
