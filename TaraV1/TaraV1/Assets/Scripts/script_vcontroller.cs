@@ -64,6 +64,13 @@ public class script_vcontroller : MonoBehaviour {
 	private float atkButtonId = -1;
 	private bool atkButtonDown = false;
 	private static bool atkButtonPressed = false;
+    // SpecialAttack Button
+    public Texture specialAtkButton;
+    private Rect specialAtkButtonRect;
+    private float specialAtkButtonRadius;
+    private float specialAtkButtonDiameter;
+    private float specialAtkButtonId = -1;
+    private bool specialAtkButtonDown = false;
     private static bool specialAtkButtonPressed = false;
 	// Use this for initialization
 	void Start () {
@@ -79,6 +86,7 @@ public class script_vcontroller : MonoBehaviour {
 		//circle = ResourceManager.Get().tex_Controller_Joystick;
 		jumpButton = ResourceManager.Get().tex_Controller_JMP;
 		atkButton = ResourceManager.Get().tex_Controller_ATK;
+        specialAtkButton = ResourceManager.Get().tex_Controller_SPECIALATTACK;
 		/*
 		if (circle != null){
 			diameter = circle.width;
@@ -86,6 +94,12 @@ public class script_vcontroller : MonoBehaviour {
 			leftStickRadiusSquared = leftStickRadius * leftStickRadius;
 		}
 		*/
+        if (specialAtkButton != null)
+        {
+            specialAtkButtonDiameter = specialAtkButton.width;
+            specialAtkButtonRadius = specialAtkButtonDiameter * 0.5f;
+            specialAtkButtonRect = new Rect(Screen.width - 150, screenHeight - 450, specialAtkButtonDiameter, specialAtkButtonDiameter);
+        }
 		if (jumpButton != null){
 			jumpButtonDiameter = jumpButton.width;
 			jumpButtonRadius = jumpButtonDiameter * 0.5f;
@@ -111,6 +125,7 @@ public class script_vcontroller : MonoBehaviour {
 		if ((Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)){
 			GUI.DrawTexture(jumpButtonRect, jumpButton);
 			GUI.DrawTexture(atkButtonRect, atkButton);
+            GUI.DrawTexture(specialAtkButtonRect, specialAtkButton);
 		}
 	}
 	// Update is called once per frame
@@ -122,6 +137,7 @@ public class script_vcontroller : MonoBehaviour {
 			Touch touch = Input.GetTouch(i);
 			UpdateJumpButton(touch);
 			UpdateAtkButton(touch);
+            UpdateSpecialAttackButton(touch);
 			//UpdateSwipe(touch);
 		}
 		horizontalOffset = joystick.position.x;
@@ -197,6 +213,29 @@ public class script_vcontroller : MonoBehaviour {
 		}
 	}
 	*/
+    void UpdateSpecialAttackButton(Touch touch)
+    {
+        Vector2 touchPosition = touch.position;
+        if (touch.phase == TouchPhase.Began
+                && !specialAtkButtonDown
+                && specialAtkButtonRect.Contains(new Vector2(touchPosition.x, Screen.height - touchPosition.y)))
+        {
+            specialAtkButtonDown = true;
+            script_vcontroller.specialAtkButtonPressed = true;
+            specialAtkButtonId = touch.fingerId;
+        }
+        else if (specialAtkButtonDown && touch.fingerId == specialAtkButtonId)
+        {
+            if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                if (specialAtkButtonDown && touch.fingerId == specialAtkButtonId)
+                {
+                    script_vcontroller.specialAtkButtonPressed = false;
+                    specialAtkButtonDown = false;
+                }
+            }
+        }
+    }
 	void UpdateJumpButton(Touch touch){
 		Vector2 touchPosition = touch.position;
 		if (touch.phase == TouchPhase.Began

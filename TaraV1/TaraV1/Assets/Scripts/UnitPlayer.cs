@@ -146,7 +146,7 @@ public class UnitPlayer : Unit,ICombat {
     {
         if (!isPlayingSpecialAnimation() && IsSpecialAttack() == false)
         {
-            if ((Input.GetKey(KeyCode.X) || script_vcontroller.isATK()) && !specialAtkButtonDown)
+            if ((Input.GetKey(KeyCode.X) || script_vcontroller.isSpecialAtk()) && !specialAtkButtonDown)
             {
                 Debug.Log("Special Attack");
                 specialAtkButtonDown = true;
