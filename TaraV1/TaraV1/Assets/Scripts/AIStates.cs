@@ -210,8 +210,7 @@ public class AIStates : MonoBehaviour
 	IEnumerator attackDelay(){				//Cooldown on the bat's attack so he doesn't swoop in quick succession
 		yield return new WaitForSeconds(1.0f);
 		batWait = false;
-	}
-	
+	}	
 	
 	private void PlayBear(){				
 		if (EnemyState == states.Attack && !died)
@@ -308,27 +307,6 @@ public class AIStates : MonoBehaviour
 	}
 	
 	private void PlayMechBoss(){
-		/* Steven:
-		 * Boss of level 1.
-		 * */ 
-		
-		/*To do (ideas...for now):
-		* 
-		* Idle:
-		* That's easy...
-		* 
-		* Move mech:
-		* Either the same as the regular enemies, or have it only walk on the X or Z plane
-		* 
-		* Attack: Missiles:
-		* Random number generated, if it is the one for missiles, stand still, and launch at the player's position
-		* when it was decided
-		* (Shoot missiles up (however many), after a second or so, randomize positions in the play area for
-		* the missiles to land. Put a marker at those spots to identify where they will land)
-		* 
-		* Death:
-		* That's easy too...
-		*/
 		if (EnemyState == states.Attack && !died){
 			if (mechAttack == 1){ 								//Gatling attack
 				if(!attacking){
@@ -374,9 +352,10 @@ public class AIStates : MonoBehaviour
     	}
 		else if (EnemyState == states.Idle)
             animation.Play("MechIdle");
-	    else if (EnemyState == states.Run)
+	    else if (EnemyState == states.Run){
     	    animation.Play("MechWalk");
-        else if (EnemyState == states.Death){
+			animation["MechWalk"].speed = 0.5f;
+		}else if (EnemyState == states.Death){
             if (animation.IsPlaying("MechJump"))
             {
                 animation.Stop();
@@ -410,6 +389,7 @@ public class AIStates : MonoBehaviour
 		yield return new WaitForSeconds(8.0f);
 		if(!autoBossAttack){
 			autoBossAttack = true;
+			StartCoroutine("getMechAttack");
 			EnemyState = states.Attack;
 		}
 		autoBossAttack = false;

@@ -366,7 +366,6 @@ public class Seeker : MonoBehaviour {
 	public Path GetNewPath (Vector3 start, Vector3 end) {
 		//Construct a path with start and end points
 		Path p = ABPath.Construct (start, end, null);
-		
 		return p;
 	}
 	

@@ -69,7 +69,6 @@ public class LevelLoader : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-
         if (GameManager.isPaused == false && levelLoaded == true)
         {
             if (boolSetNewLevel)
@@ -116,8 +115,7 @@ public class LevelLoader : MonoBehaviour
             }
 
             if (IsPlayerCreated() && IsLevelLoaded() && boolSetNewLevel == false)
-            {
-                
+            {                
                 planes = GeometryUtility.CalculateFrustumPlanes(camera);
                 foreach (GameObject building in ((Level)levelToLoad.GetComponent(typeof(Level))).buildingsToHideForCamera)
                 {
