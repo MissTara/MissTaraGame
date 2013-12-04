@@ -35,7 +35,7 @@ public class AIStates : MonoBehaviour
 	 * */
 	public bool swoop,autoBossAttack = false;
 	private bool batAtt,batWait = false;
-	public int mechAttack = 0;
+	public int bossAttack = 0;
 
     void Start()
     {
@@ -54,7 +54,6 @@ public class AIStates : MonoBehaviour
 
     void Update()
     {
-        //transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
 		if (gameObject.tag == "Bunny")
 			PlayBunny();
         else if (gameObject.tag == "Alien")
@@ -67,6 +66,8 @@ public class AIStates : MonoBehaviour
 			PlayWolf();
 		else if (gameObject.tag == "MechBoss")
 			PlayMechBoss();
+		else if (gameObject.tag == "CaptainBoss")
+			playCaptainBoss();
     }
 	
 	private void PlayBunny(){
@@ -308,7 +309,7 @@ public class AIStates : MonoBehaviour
 	
 	private void PlayMechBoss(){
 		if (EnemyState == states.Attack && !died){
-			if (mechAttack == 1){ 								//Gatling attack
+			if (bossAttack == 1){ 								//Gatling attack
 				if(!attacking){
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
@@ -371,7 +372,7 @@ public class AIStates : MonoBehaviour
        	}
 	    else if (EnemyState == states.Dance){
 			 if (!died)
-               	animation.Play("MechDance");
+				animation.Play("MechDance");
 	    }
         else if (EnemyState == states.Jump)
         {
@@ -379,19 +380,77 @@ public class AIStates : MonoBehaviour
         }
 	}
 	
-	IEnumerator getMechAttack(){
-		mechAttack = Random.Range(0,2);
+	IEnumerator getBossAttack(){
+		bossAttack = Random.Range(0,2);
 		yield return new WaitForSeconds(0.2f);
-		StopCoroutine("getMechAttack");
+		StopCoroutine("getBossAttack");
 	}
 	
 	IEnumerator bossAutoAttack(){
 		yield return new WaitForSeconds(8.0f);
 		if(!autoBossAttack){
 			autoBossAttack = true;
-			StartCoroutine("getMechAttack");
+			StartCoroutine("getBossAttack");
 			EnemyState = states.Attack;
 		}
 		autoBossAttack = false;
+	}
+	
+	private void playCaptainBoss(){
+		/* Steven:
+		 * Boss of stage 2.
+		 * Attack1: Left hook: Slow at the start to give the player time to react (like 1/4 speed), then return to normal speed
+		 * Attack2: Slam: Normal speed for the windup, then slow it down at the apex (1/10 speed), then back to normal for the attack
+		 * */
+		if (EnemyState == states.Attack && !died){
+			if (bossAttack == 1){ 								
+				if(!attacking){
+					AIPathing.canMove = false;
+					AIPathing.canSearch = false;
+					
+					animation.Play("captainBossAttack1_copy");
+					animation["captainBossAttack1_copy"].speed = 0.25f;
+					attacking = true;
+				}else{							
+					if(!animation.IsPlaying("captainBossAttack1_copy")){
+						AIPathing.canMove = true;
+						AIPathing.canSearch = true;
+						transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;
+						EnemyState = states.Run;
+						attacking = false;
+					}
+				}
+			}else{
+				if(!attacking){									
+					AIPathing.canMove = false;
+					AIPathing.canSearch = false;
+					animation.Play("captainBossAttack2_copy");
+					attacking = true;
+				}else{							
+					if(!animation.IsPlaying("captainBossAttack2_copy")){
+						AIPathing.canMove = true;
+						AIPathing.canSearch = true;
+						transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;
+						EnemyState = states.Run;
+						attacking = false;
+					}
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("captainBossIdle");
+	    else if (EnemyState == states.Run){
+    	    animation.Play("captainBossWalk");
+		}else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("captainBossDead");
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+			 if (!died)
+				animation.Play("captainBossDance");
+	    }
 	}
 }

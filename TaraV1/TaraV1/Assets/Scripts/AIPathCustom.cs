@@ -296,9 +296,9 @@ public class AIPathCustom : MonoBehaviour, ICombat
     	    {
         	    isIdle = true;
             	isRunning = false;
-				if (gameObject.tag == "MechBoss"){
+				if (gameObject.tag == "MechBoss" || gameObject.tag == "CaptainBoss"){
 					if(!GetComponent<AIStates>().autoBossAttack){
-						GetComponent<AIStates>().StartCoroutine("getMechAttack");
+						GetComponent<AIStates>().StartCoroutine("getBossAttack");
 					 	AnimControl.EnemyState = AIStates.states.Attack;
 					}
 				}else
@@ -632,7 +632,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 
     public virtual void KillMe()
     {
-        if (gameObject.tag == "Alien" || gameObject.tag == "Bat" || gameObject.tag == "Bear" || gameObject.tag == "Wolf" || gameObject.tag == "MechBoss")
+        if (gameObject.tag == "Alien" || gameObject.tag == "Bat" || gameObject.tag == "Bear" || gameObject.tag == "Wolf" || gameObject.tag == "MechBoss" || gameObject.tag == "CaptainBoss")
             this.Dance();
     }
 
@@ -641,7 +641,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
         canSearch = false;
         canMove = false;
         AnimControl.EnemyState = AIStates.states.Dance;
-		if (gameObject.tag != "MechBoss")
+		if (gameObject.tag != "MechBoss" || gameObject.tag == "captainBoss")
         	StartCoroutine("PlayDance");
 		else
 			StartCoroutine("PlayDanceBoss");
@@ -657,7 +657,10 @@ public class AIPathCustom : MonoBehaviour, ICombat
 	
 	IEnumerator PlayDanceBoss()
     {
-        yield return new WaitForSeconds(9.0f);
+		if(gameObject.tag == "MechBoss")
+        	yield return new WaitForSeconds(9.0f);
+		else
+			yield return new WaitForSeconds(2.0f);
         this._CurHP -= 50.0f;
 		canSearch = true;
 		canMove = true;
