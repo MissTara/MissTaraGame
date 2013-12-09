@@ -36,6 +36,7 @@ public class AIStates : MonoBehaviour
 	public bool swoop,autoBossAttack = false;
 	private bool batAtt,batWait = false;
 	public int bossAttack = 0;
+	public float bossAutoDelay = 12.0f;
 
     void Start()
     {
@@ -387,13 +388,15 @@ public class AIStates : MonoBehaviour
 	}
 	
 	IEnumerator bossAutoAttack(){
-		yield return new WaitForSeconds(8.0f);
-		if(!autoBossAttack){
-			autoBossAttack = true;
-			StartCoroutine("getBossAttack");
-			EnemyState = states.Attack;
+		if(!GameManager.isPaused){
+			yield return new WaitForSeconds(bossAutoDelay);
+			if(!autoBossAttack){
+				autoBossAttack = true;
+				StartCoroutine("getBossAttack");
+				EnemyState = states.Attack;
+			}
+			autoBossAttack = false;
 		}
-		autoBossAttack = false;
 	}
 	
 	private void playCaptainBoss(){

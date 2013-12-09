@@ -641,7 +641,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
         canSearch = false;
         canMove = false;
         AnimControl.EnemyState = AIStates.states.Dance;
-		if (gameObject.tag != "MechBoss" || gameObject.tag == "captainBoss")
+		if (gameObject.tag != "MechBoss" || gameObject.tag == "CaptainBoss")
         	StartCoroutine("PlayDance");
 		else
 			StartCoroutine("PlayDanceBoss");

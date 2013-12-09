@@ -23,7 +23,8 @@ public enum CollideTypes
     CUTSCENE,
     SPAWNENEMY,
     SWITCHLEVEL_WITHOUT_CUTSCENE,
-    SWITCHLEVEL_WITH_CUTSCENE
+    SWITCHLEVEL_WITH_CUTSCENE,
+	CUTSCENE_WITH_SPAWNENEMY
 }
 
 public class ColliderPickup : MonoBehaviour
@@ -180,6 +181,16 @@ public class ColliderPickup : MonoBehaviour
                 GameManager.LoadLevel(loadingLevel);
 
                 break;
+		case CollideTypes.CUTSCENE_WITH_SPAWNENEMY:
+				ItemID = 99;
+                GameManager.LoadCutscene(loadingCutsceneFrom, loadingCutsceneTo, cutscene_duration);
+			
+			    ItemID = 100;
+                GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum);
+				foreach(GameObject dancer in ((Level)this.transform.parent.GetComponent(typeof(Level))).dancers){
+					dancer.GetComponent<GogoDancer>().cutsceneOver();
+				}
+			break;
         }
 
 		if (!Activated){

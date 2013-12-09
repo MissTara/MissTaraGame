@@ -6,6 +6,7 @@ public class Level : MonoBehaviour {
 
     public float levelNumber;
     public List<GameObject> buildingsToHideForCamera;
+	public List<GameObject> dancers;
     public bool isBossLevel;
 
     public Level()

@@ -151,6 +151,7 @@
     <Compile Include="Assets\Scripts\DebugScreen.cs" />
     <Compile Include="Assets\Scripts\facebookTwitter.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GogoDancer.cs" />
     <Compile Include="Assets\Scripts\GUIBase.cs" />
     <Compile Include="Assets\Scripts\GUIBaseLoading.cs" />
     <Compile Include="Assets\Scripts\ICombat.cs" />

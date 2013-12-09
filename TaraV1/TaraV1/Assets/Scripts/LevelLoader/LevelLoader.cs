@@ -133,7 +133,6 @@ public class LevelLoader : MonoBehaviour
                         }
                     }
                 }
-
                 if (mainPlayer != null)
                 {
                     foreach (GameObject enemy in GameManager.Get().objEnemies)
