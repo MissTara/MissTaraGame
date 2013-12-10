@@ -65,6 +65,8 @@ public class AIStates : MonoBehaviour
 			PlayBear();
 		else if (gameObject.tag == "Wolf")
 			PlayWolf();
+		else if (gameObject.tag == "Spear")
+			PlaySpear();
 		else if (gameObject.tag == "MechBoss")
 			PlayMechBoss();
 		else if (gameObject.tag == "CaptainBoss")
@@ -304,6 +306,49 @@ public class AIStates : MonoBehaviour
 	    }
         if (hitted == true && !died){
            	animation.Play("WolfHit");
+            hitted = false;
+	    }
+	}
+	
+	private void PlaySpear(){
+		if (EnemyState == states.Attack && !died){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("SpearAttack");
+		        delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("SpearAttack")){
+					animation.Stop("SpearAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("SpearIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("SpearWalk");
+        else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("SpearDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("SpearDance");
+    	        if (!animation.IsPlaying("SpearDance"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (hitted == true && !died){
+           	animation.Play("SpearHit");
             hitted = false;
 	    }
 	}
