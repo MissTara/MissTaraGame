@@ -20,7 +20,8 @@ public class ColliderWeaponEnemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		if(GetComponent<Rigidbody>().IsSleeping())
+			GetComponent<Rigidbody>().WakeUp();	
 	}
 	void Attack(Collider other){
 		if(selfCombat == null)
@@ -45,6 +46,6 @@ public class ColliderWeaponEnemy : MonoBehaviour {
 		if (other.tag == "Sidewalls" && transform.parent.tag == "Bat" && transform.parent.GetComponent<AIStates>().swoop){
 			Vector3 tmp = transform.parent.GetComponent<AIStates>().speedSwoop;
 			transform.parent.GetComponent<AIStates>().speedSwoop = new Vector3(0.0f,tmp.y,0.0f);	
-		}
+		}		
 	}
 }

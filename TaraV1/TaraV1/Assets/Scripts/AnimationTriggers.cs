@@ -16,6 +16,15 @@ public class AnimationTriggers : MonoBehaviour {
 	}
     private int missilesToFire = 2;
 	
+	//Regular enemy triggers
+	
+	private void enemyAttackStart(){
+		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = true;
+	}
+	
+	private void enemyAttackStop(){
+		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = false;
+	}
 	//Mech's triggers
 	private void mechGatlingStart(){
 		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
@@ -49,7 +58,7 @@ public class AnimationTriggers : MonoBehaviour {
 		}
 
         missilesToFire += 1;
-	}	
+	}
 	//Captain's triggers
 	
 	private void captainAttack1Swing(){

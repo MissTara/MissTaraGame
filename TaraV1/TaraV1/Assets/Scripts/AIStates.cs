@@ -359,17 +359,17 @@ public class AIStates : MonoBehaviour
 				if(!attacking){
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
-					animation.Play("MechAttack1_copy");
-					animation["MechAttack1_copy"].speed = 0.5f;
+					animation.Play("MechAttack1");
+					animation["MechAttack1"].speed = 0.5f;
 					attacking = true;
 					StopCoroutine("bossAutoAttack");
 					if(autoBossAttack)
 						autoBossAttack = false;
 				}else{							
-					if(!animation.IsPlaying("MechAttack1_copy")){
+					if(!animation.IsPlaying("MechAttack1")){
 						AIPathing.canMove = true;
 						AIPathing.canSearch = true;
-						animation.Stop("MechAttack1_copy");
+						animation.Stop("MechAttack1");
 						EnemyState = states.Run;
 						attacking = false;
 						StartCoroutine("bossAutoAttack");
@@ -379,17 +379,17 @@ public class AIStates : MonoBehaviour
 				if(!attacking){									//Missile attack
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
-					animation.Play("MechAttack2_copy");
-					animation["MechAttack2_copy"].speed = 0.5f;
+					animation.Play("MechAttack2");
+					animation["MechAttack2"].speed = 0.5f;
 					attacking = true;
 					StopCoroutine("bossAutoAttack");
 					if(autoBossAttack)
 						autoBossAttack = false;
 				}else{							
-					if(!animation.IsPlaying("MechAttack2_copy")){
+					if(!animation.IsPlaying("MechAttack2")){
 						AIPathing.canMove = true;
 						AIPathing.canSearch = true;
-						animation.Stop("MechAttack2_copy");
+						animation.Stop("MechAttack2");
 						EnemyState = states.Run;
 						attacking = false;
 						StartCoroutine("bossAutoAttack");
@@ -456,11 +456,11 @@ public class AIStates : MonoBehaviour
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
 					
-					animation.Play("captainBossAttack1_copy");
-					animation["captainBossAttack1_copy"].speed = 0.25f;
+					animation.Play("captainBossAttack1");
+					animation["captainBossAttack1"].speed = 0.25f;
 					attacking = true;
 				}else{							
-					if(!animation.IsPlaying("captainBossAttack1_copy")){
+					if(!animation.IsPlaying("captainBossAttack1")){
 						AIPathing.canMove = true;
 						AIPathing.canSearch = true;
 						transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;
@@ -472,10 +472,10 @@ public class AIStates : MonoBehaviour
 				if(!attacking){									
 					AIPathing.canMove = false;
 					AIPathing.canSearch = false;
-					animation.Play("captainBossAttack2_copy");
+					animation.Play("captainBossAttack2");
 					attacking = true;
 				}else{							
-					if(!animation.IsPlaying("captainBossAttack2_copy")){
+					if(!animation.IsPlaying("captainBossAttack2")){
 						AIPathing.canMove = true;
 						AIPathing.canSearch = true;
 						transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;

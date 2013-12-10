@@ -230,6 +230,8 @@ public class GameManager : MonoBehaviour
 			enemy = Instantiate(RM.preEnemyBear,position, rotation)as GameObject;
 		else if (mob.tag == "Wolf")
 			enemy = Instantiate(RM.preEnemyWolf,position, rotation)as GameObject;
+		else if (mob.tag == "Spear")
+			enemy = Instantiate(RM.preEnemySpear,position, rotation)as GameObject;
 		else if (mob.tag == "MechBoss")
 			enemy = Instantiate(RM.preMechBoss,position, rotation)as GameObject;
 		else if (mob.tag == "CaptainBoss")
