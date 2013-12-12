@@ -194,12 +194,11 @@ public class UnitPlayer : Unit,ICombat {
         return playerMesh.animation.IsPlaying("SpecialMove");
     }
 
-    private bool isPlayingAttackAnimation() {
+    private bool isPlayingAttackAnimation(){
         return playerMesh.animation.IsPlaying("Attack1") || playerMesh.animation.IsPlaying("Attack2") || playerMesh.animation.IsPlaying("Attack3");
     }
 	private void UpdatePlayerAttack(){
-        if (!isPlayingAttackAnimation())
-        {
+        if (!isPlayingAttackAnimation()){
             _isAttacking = false;
             lastComboDelay += Time.deltaTime;
 
@@ -225,13 +224,11 @@ public class UnitPlayer : Unit,ICombat {
                         callBackAnimation = "Attack3";
                         break;
                     default:
-                        if (comboCount % 2 == 0)
-                        {
+                        if (comboCount % 2 == 0){
                             playerMesh.animation.Play("Attack1");
                             callBackAnimation = "Attack1";
                         }
-                        else
-                        {
+                        else{
                             playerMesh.animation.Play("Attack2");
                             callBackAnimation = "Attack2";
                         }
@@ -242,26 +239,22 @@ public class UnitPlayer : Unit,ICombat {
         }
         else
             _isAttacking = true;
-		if (playerMesh.animation.IsPlaying("Attack3")){
-		}
+		if (playerMesh.animation.IsPlaying("Attack3")){}
 		else
 			wepHead.enabled = false;
 		
         if (!(Input.GetKey(KeyCode.Z) || script_vcontroller.isATK()))
             atkButtonDown = false;
-        if (lastComboDelay > 0.1f)
-        {
-            comboCount = 0;
-            if (callBackAnimation != "")
-            {
+        if (lastComboDelay > 0.1f){
+			comboCount = 0;
+            if (callBackAnimation != ""){
                 playerMesh.animation.Play(callBackAnimation);
                 callBackAnimation = "";
             }
         }
 	}
 
-    IEnumerator EnemyDanceCutscene()
-    {
+    IEnumerator EnemyDanceCutscene(){
         enemyPlanes = GeometryUtility.CalculateFrustumPlanes(LevelLoader.Get().camera);
         foreach (GameObject enemy in GameManager.Get().objEnemies)
         {
@@ -284,8 +277,7 @@ public class UnitPlayer : Unit,ICombat {
 
     }
 	private void UpdateAnimation(){
-        if (move != Vector3.zero)
-        {
+        if (move != Vector3.zero){
             if (!isPlayingAttackAnimation() && callBackAnimation == "" && !isPlayingSpecialAnimation()) {
                 playerMesh.animation.Play("Run");
             }

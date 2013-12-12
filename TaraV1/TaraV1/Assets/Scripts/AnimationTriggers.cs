@@ -14,7 +14,7 @@ public class AnimationTriggers : MonoBehaviour {
 				projectile = GetComponent<ColliderProjectile>();
 			}
 	}
-    private int missilesToFire = 2;
+    public int missilesToFire = 2;
 	
 	//Regular enemy triggers
 	
@@ -25,6 +25,9 @@ public class AnimationTriggers : MonoBehaviour {
 	private void enemyAttackStop(){
 		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = false;
 	}
+	
+	
+	
 	//Mech's triggers
 	private void mechGatlingStart(){
 		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
@@ -59,19 +62,25 @@ public class AnimationTriggers : MonoBehaviour {
 
         missilesToFire += 1;
 	}
+	
+	
 	//Captain's triggers
 	
 	private void captainAttack1Swing(){
-		animation["captainBossAttack1_copy"].speed = 1.0f;
+		animation["captainBossAttack1"].speed = 1.0f;
 		transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = true;
 	}
 	
 	private void captainAttack2Hold(){
-		animation["captainBossAttack2_copy"].speed = 0.1f;
+		animation["captainBossAttack2"].speed = 0.1f;
 	}
 	
 	private void captainAttack2Slam(){
-		animation["captainBossAttack2_copy"].speed = 1.0f;
+		animation["captainBossAttack2"].speed = 1.0f;
 		transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = true;
+	}
+	
+	private void captainAttackDone(){
+		transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;
 	}
 }

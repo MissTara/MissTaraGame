@@ -48,7 +48,7 @@ public class ColliderWeapon : MonoBehaviour {
 			if (combatSelf.FactionHostile.Count > 0 && BattleCore.isHostile(combatSelf.FactionHostile,combatOther.FactionSelf)){
 				combatSelf.onAttack(other.ClosestPointOnBounds(other.transform.position));
 				combatOther.hurt(combatSelf.Weapon);
-				combatOther.AddImpact((other.transform.position - this.transform.position),500);
+				//combatOther.AddImpact((other.transform.position - this.transform.position),500);
 			}
 		}
 	}

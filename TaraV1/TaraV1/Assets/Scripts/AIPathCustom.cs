@@ -630,14 +630,12 @@ public class AIPathCustom : MonoBehaviour, ICombat
 		}
 	}
 
-    public virtual void KillMe()
-    {
+    public virtual void KillMe(){
 		if (gameObject.layer == 10)
             this.Dance();
     }
 
-    public void Dance()
-    {
+    public void Dance(){
         canSearch = false;
         canMove = false;
         AnimControl.EnemyState = AIStates.states.Dance;
@@ -647,16 +645,14 @@ public class AIPathCustom : MonoBehaviour, ICombat
 			StartCoroutine("PlayDanceBoss");
     }
 
-    IEnumerator PlayDance()
-    {
+    IEnumerator PlayDance(){
         yield return new WaitForSeconds(3.0f);
         this._CurHP = 0;
         this.dead = true;
         this.Die();
     }
 	
-	IEnumerator PlayDanceBoss()
-    {
+	IEnumerator PlayDanceBoss(){
 		if(gameObject.tag == "MechBoss")
         	yield return new WaitForSeconds(9.0f);
 		else

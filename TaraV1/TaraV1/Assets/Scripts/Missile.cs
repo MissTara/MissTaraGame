@@ -7,9 +7,9 @@ using System.Collections;
 
 public class Missile : MonoBehaviour {
 
-    float amountDamage = 50.0f;
+    float amountDamage = 2.0f;
 
-    private static Missile m_Instance = null;
+    //private static Missile m_Instance = null;
 
 	void OnTriggerEnter(Collider other){
 		if(other.tag == "Target"){

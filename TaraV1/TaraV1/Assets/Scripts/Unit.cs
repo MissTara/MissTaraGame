@@ -17,7 +17,7 @@ public class Unit : MonoBehaviour {
 	public bool 	canAttack		= true;				// If the unit can attack
 	public bool 	canBeAttacked	= true;				// If the unit can be attacked
 	public bool 	dead			= false;			// If the unit is dead
-	public float 		MaxHP			= 10;				// The maximum HP of the unit
+	public float 	MaxHP			= 10;				// The maximum HP of the unit
 	public float speedMove 		= 10f;				// The basic move speed of the unit
 	public float speedRun 		= 20f;				// The running speed of the unit
 	public float speedJump 		= 10f;				// The jump height(speed) of the unit
@@ -52,6 +52,14 @@ public class Unit : MonoBehaviour {
 		get {
 			if (Weapon != null)
 				return _BaseDamage + Weapon.BaseDamage;
+			/*if(gameObject.tag == "MechBoss"){
+				if(GetComponent<AIPathCustom>().CurHP /	GetComponent<AIPathCustom>().MaxHP < 0.25)
+					GetComponent<AnimationTriggers>().missilesToFire = 5;
+				else if(GetComponent<AIPathCustom>().CurHP /	GetComponent<AIPathCustom>().MaxHP < 0.50)
+					GetComponent<AnimationTriggers>().missilesToFire = 4;
+				else if(GetComponent<AIPathCustom>().CurHP /	GetComponent<AIPathCustom>().MaxHP < 0.75)
+					GetComponent<AnimationTriggers>().missilesToFire = 3;
+			}*/
 			return _BaseDamage;
 		}
 	}
@@ -59,8 +67,6 @@ public class Unit : MonoBehaviour {
 		get {return _BaseDamage; }
 		set {_BaseDamage = value;}
 	}
-
-    
 
     public void gainHealth(float gainAmountOfHealth)
     {

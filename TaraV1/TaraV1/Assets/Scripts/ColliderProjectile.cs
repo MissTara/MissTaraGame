@@ -27,7 +27,7 @@ public class ColliderProjectile : MonoBehaviour {
 	void Start () {
 		spawnPos = transform.position;
 		maxRange = 10;
-		Weapon = new ItemWeapon(BattleCore.elements.Fire , 10);
+		Weapon = new ItemWeapon(BattleCore.elements.Fire , 1);
         isReadByBoss = false;
         killTime = TIME;
 	}

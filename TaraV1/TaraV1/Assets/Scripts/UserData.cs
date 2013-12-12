@@ -70,8 +70,6 @@ public class UserData{
 			player.Armour = a;
 			equippedArmour = id;
 			SaveLoad.Get().SaveUserData();
-			
-			
 		}
 	}
 

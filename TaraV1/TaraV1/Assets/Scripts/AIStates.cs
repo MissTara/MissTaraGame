@@ -31,10 +31,10 @@ public class AIStates : MonoBehaviour
 	/* Steven:
 	 * swoop is if the bat is swooping.
 	 * BatAtt is if the bat is attacking
-	 * batWait is a cooldown so the bat doesnt try to swoop in succession
+	 * attackWait is a cooldown on all attacks so they dont attack in quick succession
 	 * */
 	public bool swoop,autoBossAttack = false;
-	private bool batAtt,batWait = false;
+	private bool batAtt,attackWait = false;
 	public int bossAttack = 0;
 	public float bossAutoDelay = 12.0f;
 
@@ -86,20 +86,21 @@ public class AIStates : MonoBehaviour
             animation.Play("AlienIdle");
         else if (EnemyState == states.Run)
             animation.Play("AlienWalk");
-        else if (EnemyState == states.Attack){
+        else if (EnemyState == states.Attack && !died && !attackWait){
 			if(!attacking){					//If he isnt already attacking, start doing so
 				AIPathing.canMove = false;
 				AIPathing.canSearch = false;
-				animation.Play("AlienAttack_copy");
+				animation.Play("AlienAttack");
 	            delay = Time.time;
 				attacking = true;
 			}else{							//Once the attack animation is done
-				if(!animation.IsPlaying("AlienAttack_copy")){
-					animation.Stop("AlienAttack_copy");
+				if(!animation.IsPlaying("AlienAttack")){
+					animation.Stop("AlienAttack");
 					AIPathing.canMove = true;
 					AIPathing.canSearch = true;
 					EnemyState = states.Run;
 					attacking = false;
+					StartCoroutine("attackDelay");
 				}
 			}
         }
@@ -140,7 +141,7 @@ public class AIStates : MonoBehaviour
 			speedSwoop = new Vector3(0.0f,0.0f,0.0f);
             batAtt = false;
 			swoop = false;
-			batWait = true;
+			attackWait = true;
 			StartCoroutine("attackDelay");
         }
 
@@ -148,7 +149,7 @@ public class AIStates : MonoBehaviour
             animation.PlayQueued("BatFly");
         else if (EnemyState == states.Run && !batAtt)
             animation.PlayQueued("BatFly");
-        else if (EnemyState == states.Attack && !batAtt && !batWait)
+        else if (EnemyState == states.Attack && !batAtt && !attackWait)
         {
             AIPathing.canMove = false;
             AIPathing.canSearch = false;
@@ -213,12 +214,11 @@ public class AIStates : MonoBehaviour
 	
 	IEnumerator attackDelay(){				//Cooldown on the bat's attack so he doesn't swoop in quick succession
 		yield return new WaitForSeconds(1.0f);
-		batWait = false;
+		attackWait = false;
 	}	
 	
 	private void PlayBear(){				
-		if (EnemyState == states.Attack && !died)
-        {
+		if (EnemyState == states.Attack && !died && !attackWait){
 			if(!attacking){					//If he isnt already attacking, start doing so
 				AIPathing.canMove = false;
 				AIPathing.canSearch = false;
@@ -232,6 +232,7 @@ public class AIStates : MonoBehaviour
 					AIPathing.canSearch = true;
 					EnemyState = states.Run;
 					attacking = false;
+					StartCoroutine("attackDelay");
 				}
 			}
         }else if (EnemyState == states.Idle && !attacking)
@@ -248,26 +249,21 @@ public class AIStates : MonoBehaviour
                 died = true;
             }
         }
-        else if (EnemyState == states.Dance)
-        {
-            if (!died)
-            {
+        else if (EnemyState == states.Dance){
+            if (!died){
                 animation.Play("BearDance");
                 if (!animation.IsPlaying("BearDance"))
-                {
                     EnemyState = states.Death;
-                }
             }
         }
-        if (hitted == true && !died)
-        {
+        if (hitted == true && !died){
             animation.Play("BearHit");
             hitted = false;
         }
 	}
 	
 	private void PlayWolf(){
-		if (EnemyState == states.Attack && !died){
+		if (EnemyState == states.Attack && !died && !attackWait){
 			if(!attacking){					//If he isnt already attacking, start doing so
 				AIPathing.canMove = false;
 				AIPathing.canSearch = false;
@@ -281,6 +277,7 @@ public class AIStates : MonoBehaviour
 					AIPathing.canSearch = true;
 					EnemyState = states.Run;
 					attacking = false;
+					StartCoroutine("attackDelay");
 				}
 			}
     	}
@@ -311,7 +308,7 @@ public class AIStates : MonoBehaviour
 	}
 	
 	private void PlaySpear(){
-		if (EnemyState == states.Attack && !died){
+		if (EnemyState == states.Attack && !died && !attackWait){
 			if(!attacking){					//If he isnt already attacking, start doing so
 				AIPathing.canMove = false;
 				AIPathing.canSearch = false;
@@ -354,7 +351,7 @@ public class AIStates : MonoBehaviour
 	}
 	
 	private void PlayMechBoss(){
-		if (EnemyState == states.Attack && !died){
+		if (EnemyState == states.Attack && !died && !attackWait){
 			if (bossAttack == 1){ 								//Gatling attack
 				if(!attacking){
 					AIPathing.canMove = false;
@@ -373,6 +370,7 @@ public class AIStates : MonoBehaviour
 						EnemyState = states.Run;
 						attacking = false;
 						StartCoroutine("bossAutoAttack");
+						StartCoroutine("attackDelay");
 					}
 				}
 			}else{
@@ -393,6 +391,7 @@ public class AIStates : MonoBehaviour
 						EnemyState = states.Run;
 						attacking = false;
 						StartCoroutine("bossAutoAttack");
+						StartCoroutine("attackDelay");
 					}
 				}
 			}
@@ -403,12 +402,10 @@ public class AIStates : MonoBehaviour
     	    animation.Play("MechWalk");
 			animation["MechWalk"].speed = 0.5f;
 		}else if (EnemyState == states.Death){
-            if (animation.IsPlaying("MechJump"))
-            {
+            if (animation.IsPlaying("MechJump")){
                 animation.Stop();
                 animation.Play("MechDead");
             }
-
     	    if (!died){
             	animation.Stop();
 				animation["MechDead"].speed = 0.5f;
@@ -421,9 +418,7 @@ public class AIStates : MonoBehaviour
 				animation.Play("MechDance");
 	    }
         else if (EnemyState == states.Jump)
-        {
             animation.Play("MechJump");
-        }
 	}
 	
 	IEnumerator getBossAttack(){
@@ -450,7 +445,7 @@ public class AIStates : MonoBehaviour
 		 * Attack1: Left hook: Slow at the start to give the player time to react (like 1/4 speed), then return to normal speed
 		 * Attack2: Slam: Normal speed for the windup, then slow it down at the apex (1/10 speed), then back to normal for the attack
 		 * */
-		if (EnemyState == states.Attack && !died){
+		if (EnemyState == states.Attack && !died && !attackWait){
 			if (bossAttack == 1){ 								
 				if(!attacking){
 					AIPathing.canMove = false;
@@ -466,6 +461,7 @@ public class AIStates : MonoBehaviour
 						transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;
 						EnemyState = states.Run;
 						attacking = false;
+						StartCoroutine("attackDelay");
 					}
 				}
 			}else{
@@ -481,6 +477,7 @@ public class AIStates : MonoBehaviour
 						transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;
 						EnemyState = states.Run;
 						attacking = false;
+						StartCoroutine("attackDelay");
 					}
 				}
 			}

@@ -198,7 +198,7 @@
             <Factions>human</Factions>
          </FactionHostile>
          <BaseArmour>0</BaseArmour>
-         <BaseAttack>10</BaseAttack>
+         <BaseAttack>1</BaseAttack>
          <Mass>1</Mass>
       </EnemyProperties>
    </Enemies>
