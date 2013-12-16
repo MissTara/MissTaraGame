@@ -37,7 +37,7 @@ tex_Controller_SPECIALATTACK,
 	public Texture [] tex_WeaponIcons;
 	public AudioClip se_PlayerJump, se_AttackOn, se_Attack;
 	
-	public GameObject preBunny,preEnemyAlien,preEnemyBat,preEnemyBear,preEnemyWolf,preEnemySpear,preMechBoss,preCaptainBoss,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
+	public GameObject preBunny,preEnemyGunAlien,preEnemyBat,preEnemyBear,preEnemyWolf,preEnemyAlien,preEnemySpear,preMechBoss,preCaptainBoss,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
 	preMenu,preKillZone,preJoyStick, preNoteQuarter,preNoteHalf, preNoteSharp, preNoteTreble,preNoteWhole,preBullet,preCollideWall,preEnemyBullet,
 	preMissileTarget, preMissile, preExplosion;
 	public GameObject particleAttack, particleExplosion;

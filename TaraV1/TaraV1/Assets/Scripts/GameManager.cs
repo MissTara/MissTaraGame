@@ -222,14 +222,16 @@ public class GameManager : MonoBehaviour
 		 * Used by update (below) to spawn new enemies.
 		 * */
 		GameObject enemy;
-		if (mob.tag == "Alien")
-			enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
+		if (mob.tag == "GunAlien")
+			enemy = Instantiate(RM.preEnemyGunAlien,position, rotation)as GameObject;
 		else if (mob.tag == "Bat")
 			enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
 		else if (mob.tag == "Bear")
 			enemy = Instantiate(RM.preEnemyBear,position, rotation)as GameObject;
 		else if (mob.tag == "Wolf")
 			enemy = Instantiate(RM.preEnemyWolf,position, rotation)as GameObject;
+		else if (mob.tag == "Alien")
+			enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
 		else if (mob.tag == "Spear")
 			enemy = Instantiate(RM.preEnemySpear,position, rotation)as GameObject;
 		else if (mob.tag == "MechBoss")

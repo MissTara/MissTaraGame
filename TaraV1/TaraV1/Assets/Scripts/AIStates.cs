@@ -55,18 +55,26 @@ public class AIStates : MonoBehaviour
 
     void Update()
     {
+		//Level 1 enemies
 		if (gameObject.tag == "Bunny")
 			PlayBunny();
-        else if (gameObject.tag == "Alien")
-            PlayAlien();
+        else if (gameObject.tag == "GunAlien")
+            PlayGunAlien();
         else if (gameObject.tag == "Bat")
             PlayBat();
 		else if (gameObject.tag == "Bear")
 			PlayBear();
 		else if (gameObject.tag == "Wolf")
 			PlayWolf();
+		
+		//Level 2 enemies
+		else if (gameObject.tag == "Alien")
+			PlayAlien();
 		else if (gameObject.tag == "Spear")
 			PlaySpear();
+		//Level 3 enemies
+		
+		//Bosses
 		else if (gameObject.tag == "MechBoss")
 			PlayMechBoss();
 		else if (gameObject.tag == "CaptainBoss")
@@ -80,22 +88,22 @@ public class AIStates : MonoBehaviour
 			animation.Play("LBunnyHop");
 	}
 
-    private void PlayAlien()
+    private void PlayGunAlien()
     {
         if (EnemyState == states.Idle)
-            animation.Play("AlienIdle");
+            animation.Play("GunAlienIdle");
         else if (EnemyState == states.Run)
-            animation.Play("AlienWalk");
+            animation.Play("GunAlienWalk");
         else if (EnemyState == states.Attack && !died && !attackWait){
 			if(!attacking){					//If he isnt already attacking, start doing so
 				AIPathing.canMove = false;
 				AIPathing.canSearch = false;
-				animation.Play("AlienAttack");
+				animation.Play("GunAlienAttack");
 	            delay = Time.time;
 				attacking = true;
 			}else{							//Once the attack animation is done
-				if(!animation.IsPlaying("AlienAttack")){
-					animation.Stop("AlienAttack");
+				if(!animation.IsPlaying("GunAlienAttack")){
+					animation.Stop("GunAlienAttack");
 					AIPathing.canMove = true;
 					AIPathing.canSearch = true;
 					EnemyState = states.Run;
@@ -107,22 +115,22 @@ public class AIStates : MonoBehaviour
         else if (EnemyState == states.Death){
             if (!died)
             {
-                animation.Play("AlienDead");
-				animation["AlienDead"].speed = 1.5f;
+                animation.Play("GunAlienDead");
+				//animation["GunAlienDead"].speed = 1.5f;
                 died = true;
             }
         }
         else if (EnemyState == states.Dance){
             if (!died){
-                animation.Play("AlienDance");
+                animation.Play("GunAlienDance");
 
-                if (!animation.IsPlaying("AlienDance"))
+                if (!animation.IsPlaying("GunAlienDance"))
                     EnemyState = states.Death;
             }
         }
 
         if (hitted == true && !died){
-            animation.Play("HeadHit");
+            animation.Play("GunAlienHurt");
             hitted = false;
         }
     }
@@ -308,6 +316,53 @@ public class AIStates : MonoBehaviour
             hitted = false;
 	    }
 	}
+	
+    private void PlayAlien()
+    {
+        if (EnemyState == states.Idle)
+            animation.Play("AlienIdle");
+        else if (EnemyState == states.Run)
+            animation.Play("AlienWalk");
+        else if (EnemyState == states.Attack && !died && !attackWait){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("AlienAttack");
+	            delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("AlienAttack")){
+					animation.Stop("AlienAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+					StartCoroutine("attackDelay");
+				}
+			}
+        }
+        else if (EnemyState == states.Death){
+            if (!died)
+            {
+                animation.Play("AlienDead");
+				animation["AlienDead"].speed = 1.5f;
+                died = true;
+            }
+        }
+        else if (EnemyState == states.Dance){
+            if (!died){
+                animation.Play("AlienDance");
+
+                if (!animation.IsPlaying("AlienDance"))
+                    EnemyState = states.Death;
+            }
+        }
+
+        if (hitted == true && !died){
+            animation.Play("AlienHurt");
+            hitted = false;
+        }
+    }
 	
 	private void PlaySpear(){
 		if (EnemyState == states.Attack && !died && !attackWait){

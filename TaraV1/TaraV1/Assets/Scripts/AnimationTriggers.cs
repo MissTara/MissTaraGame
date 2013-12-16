@@ -9,7 +9,11 @@ public class AnimationTriggers : MonoBehaviour {
 	//Alien triggers
 	ColliderProjectile projectile;
 	private void AlienAttack(){
-		GameObject bullet = Instantiate(ResourceManager.Get().preEnemyBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 4) + this.transform.TransformDirection(Vector3.forward * 3), this.transform.rotation) as GameObject;
+		GameObject bullet;
+		if(this.tag == "GunAlien")
+			bullet = Instantiate(ResourceManager.Get().preEnemyBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.left *2), this.transform.rotation) as GameObject;
+		else
+			bullet = Instantiate(ResourceManager.Get().preEnemyBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.left *2), this.transform.rotation) as GameObject; // + this.transform.TransformDirection(Vector3.forward)
 			if (bullet != null){
 				projectile = GetComponent<ColliderProjectile>();
 			}
@@ -25,8 +29,6 @@ public class AnimationTriggers : MonoBehaviour {
 	private void enemyAttackStop(){
 		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = false;
 	}
-	
-	
 	
 	//Mech's triggers
 	private void mechGatlingStart(){
