@@ -142,6 +142,7 @@ public class AIStates : MonoBehaviour
             batAtt = false;
 			swoop = false;
 			attackWait = true;
+			animation["BatAttack"].speed = 1.0f;
 			StartCoroutine("attackDelay");
         }
 
@@ -209,6 +210,7 @@ public class AIStates : MonoBehaviour
 		if (swoop && !died && EnemyState != states.Dance){
 			this.transform.position += speedSwoop;
 			speedSwoop.y += 0.15f*Time.deltaTime;
+			animation["BatAttack"].speed = 0.7f;
 		}		
 	}
 	
