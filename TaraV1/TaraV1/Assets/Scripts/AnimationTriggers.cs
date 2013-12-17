@@ -85,4 +85,9 @@ public class AnimationTriggers : MonoBehaviour {
 	private void captainAttackDone(){
 		transform.FindChild("polySurface1").GetComponent<BoxCollider>().enabled = false;
 	}
+
+    private void captainAttackAir()
+    {
+        Instantiate(ResourceManager.Get().preAir, transform.FindChild("polySurface1").transform.position, this.gameObject.transform.rotation);
+    }
 }

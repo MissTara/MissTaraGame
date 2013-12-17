@@ -39,7 +39,7 @@ tex_Controller_SPECIALATTACK,
 	
 	public GameObject preBunny,preEnemyGunAlien,preEnemyBat,preEnemyBear,preEnemyWolf,preEnemyAlien,preEnemySpear,preMechBoss,preCaptainBoss,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
 	preMenu,preKillZone,preJoyStick, preNoteQuarter,preNoteHalf, preNoteSharp, preNoteTreble,preNoteWhole,preBullet,preCollideWall,preEnemyBullet,
-	preMissileTarget, preMissile, preExplosion;
+	preMissileTarget, preMissile, preExplosion, preAir;
 	public GameObject particleAttack, particleExplosion;
 
     public GameObject bossHealthBar;
