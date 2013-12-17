@@ -18,6 +18,8 @@ public class AIBoss : MonoBehaviour
     // prefab
     [System.NonSerialized]
     public Transform targetPlayer;
+	
+	public bool canDodge;
 
     [System.NonSerialized]
     public Transform bullet;
@@ -63,31 +65,29 @@ public class AIBoss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if(gameObject.tag == "MechBoss"){
-	        if (targetPlayer == null)
-    	    {
-        	    targetPlayer = GetComponent<AIPathCustom>().target;
-            	return;
-	        }
-        	if (targetPlayer != null)
-            	defend(targetPlayer);
+        if (targetPlayer == null)
+	    {
+    	    targetPlayer = GetComponent<AIPathCustom>().target;
+        	return;
+        }
+    	if (targetPlayer != null)
+        	defend(targetPlayer);
 
-	        if (healthBar != null)
-    	    {
-            	screenPosition = LevelLoader.Get().camera.WorldToScreenPoint(GameObject.Find("bar").transform.position);
-        	    screenPosition.z = 0;
-    	        healthBar.transform.position = LevelLoader.Get().camera.WorldToViewportPoint(GameObject.Find("bar").transform.position);
-	            hp = this.GetComponent<AIPathCustom>().CurHP;
+        if (healthBar != null)
+	    {
+        	screenPosition = LevelLoader.Get().camera.WorldToScreenPoint(GameObject.Find("bar").transform.position);
+    	    screenPosition.z = 0;
+	        healthBar.transform.position = LevelLoader.Get().camera.WorldToViewportPoint(GameObject.Find("bar").transform.position);
+            hp = this.GetComponent<AIPathCustom>().CurHP;
 
-            	float healthBarWidth = hp / maxHP;
-        	    healthBar.gameObject.transform.Find("bar").guiTexture.pixelInset = new Rect(-4f, -6f, 60 * healthBarWidth, 10);
-    	    }
+        	float healthBarWidth = hp / maxHP;
+    	    healthBar.gameObject.transform.Find("bar").guiTexture.pixelInset = new Rect(-4f, -6f, 60 * healthBarWidth, 10);
+	    }
 
-	        if (healthBar != null && this.GetComponent<AIStates>().EnemyState == AIStates.states.Death)
-        	{
-    	        Destroy(this.healthBar);
-	        }
-		}
+        if (healthBar != null && this.GetComponent<AIStates>().EnemyState == AIStates.states.Death)
+    	{
+	        Destroy(this.healthBar);
+        }
     }
 
     protected void defend(Transform player)
@@ -95,7 +95,7 @@ public class AIBoss : MonoBehaviour
 
         if (player != null)
         {
-            if (player.GetComponent<UnitPlayer>().projectile != null 
+            if (canDodge && player.GetComponent<UnitPlayer>().projectile != null 
                 && player.GetComponent<UnitPlayer>().projectile.isReadByBoss == false 
                 && !isRotating
                 && this.GetComponent<AIStates>().EnemyState != AIStates.states.Death
