@@ -100,7 +100,7 @@ public class LevelLoader : MonoBehaviour
                 if (mainPlayer != null)
                 {
                     mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
-					Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
+					//Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
                     //cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
                     boolSetNewLevel = false;
                     return;

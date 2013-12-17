@@ -57,7 +57,7 @@ public class UserData{
 	public void equipWeapon(int id){
 		UnitPlayer player = UnitPlayer.Get();
 		ItemWeapon w = GameManager.dataManager.getWeaponById(id);
-		if (w != null){
+		if (player != null &&  w != null){
 			player.Weapon = w;
 			equippedWeapon = id;
 			SaveLoad.Get().SaveUserData();
