@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIBoss.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UnitPlayer.cs">
     <Files>
       <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\DataManager.cs" Line="1" Column="1" />
@@ -11,9 +11,10 @@
       <File FileName="Assets\Scripts\AIStates.cs" Line="1" Column="1" />
       <File FileName="Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ResourceManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AnimationTriggers.cs" Line="15" Column="7" />
-      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="144" Column="3" />
+      <File FileName="Assets\Scripts\AnimationTriggers.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="365" Column="70" />
       <File FileName="Assets\Scripts\AIBoss.cs" Line="91" Column="6" />
+      <File FileName="Assets\Scripts\script_HUD.cs" Line="98" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

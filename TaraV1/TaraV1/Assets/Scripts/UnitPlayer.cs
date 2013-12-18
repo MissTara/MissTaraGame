@@ -82,6 +82,7 @@ public class UnitPlayer : Unit,ICombat {
     private bool atkButtonDown = false;
     private bool specialAtkButtonDown,invinsible = false;
 	public ColliderWeapon wepFistRight, wepFistLeft, wepHead;
+	public script_HUD HUD;
 	// Use this for initialization
 	void Awake(){
 		GameManager.isPaused = false;
@@ -91,6 +92,7 @@ public class UnitPlayer : Unit,ICombat {
 	public override void Start () {
 		animator = playerAvatar.GetComponent<Animator>();
 		audioJump = ResourceManager.Get().se_PlayerJump;
+		HUD = GameObject.Find("CameraSelf").transform.FindChild("Main Camera").GetComponent<script_HUD>();
         
 		base.Start();
 	}
@@ -113,7 +115,9 @@ public class UnitPlayer : Unit,ICombat {
 		UpdateShooting();
         UpdateState();
         UpdateAnimation();
-		base.Update();		
+		base.Update();	
+		//if(Input.GetKey(KeyCode.J))
+			//HUD.changeAmmo(10);
 	}
 	private void UpdateControllerInput(){
 		if (controller.isGrounded){
@@ -146,10 +150,11 @@ public class UnitPlayer : Unit,ICombat {
     {
         if (!isPlayingSpecialAnimation() && IsSpecialAttack() == false)
         {
-            if ((Input.GetKey(KeyCode.X) || script_vcontroller.isSpecialAtk()) && !specialAtkButtonDown)
+            if ((Input.GetKey(KeyCode.X) || script_vcontroller.isSpecialAtk()) && !specialAtkButtonDown && HUD.rangeBunny == 0.0f)
             {
                 Debug.Log("Special Attack");
                 specialAtkButtonDown = true;
+				HUD.resetGuage();
                 StartCoroutine(EnemyDanceCutscene());
 
             }
@@ -357,7 +362,8 @@ public class UnitPlayer : Unit,ICombat {
 	public void UpdateShooting()
 	// Shoot System
 	{
-		if ((Input.GetKeyDown(KeyCode.Space) || script_vcontroller.isJump())){
+		// Once we're ready to make ammo limited, add this: && HUD.ammo > 0
+		if ((Input.GetKeyDown(KeyCode.Space)|| script_vcontroller.isJump())){
 			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), this.transform.rotation) as GameObject;
             if (bullet != null)
             {
@@ -365,6 +371,7 @@ public class UnitPlayer : Unit,ICombat {
 				if(GetComponent<CharacterController>().velocity != Vector3.zero)
 					projectile.speed += speedMove;
             }
+			HUD.changeAmmo(-1);
 		}
 	}
 	

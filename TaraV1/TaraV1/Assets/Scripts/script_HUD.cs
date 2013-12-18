@@ -15,7 +15,9 @@ public class script_HUD : MonoBehaviour {
 	// HP Flow
 	float intHPFlow, intHPRange;
 	private float range = 0.0f;
-	private float rangeBunny = 1.0f;
+	public float rangeBunny = 1.0f;
+	public int ammo = 5;
+	private int maxAmmo = 10;
 	// Use this for initialization
 	void Start () {
 		// Load Textures
@@ -53,6 +55,7 @@ public class script_HUD : MonoBehaviour {
 		
 		GUI.DrawTexture(rectGrenadeIcon, texGrenadeIcon);
 		GUI.Label(new Rect(80,130,100,100),"Coins:" + GameManager.userData.currency);
+		GUI.Label(new Rect(100,130,10,10),"Ammo: " + ammo);
 		
 		//Bunny bar
 		GUI.DrawTexture(rectBunnyBG,texBunnyBG);
@@ -91,6 +94,13 @@ public class script_HUD : MonoBehaviour {
             }
         }
 	}
+	public void changeAmmo(int ammount){
+		if(ammo + ammount >= maxAmmo)
+			ammo = maxAmmo;
+		else
+			ammo += ammount;	
+	}
+	
 	IEnumerator bunnyGuage(){
 		if (rangeBunny-0.1f < 0.0f)
 			rangeBunny = 0.0f;	
@@ -98,5 +108,9 @@ public class script_HUD : MonoBehaviour {
 			rangeBunny -= 0.1f;
 		yield return new WaitForSeconds(0.1f);
 		StopCoroutine("bunnyGuage");
+	}
+	
+	public void resetGuage(){
+		rangeBunny = 1.0f;	
 	}
 }
