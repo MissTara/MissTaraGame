@@ -8,6 +8,7 @@ using System.Collections;
 public class AnimationTriggers : MonoBehaviour {
 	//Alien triggers
 	ColliderProjectile projectile;
+
 	private void AlienAttack(){
 		GameObject bullet;
 		if(this.tag == "GunAlien")
@@ -88,6 +89,7 @@ public class AnimationTriggers : MonoBehaviour {
 
     private void captainAttackAir()
     {
+        Instantiate(ResourceManager.Get().preAirEffect, transform.FindChild("polySurface1").transform.position - new Vector3(0,2.0f,0), this.gameObject.transform.rotation);
         Instantiate(ResourceManager.Get().preAir, transform.FindChild("polySurface1").transform.position, this.gameObject.transform.rotation);
     }
 }

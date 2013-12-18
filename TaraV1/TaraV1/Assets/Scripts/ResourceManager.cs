@@ -20,26 +20,26 @@ public class ResourceManager : MonoBehaviour
             m_Instance = (ResourceManager)FindObjectOfType(typeof(ResourceManager));
         return m_Instance;
     }
-	public Texture tex_HUD_HPBar,
+    public Texture tex_HUD_HPBar,
 tex_HUD_HeadTexture,
 tex_HUD_Grenade,
 tex_Controller_Joystick,
 tex_Controller_ATK,
 tex_Controller_JMP,
 tex_Controller_SPECIALATTACK,
-	tex_HurtScreen,
-	tex_Black,
-	tex_MenuBack,
-	tex_LoadingScreen,
-	tex_Credits,
-	tex_HUD_BunnyBar,
-	tex_HUD_BunnyBarBG;
+    tex_HurtScreen,
+    tex_Black,
+    tex_MenuBack,
+    tex_LoadingScreen,
+    tex_Credits,
+    tex_HUD_BunnyBar,
+    tex_HUD_BunnyBarBG;
 	public Texture [] tex_WeaponIcons;
 	public AudioClip se_PlayerJump, se_AttackOn, se_Attack;
 	
 	public GameObject preBunny,preEnemyGunAlien,preEnemyBat,preEnemyBear,preEnemyWolf,preEnemyAlien,preEnemySpear,preMechBoss,preCaptainBoss,preFPSMonitor,preDirectionalLight,preMainPlayer,preGround,
 	preMenu,preKillZone,preJoyStick, preNoteQuarter,preNoteHalf, preNoteSharp, preNoteTreble,preNoteWhole,preBullet,preCollideWall,preEnemyBullet,
-	preMissileTarget, preMissile, preExplosion, preAir;
+	preMissileTarget, preMissile, preExplosion, preAir, preAirEffect;
 	public GameObject particleAttack, particleExplosion;
 
     public GameObject bossHealthBar;

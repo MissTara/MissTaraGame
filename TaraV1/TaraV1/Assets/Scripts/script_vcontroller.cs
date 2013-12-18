@@ -125,7 +125,8 @@ public class script_vcontroller : MonoBehaviour {
 		if ((Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)){
 			GUI.DrawTexture(jumpButtonRect, jumpButton);
 			GUI.DrawTexture(atkButtonRect, atkButton);
-            GUI.DrawTexture(specialAtkButtonRect, specialAtkButton);
+            if (LevelLoader.Get().mainPlayer.GetComponent<UnitPlayer>().HUD.rangeBunny == 0.0f)
+                GUI.DrawTexture(specialAtkButtonRect, specialAtkButton);
 		}
 	}
 	// Update is called once per frame
@@ -218,7 +219,9 @@ public class script_vcontroller : MonoBehaviour {
         Vector2 touchPosition = touch.position;
         if (touch.phase == TouchPhase.Began
                 && !specialAtkButtonDown
-                && specialAtkButtonRect.Contains(new Vector2(touchPosition.x, Screen.height - touchPosition.y)))
+                && specialAtkButtonRect.Contains(new Vector2(touchPosition.x, Screen.height - touchPosition.y))
+                && LevelLoader.Get().mainPlayer.GetComponent<UnitPlayer>().HUD.rangeBunny == 0.0f)
+            
         {
             specialAtkButtonDown = true;
             script_vcontroller.specialAtkButtonPressed = true;
