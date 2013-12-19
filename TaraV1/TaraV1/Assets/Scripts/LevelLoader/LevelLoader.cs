@@ -139,8 +139,11 @@ public class LevelLoader : MonoBehaviour
                     {
                         enemy.GetComponent<AIPathCustom>().target = mainPlayer.transform;
                     }
-
-                    CameraController.Get().cameraTarget = mainPlayer.transform;
+					if(levelToLoad.GetComponent<Level>().isBossLevel){
+                    	CameraController.Get().cameraTarget = levelToLoad.transform.FindChild("sceneStart").transform;
+						CameraController.Get().transform.RotateAround(levelToLoad.transform.FindChild("sceneStart").transform.position,Vector3.up,-0.05f);
+					}else
+						CameraController.Get().cameraTarget = mainPlayer.transform;
                 }
             }
         }

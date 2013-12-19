@@ -13,6 +13,7 @@
  * */
 using System;
 using UnityEngine;
+using System.Collections;
 
 public enum CollideTypes
 {
@@ -24,7 +25,8 @@ public enum CollideTypes
     SPAWNENEMY,
     SWITCHLEVEL_WITHOUT_CUTSCENE,
     SWITCHLEVEL_WITH_CUTSCENE,
-	CUTSCENE_WITH_SPAWNENEMY
+	CUTSCENE_WITH_SPAWNENEMY,
+	BOSS_INTRO
 }
 
 public class ColliderPickup : MonoBehaviour
@@ -49,6 +51,7 @@ public class ColliderPickup : MonoBehaviour
     public int cutscene_duration = 3;
 
     public float loadingLevel;
+	private bool bossSceneDone = false;
 
 	public bool Active{
 		set { 
@@ -108,7 +111,7 @@ public class ColliderPickup : MonoBehaviour
             transform.rotation = Quaternion.Euler(new Vector3(0, degree, 0));
         }
 
-        if (isDestorying)
+        if (isDestorying && bossSceneDone)
         {
             if (emitter != null)
             {
@@ -132,6 +135,9 @@ public class ColliderPickup : MonoBehaviour
         //99. CUTSCENE
         //100. SPAWN ENEMY
         //102. SWITCH LEVEL
+		//103. BOSS_INTRO
+		if(collideTypes != CollideTypes.BOSS_INTRO)
+			bossSceneDone = true;
         switch (collideTypes)
         {
             case CollideTypes.GETITEM_SINGLECOIN:
@@ -181,7 +187,7 @@ public class ColliderPickup : MonoBehaviour
                 GameManager.LoadLevel(loadingLevel);
 
                 break;
-		case CollideTypes.CUTSCENE_WITH_SPAWNENEMY:
+			case CollideTypes.CUTSCENE_WITH_SPAWNENEMY:
 				ItemID = 99;
                 GameManager.LoadCutscene(loadingCutsceneFrom, loadingCutsceneTo, cutscene_duration);
 			
@@ -191,6 +197,10 @@ public class ColliderPickup : MonoBehaviour
 					dancer.GetComponent<GogoDancer>().cutsceneOver();
 				}
 			break;
+			
+			case CollideTypes.BOSS_INTRO:
+				StartCoroutine("bossIntro");
+				break;
         }
 
 		if (!Activated){
@@ -208,5 +218,21 @@ public class ColliderPickup : MonoBehaviour
 			Destroy (gameObject, audioPickupSE.length);
 		}
 		
+	}
+	IEnumerator bossIntro(){
+		yield return new WaitForSeconds(1.0f);
+		startBossScene();
+	}
+	
+	private void startBossScene(){
+		ItemID = 99;
+        GameManager.LoadCutscene(loadingCutsceneFrom, loadingCutsceneTo, cutscene_duration);
+		ItemID = 100;
+        GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum);
+		foreach(GameObject dancer in ((Level)this.transform.parent.GetComponent(typeof(Level))).dancers){
+			dancer.GetComponent<GogoDancer>().cutsceneOver();
+		}
+		CameraController.Get().Reset();
+		bossSceneDone  = true;
 	}
 }

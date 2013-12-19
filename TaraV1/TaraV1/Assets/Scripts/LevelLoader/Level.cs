@@ -13,6 +13,10 @@ public class Level : MonoBehaviour {
     {
         
     }
+	
+	void Start(){
+			
+	}
 
     public void Delete()
     {

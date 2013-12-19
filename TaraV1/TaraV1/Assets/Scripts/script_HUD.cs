@@ -55,7 +55,6 @@ public class script_HUD : MonoBehaviour {
 		
 		GUI.DrawTexture(rectGrenadeIcon, texGrenadeIcon);
 		GUI.Label(new Rect(80,130,100,100),"Coins:" + GameManager.userData.currency);
-		GUI.Label(new Rect(100,130,10,10),"Ammo: " + ammo);
 		
 		//Bunny bar
 		GUI.DrawTexture(rectBunnyBG,texBunnyBG);
