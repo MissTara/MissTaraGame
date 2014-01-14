@@ -37,7 +37,8 @@ public class CameraController : MonoBehaviour {
 	private Rect fadeBox = new Rect(0,0,Screen.width,Screen.height);
 	/*===============*/
 
-    	private float oldZ;
+    public float oldZ;
+	public Vector3 dstPos;
 
 	public float x = 0.0f;
 	public float y = 0.0f;
@@ -45,8 +46,8 @@ public class CameraController : MonoBehaviour {
 	private float currentDistance;
 	private float desiredDistance;
 	private float correctedDistance;
-	float offsetHor = 0;			// Get Move Offset X
-	float offsetVer = 0;
+	//float offsetHor = 0;			// Get Move Offset X
+	//float offsetVer = 0;
 	Vector2 offsetVector = Vector2.zero;
 	private static CameraController m_Instance = null;
     public static CameraController Get()
@@ -78,7 +79,6 @@ public class CameraController : MonoBehaviour {
 				fadeAlpha -= (fadeSpeed * fadeIdentifier) * Time.deltaTime;
 			else
 				fadeAlpha += (fadeSpeed * fadeIdentifier) * Time.deltaTime;
-			
 			if (fadeAlpha > 1){
 				fadeAlpha = 1;
 				fadeIn = false;
@@ -117,36 +117,38 @@ public class CameraController : MonoBehaviour {
 
 		if (GameManager.isPaused && LevelLoader.Get().boolSetNewLevel == true)
 			return;
-		Vector3 dstPos = new Vector3(cameraSelf.position.x,cameraTarget.position.y,cameraTarget.position.z);
-        if (Vector3.Distance(cameraSelf.position, dstPos) > 0.5f && !Locked)
+		if(LevelLoader.Get().bossLevel)
+			dstPos = new Vector3(cameraSelf.position.x,GameObject.Find("bossView").transform.position.y,cameraTarget.position.z);
+		else
+			dstPos = new Vector3(cameraSelf.position.x,cameraTarget.position.y,cameraTarget.position.z);
+		
+		if (Vector3.Distance(cameraSelf.position, dstPos) > 0.5f && !Locked)
         {
-            
-            cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 10);
-
-            if (!GameManager.isPaused && (cameraTarget.position.z - oldZ) < 0.0f && !Locked && LevelLoader.Get().boolSetNewLevel == false)
-            {	// If the camera has moved, move the player boundary with it, but stop if the camera gets locked
-                if (LevelLoader.Get().collideWall != null)
-                {
+			if(LevelLoader.Get().bossLevel){ 
+				if((cameraTarget.position.z - oldZ) < 0.0f && GameObject.Find("bossView").transform.position.z > -30.0f){
+					GameObject.Find("bossView").transform.position += new Vector3(0.0f, 0.0f,-Time.deltaTime * 2);
+					cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 5);
+				}else if ((cameraTarget.position.z - oldZ) > 0.0f && GameObject.Find("bossView").transform.position.z < -25.0f){
+					GameObject.Find("bossView").transform.position += new Vector3(0.0f, 0.0f,Time.deltaTime * 2);
+            		cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 5);
+				}
+			}else{
+				cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 10);
+			}
+            if (!GameManager.isPaused && (cameraTarget.position.z - oldZ) < 0.0f && !Locked && !LevelLoader.Get().boolSetNewLevel){
+				// If the camera has moved, move the player boundary with it, but stop if the camera gets locked
+                if (LevelLoader.Get().collideWall != null && (cameraTarget.position.z - oldZ) < 0.0f){
                     ((Wall)(LevelLoader.Get().collideWall.GetComponent(typeof(Wall)))).Move(oldZ);
                 }
-                //GameObject tmp = GameObject.Find("testwallF");
-                //tmp.transform.position = new Vector3(tmp.transform.position.x, tmp.transform.position.y, tmp.transform.position.z + (((cameraTarget.position.z - oldZ) * Time.deltaTime) * 10));
-                //tmp = GameObject.Find("testwallB");
-                //tmp.transform.position = new Vector3(tmp.transform.position.x, tmp.transform.position.y, tmp.transform.position.z + (((cameraTarget.position.z - oldZ) * Time.deltaTime) * 10));
             }
-
-            if (cameraSelf.position.z > oldZ)
-            {
-                //oldZ = cameraTarget.position.z;
-                cameraSelf.position = new Vector3(cameraSelf.position.x, cameraSelf.position.y, oldZ);
-                //Debug.Log(oldZ);
-            }
-            //cameraSelf.position = new Vector3(cameraSelf.position.x, cameraTarget.position.y, cameraTarget.position.z);.
-            //cameraSelf.position = Vector3.Lerp(cameraSelf.position, cameraTarget.position, 5 * Time.deltaTime);
+			if(!LevelLoader.Get().bossLevel){
+	            if (cameraSelf.position.z > oldZ){
+                	cameraSelf.position = new Vector3(cameraSelf.position.x, cameraSelf.position.y, oldZ);
+				}
+			}
         }
         if (Locked){}
-        else
-        {
+        else{
             this.transform.forward = Vector3.Lerp(this.transform.forward, oriRotation, Time.deltaTime * 10);
         }
 	}

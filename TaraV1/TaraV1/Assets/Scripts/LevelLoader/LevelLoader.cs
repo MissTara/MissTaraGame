@@ -29,6 +29,7 @@ public class LevelLoader : MonoBehaviour
     private static LevelLoader m_Instance = null;
     private GameObject levelToLoad;
     private int levelTextNum;
+	public bool bossLevel = false;
 
     [System.NonSerialized]public GameObject collideWall;
     [System.NonSerialized]public bool boolSetNewLevel=false;
@@ -84,23 +85,40 @@ public class LevelLoader : MonoBehaviour
                             tmpLevel = Instantiate(levelNum.gameObject, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
                             levelToLoad = tmpLevel;
 
-                            if (level.GetComponent<Level>().isBossLevel)
+                            if (level.GetComponent<Level>().isBossLevel){
                                 levelText.text = "BOSS BATTLE";
-                            else
+								bossLevel = true;
+								if(loadLevel == 1.1){
+									GameObject.Find("Light").light.intensity = 0.0f;
+								}else if (loadLevel == 2.1){
+									
+								}else if (loadLevel == 3.1){
+									
+								}
+								CameraController.Get().cameraSelf.transform.position -= new Vector3(20,-20,-10);
+							}else{
+								GameObject tmpCollideWall;
                                 levelText.text = "Level " + levelTextNum;
-
-                            GameObject tmpCollideWall;
-                            tmpCollideWall = Instantiate(ResourceManager.Get().preCollideWall, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
-                            collideWall = tmpCollideWall;
-                            return;
+                            	tmpCollideWall = Instantiate(ResourceManager.Get().preCollideWall, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+	                            collideWall = tmpCollideWall;
+								bossLevel = false;
+								CameraController.Get().Reset();
+								if(loadLevel == 1){
+									GameObject.Find("Light").light.intensity = 0.5f;
+								}else if (loadLevel == 2){
+									GameObject.Find("Light").light.intensity = 0.0f;
+								}else if (loadLevel == 3){
+									GameObject.Find("Light").light.intensity = 0.3f;
+								}
+                            	return;
+							}
                         }
                     }
                 }
-
                 if (mainPlayer != null)
                 {
                     mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
-					//Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
+					Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
                     //cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
                     boolSetNewLevel = false;
                     return;
@@ -116,7 +134,7 @@ public class LevelLoader : MonoBehaviour
             }
 
             if (IsPlayerCreated() && IsLevelLoaded() && boolSetNewLevel == false)
-            {                
+            {
                 planes = GeometryUtility.CalculateFrustumPlanes(camera);
                 foreach (GameObject building in ((Level)levelToLoad.GetComponent(typeof(Level))).buildingsToHideForCamera)
                 {
@@ -139,26 +157,20 @@ public class LevelLoader : MonoBehaviour
                     {
                         enemy.GetComponent<AIPathCustom>().target = mainPlayer.transform;
                     }
-					if(levelToLoad.GetComponent<Level>().isBossLevel){
-                    	CameraController.Get().cameraTarget = levelToLoad.transform.FindChild("sceneStart").transform;
-						CameraController.Get().transform.RotateAround(levelToLoad.transform.FindChild("sceneStart").transform.position,Vector3.up,-0.05f);
-					}else
 						CameraController.Get().cameraTarget = mainPlayer.transform;
                 }
             }
         }
 	}
 
-    public void SetLevel(float levelNum)
-    {
+    public void SetLevel(float levelNum){
         boolSetNewLevel = true;
         mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
         CameraController.Get().Reset();
         //cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
         levelLoaded = false;
 
-        if (levelToLoad)
-        {
+        if (levelToLoad){
             ((Level)(levelToLoad.GetComponent(typeof(Level)))).Delete();
             ((Wall)(collideWall.GetComponent(typeof(Wall)))).Delete();
             levelToLoad = null;

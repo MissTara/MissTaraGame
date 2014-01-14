@@ -51,6 +51,7 @@ public class ColliderPickup : MonoBehaviour
     public int cutscene_duration = 3;
 
     public float loadingLevel;
+	public bool lockCamera;
 	private bool bossSceneDone = false;
 
 	public bool Active{
@@ -91,9 +92,7 @@ public class ColliderPickup : MonoBehaviour
 		DebugScreen.Get().addMsg( this.name + " | " +  other.tag);
 		if (other.tag == "Player"){
 			PickUp();
-		}
-		
-		
+		}		
 	}
 	void OnTriggerStay(Collider other){
 		if (Magnetic && other.tag == "MagCollider"){
@@ -117,7 +116,6 @@ public class ColliderPickup : MonoBehaviour
             {
                 emitter.emit = false;
             }
-
             Destroy(this.gameObject);
         }
 	}
@@ -167,7 +165,7 @@ public class ColliderPickup : MonoBehaviour
 
             case CollideTypes.SPAWNENEMY:
                 ItemID = 100;
-                GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum);
+                GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum, lockCamera);
                 break;
 
             case CollideTypes.SWITCHLEVEL_WITHOUT_CUTSCENE:
@@ -192,7 +190,7 @@ public class ColliderPickup : MonoBehaviour
                 GameManager.LoadCutscene(loadingCutsceneFrom, loadingCutsceneTo, cutscene_duration);
 			
 			    ItemID = 100;
-                GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum);
+                GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum,lockCamera);
 				foreach(GameObject dancer in ((Level)this.transform.parent.GetComponent(typeof(Level))).dancers){
 					dancer.GetComponent<GogoDancer>().cutsceneOver();
 				}
@@ -228,11 +226,11 @@ public class ColliderPickup : MonoBehaviour
 		ItemID = 99;
         GameManager.LoadCutscene(loadingCutsceneFrom, loadingCutsceneTo, cutscene_duration);
 		ItemID = 100;
-        GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum);
+        GameManager.SpawnEnemy(spawner, mobSpawn, spawnNum, lockCamera);
 		foreach(GameObject dancer in ((Level)this.transform.parent.GetComponent(typeof(Level))).dancers){
 			dancer.GetComponent<GogoDancer>().cutsceneOver();
 		}
-		CameraController.Get().Reset();
+		CameraController.Get().cameraTarget = GameObject.Find("bossView").transform;
 		bossSceneDone  = true;
 	}
 }

@@ -73,7 +73,8 @@ public class AIStates : MonoBehaviour
 		else if (gameObject.tag == "Spear")
 			PlaySpear();
 		//Level 3 enemies
-		
+		else if (gameObject.tag == "Hover")
+			PlayHover();
 		//Bosses
 		else if (gameObject.tag == "MechBoss")
 			PlayMechBoss();
@@ -116,7 +117,6 @@ public class AIStates : MonoBehaviour
             if (!died)
             {
                 animation.Play("GunAlienDead");
-				//animation["GunAlienDead"].speed = 1.5f;
                 died = true;
             }
         }
@@ -403,6 +403,49 @@ public class AIStates : MonoBehaviour
 	    }
         if (hitted == true && !died){
            	animation.Play("SpearHit");
+            hitted = false;
+	    }
+	}
+	
+	private void PlayHover(){
+		if (EnemyState == states.Attack && !died && !attackWait){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("HoverAttack");
+		        delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("HoverAttack")){
+					animation.Stop("HoverAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("HoverIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("HoverWalk");
+        else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("HoverDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("HoverDance");
+    	        if (!animation.IsPlaying("HoverDance"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (hitted == true && !died){
+           	animation.Play("HoverHit");
             hitted = false;
 	    }
 	}

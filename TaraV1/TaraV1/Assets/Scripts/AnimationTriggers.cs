@@ -32,14 +32,20 @@ public class AnimationTriggers : MonoBehaviour {
 	}
 	
 	//Mech's triggers
+	private void mechSlowDown(){
+		animation["MechAttack1"].speed = 0.1f;	
+	}
+	
 	private void mechGatlingStart(){
 		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
 		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
+		animation["MechAttack1"].speed = 0.1f;
 	}
 	
 	private void mechGatlingStop(){
 		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
 		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
+		animation["MechAttack1"].speed = 0.1f;
 	}
 	
 	private void mechMissileAttack(){

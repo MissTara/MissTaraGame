@@ -1,17 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LevelLoader\LevelLoader.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AIStates.cs">
     <Files>
       <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraController.cs" Line="130" Column="68" />
-      <File FileName="Assets\Scripts\DataManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LevelLoader\LevelLoader.cs" Line="139" Column="22" />
-      <File FileName="Assets\Scripts\AIStates.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LevelLoader\LevelLoader.cs" Line="125" Column="18" />
       <File FileName="Assets\Scripts\ResourceManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AnimationTriggers.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UnitPlayer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\script_HUD.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ColliderPickup.cs" Line="106" Column="24" />
+      <File FileName="Assets\Scripts\AnimationTriggers.cs" Line="48" Column="41" />
+      <File FileName="Assets\Scripts\AIStates.cs" Line="158" Column="44" />
+      <File FileName="Assets\Scripts\ColliderPickup.cs" Line="110" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -73,9 +73,9 @@ public class GameManager : MonoBehaviour
         level.SetLevel(levelNum);
     }
 
-	public static void SpawnEnemy(GameObject[] spawner,GameObject[] enemy, int spawnNum){
+	public static void SpawnEnemy(GameObject[] spawner,GameObject[] enemy, int spawnNum, bool locked){
 		// Load a script which creates two invisible walls
-		if (CommandScript.Get() != null){
+		if (CommandScript.Get() != null && locked){
 			List<CommandScript.BasicCommand> bCmd = new List<CommandScript.BasicCommand>();
 			//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall01"));
 			//bCmd.Add(new CommandScript.BasicCommand ("EnableGameObject","eventWall02"));
@@ -234,6 +234,8 @@ public class GameManager : MonoBehaviour
 			enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
 		else if (mob.tag == "Spear")
 			enemy = Instantiate(RM.preEnemySpear,position, rotation)as GameObject;
+		else if (mob.tag == "Hover")
+			enemy = Instantiate(RM.preEnemyHover,position, rotation)as GameObject;
 		else if (mob.tag == "MechBoss")
 			enemy = Instantiate(RM.preMechBoss,position, rotation)as GameObject;
 		else if (mob.tag == "CaptainBoss")
