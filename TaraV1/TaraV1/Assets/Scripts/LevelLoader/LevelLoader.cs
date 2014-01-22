@@ -103,13 +103,13 @@ public class LevelLoader : MonoBehaviour
 	                            collideWall = tmpCollideWall;
 								bossLevel = false;
 								CameraController.Get().Reset();
-								if(loadLevel == 1){
+								/*if(loadLevel == 1){
 									GameObject.Find("Light").light.intensity = 0.5f;
 								}else if (loadLevel == 2){
 									GameObject.Find("Light").light.intensity = 0.0f;
 								}else if (loadLevel == 3){
 									GameObject.Find("Light").light.intensity = 0.3f;
-								}
+								}*/
                             	return;
 							}
                         }
