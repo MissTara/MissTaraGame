@@ -37,15 +37,17 @@ public class AIStates : MonoBehaviour
 	private bool batAtt,attackWait = false;
 	public int bossAttack = 0;
 	public float bossAutoDelay = 12.0f;
+	
+	private Vector3 larvaDir;
+	public bool larvaRoll = false;
 
-    void Start()
-    {
+    void Start(){
         EnemyState = states.Idle;
         delay = Time.time;
         AIPathing = GetComponent<AIPathCustom>();
         controller = GetComponent<CharacterController>();
 		GM= GameManager.Get();
-		if (gameObject.tag == "Bat"){
+		if (gameObject.tag == "Bat" || gameObject.tag == "Larva"){
 			player = GM.objPlayer.transform;
 			tmp = GetComponent<UnitEnemy>();
 		}else if (gameObject.tag == "MechBoss"){
@@ -53,8 +55,7 @@ public class AIStates : MonoBehaviour
 		}
     }
 
-    void Update()
-    {
+    void Update(){
 		//Level 1 enemies
 		if (gameObject.tag == "Bunny")
 			PlayBunny();
@@ -66,20 +67,31 @@ public class AIStates : MonoBehaviour
 			PlayBear();
 		else if (gameObject.tag == "Wolf")
 			PlayWolf();
-		
 		//Level 2 enemies
 		else if (gameObject.tag == "Alien")
 			PlayAlien();
-		else if (gameObject.tag == "Spear")
-			PlaySpear();
-		//Level 3 enemies
 		else if (gameObject.tag == "Hover")
 			PlayHover();
+		else if (gameObject.tag == "Slime")
+			playSlime();
+		else if (gameObject.tag == "Sword")
+			playSword();
+		//Level 3 enemies
+		else if (gameObject.tag == "Spear")
+			PlaySpear();
+		else if (gameObject.tag == "Doggy")
+			playDoggy();
+		else if (gameObject.tag == "Larva")
+			playLarva();
+		else if (gameObject.tag == "Helmet")
+			playHelmet();
 		//Bosses
 		else if (gameObject.tag == "MechBoss")
 			PlayMechBoss();
 		else if (gameObject.tag == "CaptainBoss")
 			playCaptainBoss();
+		else if (gameObject.tag == "Queen")
+			playQueen();
     }
 	
 	private void PlayBunny(){
@@ -135,11 +147,8 @@ public class AIStates : MonoBehaviour
         }
     }
 
-    //Function for Bat enemies
-    private void PlayBat()
-    {
-        if (batAtt && Time.time >= delay + batdelay && !died)
-        {
+    private void PlayBat(){
+        if (batAtt && Time.time >= delay + batdelay && !died){
 			StopCoroutine("batAttack");
             EnemyState = states.Run;
             animation.Play("BatFly");
@@ -151,6 +160,7 @@ public class AIStates : MonoBehaviour
 			swoop = false;
 			attackWait = true;
 			animation["BatAttack"].speed = 1.0f;
+			transform.FindChild("BatZoidtoAnimate:BatZoidtoAnimate").GetComponent<BoxCollider>().enabled = false;
 			StartCoroutine("attackDelay");
         }
 
@@ -158,8 +168,7 @@ public class AIStates : MonoBehaviour
             animation.PlayQueued("BatFly");
         else if (EnemyState == states.Run && !batAtt)
             animation.PlayQueued("BatFly");
-        else if (EnemyState == states.Attack && !batAtt && !attackWait)
-        {
+        else if (EnemyState == states.Attack && !batAtt && !attackWait){
             AIPathing.canMove = false;
             AIPathing.canSearch = false;
             delay = Time.time;
@@ -169,6 +178,7 @@ public class AIStates : MonoBehaviour
 			tmp.enabled = false;
 			batAtt = true;
 			swoop = true;
+			transform.FindChild("BatZoidtoAnimate:BatZoidtoAnimate").GetComponent<BoxCollider>().enabled = true;
         }
 		else if (EnemyState == states.Attack && batAtt && !died){
 			AIPathing.canMove = false;
@@ -177,27 +187,24 @@ public class AIStates : MonoBehaviour
 			StartCoroutine("batAttack");			
 		}
 		else if (EnemyState == states.Dance){
-			if (!died)
-            {
+			if (!died){
 			   batAtt = false;
 			   StopCoroutine("batAttack");
 			   speedSwoop = new Vector3(0.0f,0.0f,0.0f);
                animation.Play("BatDance");
-               if (!animation.IsPlaying("BatDance"))
-               {
+               if (!animation.IsPlaying("BatDance")){
                    EnemyState = states.Death;
                }
 			}
 		}
-        else if (EnemyState == states.Death)
-        {
-            if (!died)
-            {
+        else if (EnemyState == states.Death){
+            if (!died){
                 animation.Stop();
                 animation.Play("BatDead");
 				StopCoroutine("batAttack");
 				if (!tmp.enabled)
 					tmp.enabled = true;
+				swoop = false;
 				speedSwoop = new Vector3(0.0f,0.0f,0.0f);
 				controller.center = new Vector3(0, 0.03f, 0);
 				this.GetComponent<CharacterController>().stepOffset = 0.03f;
@@ -219,13 +226,13 @@ public class AIStates : MonoBehaviour
 			this.transform.position += speedSwoop;
 			speedSwoop.y += 0.15f*Time.deltaTime;
 			animation["BatAttack"].speed = 0.7f;
-		}		
+		}
 	}
 	
-	IEnumerator attackDelay(){				//Cooldown on the bat's attack so he doesn't swoop in quick succession
+	IEnumerator attackDelay(){				//Cooldown on enemy attacks so they don't attack in quick succession
 		yield return new WaitForSeconds(1.0f);
 		attackWait = false;
-	}	
+	}
 	
 	private void PlayBear(){				
 		if (EnemyState == states.Attack && !died && !attackWait){
@@ -364,6 +371,97 @@ public class AIStates : MonoBehaviour
         }
     }
 	
+	private void PlayHover(){
+		if (EnemyState == states.Attack && !died && !attackWait){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("HoverAttack");
+		        delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("HoverAttack")){
+					animation.Stop("HoverAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("HoverIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("HoverWalk");
+        else if (EnemyState == states.Death){
+			this.GetComponent<CharacterController>().enabled = false;
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("HoverDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("HoverDance");
+    	        if (!animation.IsPlaying("HoverDance"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (hitted == true && !died){
+           	animation.Play("HoverHit");
+            hitted = false;
+	    }
+	}
+	
+	private void playSlime(){
+		
+	}
+	
+	private void playSword(){
+		if (EnemyState == states.Attack && !died && !attackWait){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("SwordAttack");
+		        delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("SwordAttack")){
+					animation.Stop("SwordAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("SwordIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("SwordWalk");
+        else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("SwordDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("SwordDance");
+    	        if (!animation.IsPlaying("SwordDance"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (hitted == true && !died){
+           	animation.Play("SwordHit");
+            hitted = false;
+	    }
+	}
+	
 	private void PlaySpear(){
 		if (EnemyState == states.Attack && !died && !attackWait){
 			if(!attacking){					//If he isnt already attacking, start doing so
@@ -407,17 +505,17 @@ public class AIStates : MonoBehaviour
 	    }
 	}
 	
-	private void PlayHover(){
+	private void playDoggy(){
 		if (EnemyState == states.Attack && !died && !attackWait){
 			if(!attacking){					//If he isnt already attacking, start doing so
 				AIPathing.canMove = false;
 				AIPathing.canSearch = false;
-				animation.Play("HoverAttack");
+				animation.Play("DogAttack");
 		        delay = Time.time;
 				attacking = true;
 			}else{							//Once the attack animation is done
-				if(!animation.IsPlaying("HoverAttack")){
-					animation.Stop("HoverAttack");
+				if(!animation.IsPlaying("DogAttack")){
+					animation.Stop("DogAttack");
 					AIPathing.canMove = true;
 					AIPathing.canSearch = true;
 					EnemyState = states.Run;
@@ -426,26 +524,118 @@ public class AIStates : MonoBehaviour
 			}
     	}
 		else if (EnemyState == states.Idle)
-            animation.Play("HoverIdle");
+            animation.Play("DogIdle");
 	    else if (EnemyState == states.Run)
-    	    animation.Play("HoverWalk");
+    	    animation.Play("DogWalk");
         else if (EnemyState == states.Death){
     	    if (!died){
             	animation.Stop();
-                animation.Play("HoverDead");
+                animation.Play("DogDead");
 	            Debug.Log(states.Death.ToString());
     	        died = true;
         	}
        	}
 	    else if (EnemyState == states.Dance){
             if (!died){
-               	animation.Play("HoverDance");
-    	        if (!animation.IsPlaying("HoverDance"))
+               	animation.Play("DogDance");
+    	        if (!animation.IsPlaying("DogDance"))
           	        EnemyState = states.Death;
 	        }
 	    }
         if (hitted == true && !died){
-           	animation.Play("HoverHit");
+           	animation.Play("DogHit");
+            hitted = false;
+	    }
+	}
+	
+	private void playLarva(){
+		if (EnemyState == states.Attack && !died && !attackWait){
+			if(larvaRoll){
+				this.transform.position += new Vector3(larvaDir.x*0.05f,0.0f,larvaDir.z*0.05f);
+			}
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("LarvaAttack");
+		        delay = Time.time;
+				this.transform.LookAt(new Vector3(GM.objPlayer.transform.position.x,this.transform.position.y,GM.objPlayer.transform.position.z));	//Look in the direction of the player
+				larvaDir = player.position - transform.position;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("LarvaAttack")){
+					animation.Stop("LarvaAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("LarvaIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("LarvaWalk");
+        else if (EnemyState == states.Death){
+			animation["LarvaDead"].speed = 0.5f;
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("LarvaDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("LarvaDance");
+    	        if (!animation.IsPlaying("LarvaDance"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (hitted == true && !died){
+           	animation.Play("LarvaHit");
+            hitted = false;
+	    }
+	}
+	
+	private void playHelmet(){
+		if (EnemyState == states.Attack && !died && !attackWait){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("HelmetAttack");
+		        delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("HelmetAttack")){
+					animation.Stop("HelmetAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("HelmetIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("HelmetWalk");
+        else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("HelmetDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("HelmetDance");
+    	        if (!animation.IsPlaying("HelmetDance"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (hitted == true && !died){
+           	animation.Play("HelmetHit");
             hitted = false;
 	    }
 	}
@@ -596,6 +786,41 @@ public class AIStates : MonoBehaviour
 	    else if (EnemyState == states.Dance){
 			 if (!died)
 				animation.Play("captainBossDance");
+	    }
+	}
+	
+	private void playQueen(){
+		if (EnemyState == states.Attack && !died && !attackWait){
+			if(!attacking){									
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("QueenAttack");
+				attacking = true;
+			}else{							
+				if(!animation.IsPlaying("QueenAttack")){
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					transform.FindChild("attackBox").GetComponent<BoxCollider>().enabled = false;
+					EnemyState = states.Run;
+					attacking = false;
+					StartCoroutine("attackDelay");
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("QueenIdle");
+	    else if (EnemyState == states.Run){
+    	    animation.Play("QueenWalk");
+		}else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("QueenDead");
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+			 if (!died)
+				animation.Play("QueenDance");
 	    }
 	}
 }

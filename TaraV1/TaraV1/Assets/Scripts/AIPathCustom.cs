@@ -614,7 +614,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
 	public void onAttack(Vector3 contactPoint){}
 	public void hurt(ItemWeapon weapon){ 
 		if (!dead){
-			//AnimControl.EnemyState = AIStates.states.AlienHit;
+			AnimControl.EnemyState = AIStates.states.Hit;
 			int damage = BattleCore.CalculateDamage(weapon.BaseDamage,weapon.Element,BaseArmour,Element);
 			PopoutNum pop = PopoutNum.Get();
 			if (pop != null){
@@ -639,7 +639,7 @@ public class AIPathCustom : MonoBehaviour, ICombat
         canSearch = false;
         canMove = false;
         AnimControl.EnemyState = AIStates.states.Dance;
-		if (gameObject.tag == "MechBoss" || gameObject.tag == "CaptainBoss")
+		if (gameObject.tag == "MechBoss" || gameObject.tag == "CaptainBoss" || gameObject.tag == "Queen")
         	StartCoroutine("PlayDanceBoss");
 		else
 			StartCoroutine("PlayDance");

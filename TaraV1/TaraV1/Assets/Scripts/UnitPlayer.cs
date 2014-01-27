@@ -194,8 +194,7 @@ public class UnitPlayer : Unit,ICombat {
 		}
 		run = Input.GetKey(KeyCode.LeftShift);
 	}
-    private bool isPlayingSpecialAnimation()
-    {
+    private bool isPlayingSpecialAnimation(){
         return playerMesh.animation.IsPlaying("SpecialMove");
     }
 
@@ -359,19 +358,17 @@ public class UnitPlayer : Unit,ICombat {
 	public void onAttack(Vector3 contactPoint){
 		base.Attack(contactPoint);
 	}
-	public void UpdateShooting()
+	public void UpdateShooting(){
 	// Shoot System
-	{
-		// Once we're ready to make ammo limited, add this: && HUD.ammo > 0
-		if ((Input.GetKeyDown(KeyCode.Space)|| script_vcontroller.isJump())){
+	// Once we're ready to make ammo limited, add this: && HUD.ammo > 0
+		if ((Input.GetKeyDown(KeyCode.Space)|| script_vcontroller.isJump())&& HUD.ammo > 0){
 			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), this.transform.rotation) as GameObject;
-            if (bullet != null)
-            {
+            if (bullet != null){
                 projectile = bullet.GetComponentInChildren<ColliderProjectile>();
 				if(GetComponent<CharacterController>().velocity != Vector3.zero)
 					projectile.speed += speedMove;
             }
-			HUD.changeAmmo(-1);
+				HUD.changeAmmo(-1);
 		}
 	}
 	

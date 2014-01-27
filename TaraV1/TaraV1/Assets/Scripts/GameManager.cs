@@ -44,11 +44,16 @@ public class GameManager : MonoBehaviour
 		switch(itemID){
 		case 0:
 			break;
-		case 1:						// Single Coin
-			getCoin(1);
+		case 1:						// Health
+			if(MainPlayer.CurHP + 3 > MainPlayer.MaxHP)
+				MainPlayer.gainHealth(MainPlayer.MaxHP - MainPlayer.CurHP);
+			else
+				MainPlayer.gainHealth(3);
 			break;
-		case 2:						// Double Coin
-			getCoin(2);
+		case 2:						// Gain Ammo
+			if (true){
+				
+			}
 			break;
 		case 3:						// Set Check Point
 			setCheckPoint();
@@ -92,6 +97,7 @@ public class GameManager : MonoBehaviour
         Array.Copy(enemy, enemies, spawnNum);
         spawns = new GameObject[spawner.Length];
         spawns[0] = spawner[0];
+		spawns[1] = spawner[1];	
         spawnamount = spawnNum;
     }
 
@@ -222,6 +228,7 @@ public class GameManager : MonoBehaviour
 		 * Used by update (below) to spawn new enemies.
 		 * */
 		GameObject enemy;
+		//Level 1
 		if (mob.tag == "GunAlien")
 			enemy = Instantiate(RM.preEnemyGunAlien,position, rotation)as GameObject;
 		else if (mob.tag == "Bat")
@@ -230,16 +237,31 @@ public class GameManager : MonoBehaviour
 			enemy = Instantiate(RM.preEnemyBear,position, rotation)as GameObject;
 		else if (mob.tag == "Wolf")
 			enemy = Instantiate(RM.preEnemyWolf,position, rotation)as GameObject;
+		//Level 2
 		else if (mob.tag == "Alien")
 			enemy = Instantiate(RM.preEnemyAlien,position, rotation)as GameObject;
-		else if (mob.tag == "Spear")
-			enemy = Instantiate(RM.preEnemySpear,position, rotation)as GameObject;
 		else if (mob.tag == "Hover")
 			enemy = Instantiate(RM.preEnemyHover,position, rotation)as GameObject;
+		else if (mob.tag == "DreadLock")
+			enemy = Instantiate(RM.preDread,position, rotation)as GameObject;
+		else if (mob.tag == "Slime")
+			enemy = Instantiate(RM.preSlime,position, rotation)as GameObject;
+		//Level 3
+		else if (mob.tag == "Spear")
+			enemy = Instantiate(RM.preEnemySpear,position, rotation)as GameObject;
+		else if (mob.tag == "Helmet")
+			enemy = Instantiate(RM.preHelmet,position, rotation)as GameObject;
+		else if (mob.tag == "Larva")
+			enemy = Instantiate(RM.preLarva,position, rotation)as GameObject;
+		else if (mob.tag == "Doggy")
+			enemy = Instantiate(RM.preDoggy,position, rotation)as GameObject;
+		//Bosses
 		else if (mob.tag == "MechBoss")
 			enemy = Instantiate(RM.preMechBoss,position, rotation)as GameObject;
 		else if (mob.tag == "CaptainBoss")
 			enemy = Instantiate(RM.preCaptainBoss,position,rotation)as GameObject;
+		else if (mob.tag == "Queen")
+			enemy = Instantiate(RM.preQueen,position,rotation)as GameObject;
 		else
 			enemy = Instantiate(RM.preEnemyBat,position, rotation)as GameObject;
 		if (enemy != null){
@@ -267,7 +289,7 @@ public class GameManager : MonoBehaviour
 				enemyCount++;
 			}			
             oldTimer = Time.realtimeSinceStartup;
-		}else if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 2 && isSpawn == true && enemyCount != spawnamount){
+		}else if (objEnemies.Count < spawnamount && Time.realtimeSinceStartup - oldTimer > 4 && isSpawn == true && enemyCount != spawnamount){
 			//CreateEnemy(new Vector3(UnityEngine.Random.Range(-4f,4f),1,UnityEngine.Random.Range(-4f,4f)),GameManager.dataManager.Enemies[0],Quaternion.identity);
            	CreateEnemy(spawns[0].transform.position, GameManager.dataManager.Enemies[0], Quaternion.identity, enemies[enemyCount]);
 			enemyCount++;

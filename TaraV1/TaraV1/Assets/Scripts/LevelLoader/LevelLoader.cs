@@ -86,30 +86,28 @@ public class LevelLoader : MonoBehaviour
                             levelToLoad = tmpLevel;
 
                             if (level.GetComponent<Level>().isBossLevel){
-                                levelText.text = "BOSS BATTLE";
 								bossLevel = true;
 								if(loadLevel == 1.1){
-									GameObject.Find("Light").light.intensity = 0.0f;
+									levelText.text = "Club";
 								}else if (loadLevel == 2.1){
-									
+									levelText.text = "Spaceship";
 								}else if (loadLevel == 3.1){
-									
+									levelText.text = "Home World";
 								}
 								CameraController.Get().cameraSelf.transform.position -= new Vector3(20,-20,-10);
 							}else{
 								GameObject tmpCollideWall;
-                                levelText.text = "Level " + levelTextNum;
+								if(levelTextNum == 1){
+									levelText.text = "Paris";	
+								}else if(levelTextNum == 2){
+									levelText.text = "Spaceship";
+								}else if(levelTextNum == 3){
+                                	levelText.text = "Home World";
+								}
                             	tmpCollideWall = Instantiate(ResourceManager.Get().preCollideWall, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
 	                            collideWall = tmpCollideWall;
 								bossLevel = false;
 								CameraController.Get().Reset();
-								/*if(loadLevel == 1){
-									GameObject.Find("Light").light.intensity = 0.5f;
-								}else if (loadLevel == 2){
-									GameObject.Find("Light").light.intensity = 0.0f;
-								}else if (loadLevel == 3){
-									GameObject.Find("Light").light.intensity = 0.3f;
-								}*/
                             	return;
 							}
                         }
@@ -176,8 +174,6 @@ public class LevelLoader : MonoBehaviour
             levelToLoad = null;
             levelLoaded = true;
             loadLevel = levelNum;
-            levelTextNum = (int)loadLevel;
-            levelText.text = "Level " + levelTextNum;
             
         }
     }

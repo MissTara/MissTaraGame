@@ -31,9 +31,9 @@ public enum CollideTypes
 
 public class ColliderPickup : MonoBehaviour
 {
-    public CollideTypes collideTypes;	
+    public CollideTypes collideTypes;
 	public Transform particlePickedup;	// The particle effect plays while it is triggered
-	public Transform particleStandBy;	// The default particle effect that keeps playing while stading by
+	//public Transform particleStandBy;	// The default particle effect that keeps playing while stading by
 	public bool StaticItem = false;		// A static item does not disappear after interacting with the player such as killzone
 	public bool Magnetic = false;		// A magnetic item will come to player when they are close enough [This function requires the Magnetic Collider on the player]
 	public bool AutoRotate = false;		// The item will rotates automatically while standing by
@@ -67,7 +67,7 @@ public class ColliderPickup : MonoBehaviour
 	private float degree = 0f;
 	private bool isDestorying = false;
 	void Start(){
-        if (particleStandBy != null)
+        /*if (particleStandBy != null)
         {
             Instantiate(particleStandBy, this.transform.position, this.transform.rotation);
 
@@ -77,7 +77,7 @@ public class ColliderPickup : MonoBehaviour
             {
                 emitter.emit = true;
             }
-        }
+        }*/
 		
 		if (spawnNum != mobSpawn.Length){
 			print("Mob array does not match the enemy spawn count.");

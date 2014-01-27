@@ -99,13 +99,11 @@ public class CameraController : MonoBehaviour {
 		FadingUpdate();
 		if (GameManager.isPaused)
 			return;
-        if (Input.GetKey(KeyCode.I))
-        {
+        if (Input.GetKey(KeyCode.I)){
             fadeIn = true;
             fadeOut = false;
         }
-        else if (Input.GetKey(KeyCode.O))
-        {
+        else if (Input.GetKey(KeyCode.O)){
             fadeIn = false;
             fadeOut = true;
         }

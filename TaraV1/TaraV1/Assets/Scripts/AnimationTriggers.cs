@@ -24,28 +24,34 @@ public class AnimationTriggers : MonoBehaviour {
 	//Regular enemy triggers
 	
 	private void enemyAttackStart(){
+		if(this.tag == "Wolf"){
+			animation["WolfAttack"].speed = 0.5f;	
+		}
 		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = true;
 	}
 	
 	private void enemyAttackStop(){
+		if(this.tag == "Wolf"){
+			animation["WolfAttack"].speed = 0.8f;	
+		}
 		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = false;
 	}
 	
 	//Mech's triggers
 	private void mechSlowDown(){
-		animation["MechAttack1"].speed = 0.1f;	
+		animation["MechAttack1"].speed = 0.25f;	
 	}
 	
 	private void mechGatlingStart(){
 		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
 		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = true;
-		animation["MechAttack1"].speed = 0.1f;
+		animation["MechAttack1"].speed = 0.25f;
 	}
 	
 	private void mechGatlingStop(){
 		transform.FindChild("left_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
 		transform.FindChild("right_wrist_control_grp").GetComponent<BoxCollider>().enabled = false;
-		animation["MechAttack1"].speed = 0.1f;
+		animation["MechAttack1"].speed = 0.5f;
 	}
 	
 	private void mechMissileAttack(){
@@ -56,20 +62,30 @@ public class AnimationTriggers : MonoBehaviour {
         positions[0] = LevelLoader.Get().mainPlayer.transform.position;
         positions[0].y = -1.33f;
         Instantiate(ResourceManager.Get().preMissileTarget, positions[0], this.transform.rotation);
-        GameObject missile = Instantiate(ResourceManager.Get().preMissile, new Vector3(positions[0].x, 20.0f, positions[0].z), ResourceManager.Get().preMissile.transform.rotation) as GameObject;
+        GameObject missile = Instantiate(ResourceManager.Get().preMissile, new Vector3(positions[0].x, 30.0f, positions[0].z), ResourceManager.Get().preMissile.transform.rotation) as GameObject;
         missile.transform.localScale = missile.transform.localScale * 1.5f;
         missile.rigidbody.AddForce(Vector3.down * 10.0f);
 
         for (int i = 1; i < howmanyMissiles; i++)
         {
-            positions[i] = new Vector3(Random.Range(this.transform.position.x - 15.0f, this.transform.position.x + 15.0f), -1.33f, Random.Range(this.transform.position.z - 15.0f, this.transform.position.z + 15.0f));
+            positions[i] = new Vector3(Random.Range(this.transform.position.x - 15.0f, this.transform.position.x + 15.0f), 0.2f, Random.Range(this.transform.position.z - 15.0f, this.transform.position.z + 15.0f));
 			Instantiate(ResourceManager.Get().preMissileTarget,positions[i], this.transform.rotation);
 			missile = Instantiate(ResourceManager.Get().preMissile,new Vector3(positions[i].x,20.0f,positions[i].z),ResourceManager.Get().preMissile.transform.rotation ) as GameObject;
             missile.transform.localScale = missile.transform.localScale * 1.5f;
             missile.rigidbody.AddForce(Vector3.down * 10.0f);
 		}
-
-        missilesToFire += 1;
+	}
+	
+	private void larvaRollStart(){
+		this.GetComponent<AIStates>().larvaRoll = true;
+		animation["LarvaAttack"].speed = 0.7f;
+		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = true;
+	}
+	
+	private void larvaRollStop(){
+		this.GetComponent<AIStates>().larvaRoll = false;
+		animation["LarvaAttack"].speed = 0.3f;
+		transform.FindChild("Attackbox").GetComponent<BoxCollider>().enabled = false;
 	}
 	
 	
@@ -98,4 +114,20 @@ public class AnimationTriggers : MonoBehaviour {
         Instantiate(ResourceManager.Get().preAirEffect, transform.FindChild("polySurface1").transform.position - new Vector3(0,2.0f,0), this.gameObject.transform.rotation);
         Instantiate(ResourceManager.Get().preAir, transform.FindChild("polySurface1").transform.position, this.gameObject.transform.rotation);
     }
+	
+	//Queen triggers
+	
+	private void queenDelay(){
+		animation["QueenAttack"].speed = 0.2f;		
+	}
+	
+	private void queenSwing(){
+		animation["QueenAttack"].speed = 0.5f;
+		transform.FindChild("attackBox").GetComponent<BoxCollider>().enabled = true;
+	}
+	
+	private void queenDone(){	
+		animation["QueenAttack"].speed = 0.8f;
+		transform.FindChild("attackBox").GetComponent<BoxCollider>().enabled = false;
+	}
 }

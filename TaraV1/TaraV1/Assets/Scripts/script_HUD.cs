@@ -10,8 +10,8 @@ using UnityEngine;
 using System.Collections;
 
 public class script_HUD : MonoBehaviour {
-	private Texture texCharPortrait, texHP, texGrenadeIcon, texBunny, texBunnyBG;
-	Rect rectCharPortrait, rectSrcCharPortrait, rectHP, rectGrenadeIcon, rectBunny, rectBunnyBG;
+	private Texture texCharPortrait, texHP, texBunny, texBunnyBG;
+	Rect rectCharPortrait, rectSrcCharPortrait, rectHP, rectBunny, rectBunnyBG;
 	// HP Flow
 	float intHPFlow, intHPRange;
 	private float range = 0.0f;
@@ -25,36 +25,30 @@ public class script_HUD : MonoBehaviour {
 		//texHPBG = (Texture)Resources.Load("texHP");
 		//texHP = (Texture)Resources.Load("texHP");
 		//texGrenadeIcon = (Texture)Resources.Load("texGrenade");
-		// Calculate Positions
+		//Calculate Positions
 		texCharPortrait = ResourceManager.Get().tex_HUD_HeadTexture;
 		texHP = ResourceManager.Get().tex_HUD_HPBar;
-		texGrenadeIcon = ResourceManager.Get().tex_HUD_Grenade;
 		texBunny = ResourceManager.Get().tex_HUD_BunnyBar;
 		texBunnyBG = ResourceManager.Get().tex_HUD_BunnyBarBG;
 		rectCharPortrait = new Rect(10,10, texCharPortrait.width / 4, texCharPortrait.height / 4);
 		rectSrcCharPortrait = new Rect(0,0, 1, 1);
 		//rectSrcCharPortrait = new Rect(0,0, 0.2f, 1);
 		rectHP = new Rect(80, 20, texHP.width * 0.5f, 40.0f);
-		rectGrenadeIcon = new Rect(80, 110, texGrenadeIcon.width, texGrenadeIcon.height);
 		rectBunny = new Rect(80,70,texBunny.width,texBunny.height);
 		rectBunnyBG = new Rect(80,70,texBunnyBG.width, texBunnyBG.height);
-		//Bun: 204,36
 	}
 	void OnGUI(){
 		if (GameManager.isPaused)
 			return;
 		// Draw The Pause Button
-		if (GUI.Button(new Rect(Screen.width / 2 - 25,25,50,50), "II")){
+		/*if (GUI.Button(new Rect(Screen.width / 2 - 25,25,50,50), "II")){
 			GameManager.isPaused = true;
 			MenuMain.Get().show = true;
-		}
+		}*/
 		//GUI.DrawTexture(rectCharPortrait,texCharPortrait);
 		GUI.DrawTextureWithTexCoords(rectCharPortrait,texCharPortrait,rectSrcCharPortrait);
 		//GUI.DrawTextureWithTexCoords(rectHPBG,texHPBG, rectSrcHPBG);
 		//GUI.DrawTextureWithTexCoords(rectHP,texHP,rectSrcHP);
-		
-		GUI.DrawTexture(rectGrenadeIcon, texGrenadeIcon);
-		GUI.Label(new Rect(80,130,100,100),"Coins:" + GameManager.userData.currency);
 		
 		//Bunny bar
 		GUI.DrawTexture(rectBunnyBG,texBunnyBG);
@@ -72,23 +66,13 @@ public class script_HUD : MonoBehaviour {
 		// Stop updating while pausing
 		if (GameManager.isPaused)
 			return;
-		// HP Bar flowing
-		/*intHPFlow += 5 * Time.deltaTime * 60;
-		if (intHPFlow >= texHP.width / 3 * 2)
-			intHPFlow = 0;
-		rectSrcHP = new Rect(intHPFlow / texHP.width, 0.5f, 1, 0.5f);*/
-		// Update the HP Bar
 		SyncPlayerStatus();
 	}
 	void SyncPlayerStatus(){
         if (LevelLoader.Get().mainPlayer != null)
         {
             UnitPlayer player = GameObject.FindGameObjectWithTag("Player").GetComponent<UnitPlayer>();
-            if (player != null)
-            {
-                //rectHP = new Rect(130, 30, texHP.width * 0.5f / player.MaxHP * player.CurHP, texHP.height * 0.5f * 5);
-
-                //make range go from 0 to 1 depending on the player's HP ratio
+            if (player != null){
                 range = (((float)player.CurHP / (float)player.MaxHP) - 1.0f) * -1.0f;
             }
         }

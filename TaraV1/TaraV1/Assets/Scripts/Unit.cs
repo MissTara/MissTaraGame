@@ -172,7 +172,7 @@ public class Unit : MonoBehaviour {
 		float now = Time.realtimeSinceStartup;										// Get the current time
 		//if (canAttack && now - lastAttackTime > 1.2f){									// If time span more than the attack interval
 			lastAttackTime = now;													// Update the lastAttackTime
-			Instantiate(particleAttack, contactPoint,transform.rotation);		// Create attack particle
+			//Instantiate(particleAttack, contactPoint,transform.rotation);		// Create attack particle
 		//print("Attack" +Time.realtimeSinceStartup);
 			return true;
 		//}
@@ -184,7 +184,7 @@ public class Unit : MonoBehaviour {
         AudioClip atkOn = ResourceManager.Get().se_AttackOn;
 			if (atkOn != null)
 				audio.PlayOneShot(atkOn);
-		Instantiate(particleBeingAttacked, transform.position,transform.rotation);
+		//Instantiate(particleBeingAttacked, transform.position,transform.rotation);
 		if (CurHP == 0 && !dead){
 			dead = true;
 		}
@@ -194,9 +194,9 @@ public class Unit : MonoBehaviour {
 		deadAlready = true;
 		CurHP = 0;
 		if (particleDestoried){
-			Transform tempParticle;
-			tempParticle = Instantiate(particleDestoried, transform.position,transform.rotation) as Transform;
-			tempParticle.parent = transform;
+			//Transform tempParticle;
+			//tempParticle = Instantiate(particleDestoried, transform.position,transform.rotation) as Transform;
+			//tempParticle.parent = transform;
 		}
 		AIEnemy AI = GetComponent<AIEnemy>();
 		

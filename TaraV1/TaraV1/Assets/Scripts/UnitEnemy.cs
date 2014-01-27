@@ -11,7 +11,8 @@ using UnityEngine;
 using System.Collections;
 
 public class UnitEnemy : Unit {
-	public Transform dropItem;
+	private int dropChanceHealth = 1;
+	private int dropChanceAmmo = 1;
 	// Use this for initialization
 	void Start () {
 		//generateRewards(1);
@@ -30,6 +31,14 @@ public class UnitEnemy : Unit {
 		dropItems();	
 	}
 	protected void dropItems(){
+		if(true){ //Health drop
+			Instantiate(ResourceManager.Get().preNoteTreble,this.transform.position,this.transform.rotation);
+			//Reset the counter
+		}
+		
+		if (true){ //Ammo drop
+			
+		}
 		//Vector3 itemLocation = (new Vector3(1,1,1)) + transform.position;
 		//Instantiate (itemDrop, transform.position, transform.rotation);
 		//itemLocation = (new Vector3(2,1,2)) + transform.position;
@@ -41,21 +50,5 @@ public class UnitEnemy : Unit {
 			if (c.tag == "deathBonus")
 			{c.Active = true;}
 		}
-	}
-	private void generateRewards(int algoID){
-		if (dropItem == null)
-			return;
-		Transform tmpReward, tran = this.transform;
-		Transform item = dropItem;
-		//print(item);
-		tmpReward = Instantiate(item,tran.position + new Vector3(Random.Range(-2f,2f),1,Random.Range(-2f,2f)),tran.rotation) as Transform;
-		//print(tmpReward);
-		tmpReward.tag = "deathBonus";
-		tmpReward.parent = tran;
-		ColliderPickup tmpCP = tmpReward.GetComponent<ColliderPickup>();
-		if (tmpCP){
-			tmpCP.Active = false;
-		}
-		
 	}
 }
