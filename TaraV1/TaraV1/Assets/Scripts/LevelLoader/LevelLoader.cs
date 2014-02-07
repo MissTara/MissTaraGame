@@ -29,7 +29,7 @@ public class LevelLoader : MonoBehaviour
     private static LevelLoader m_Instance = null;
     private GameObject levelToLoad;
     private int levelTextNum;
-	public bool bossLevel = false;
+	public bool bossLevel,sceneDone = false;
 
     [System.NonSerialized]public GameObject collideWall;
     [System.NonSerialized]public bool boolSetNewLevel=false;
@@ -87,14 +87,16 @@ public class LevelLoader : MonoBehaviour
 
                             if (level.GetComponent<Level>().isBossLevel){
 								bossLevel = true;
-								if(loadLevel == 1.1){
+								if(levelTextNum == 1.1){
 									levelText.text = "Club";
-								}else if (loadLevel == 2.1){
+									CameraController.Get().cameraSelf.transform.position -= new Vector3(20,-20,-10);
+								}else if (levelTextNum == 2.1){
 									levelText.text = "Spaceship";
-								}else if (loadLevel == 3.1){
+									CameraController.Get().cameraSelf.transform.position -= new Vector3(20,-30,-10);
+								}else if (levelTextNum == 3.1){
 									levelText.text = "Home World";
+									CameraController.Get().cameraSelf.transform.position -= new Vector3(20,-20,-10);
 								}
-								CameraController.Get().cameraSelf.transform.position -= new Vector3(20,-20,-10);
 							}else{
 								GameObject tmpCollideWall;
 								if(levelTextNum == 1){
@@ -113,21 +115,35 @@ public class LevelLoader : MonoBehaviour
                         }
                     }
                 }
-                if (mainPlayer != null)
-                {
-                    mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
-					Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
-                    //cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
-                    boolSetNewLevel = false;
-                    return;
-                }
-                else
-                {
-                    mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
-                    mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
-					Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
-                    boolSetNewLevel = false;
-                    return;
+                if (mainPlayer != null){
+					if(bossLevel){
+            	        mainPlayer.transform.localPosition = new Vector3(0, 0, 20);
+						Bunny.transform.localPosition = new Vector3(0,0,25);
+	                    boolSetNewLevel = false;
+                    	return;
+					}else{
+						mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
+						Bunny.transform.localPosition = new Vector3(0,0,0);
+    	                //cameraObject.transform.localPosition = new Vector3(-27, 0, 0);
+        	            boolSetNewLevel = false;
+            	        return;
+					}
+                }else{
+					if(bossLevel){
+            	        mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+        	            mainPlayer.transform.localPosition = new Vector3(0,0,20);
+						Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
+						Bunny.transform.localPosition = new Vector3(0,0,25);
+	                    boolSetNewLevel = false;
+                    	return;
+					}else{
+						mainPlayer = Instantiate(ResourceManager.Get().preMainPlayer, Vector3.zero, Quaternion.Euler(Vector3.zero)) as GameObject;
+        	            mainPlayer.transform.localPosition = new Vector3(0, 0, -10);
+						Bunny = Instantiate(ResourceManager.Get().preBunny,Vector3.zero,Quaternion.Euler(Vector3.zero)) as GameObject;
+						Bunny.transform.localPosition = new Vector3(0,0,0);
+	                    boolSetNewLevel = false;
+                    	return;
+					}
                 }
             }
 
@@ -145,7 +161,6 @@ public class LevelLoader : MonoBehaviour
                         if (GeometryUtility.TestPlanesAABB(planes, building.collider.bounds) == false)
                         {
                             building.gameObject.SetActive(false);
-                            //DestroyImmediate(building.gameObject, true);
                         }
                     }
                 }
@@ -155,6 +170,9 @@ public class LevelLoader : MonoBehaviour
                     {
                         enemy.GetComponent<AIPathCustom>().target = mainPlayer.transform;
                     }
+					if(bossLevel && !sceneDone && levelToLoad.GetComponent<Level>().levelNumber == 1.1)
+						CameraController.Get().cameraTarget = GameObject.Find("bossView").transform;
+					else 
 						CameraController.Get().cameraTarget = mainPlayer.transform;
                 }
             }
@@ -177,4 +195,10 @@ public class LevelLoader : MonoBehaviour
             
         }
     }
+	
+	public void bossSceneOver(){
+		mainPlayer.transform.localPosition = new Vector3(0,0,-10);
+		Bunny.transform.localPosition = new Vector3(0,0,0);
+		sceneDone = true;
+	}
 }

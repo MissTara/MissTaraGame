@@ -35,24 +35,24 @@ public class AIBoss : MonoBehaviour
 
     #region private variables
     private bool isRotating;
-    private bool canRotate;
-    private string direction;
-    private float tempX;
-    private float rotateSpeed = 4.0f;
+    //private bool canRotate;
+    //private string direction;
+    //private float tempX;
+    //private float rotateSpeed = 4.0f;
 
     private Vector3 worldPosition;
     private Vector3 screenPosition;
     private float hp;
     private float maxHP;
-    private bool angry;
+    //private bool angry;
     #endregion
 
     void Awake()
     {
-        angry = false;
+        //angry = false;
         isRotating = false;
-        direction = "";
-        canRotate = true;
+        //direction = "";
+        //canRotate = true;
 
         this.GetComponent<AIPathCustom>().CurHP = this.GetComponent<AIPathCustom>().MaxHP;
 
@@ -71,10 +71,9 @@ public class AIBoss : MonoBehaviour
         	return;
         }
     	if (targetPlayer != null)
-        	defend(targetPlayer);
+        	//defend(targetPlayer);
 
-        if (healthBar != null)
-	    {
+        if (healthBar != null){
         	screenPosition = LevelLoader.Get().camera.WorldToScreenPoint(GameObject.Find("bar").transform.position);
     	    screenPosition.z = 0;
 	        healthBar.transform.position = LevelLoader.Get().camera.WorldToViewportPoint(GameObject.Find("bar").transform.position);
@@ -82,6 +81,15 @@ public class AIBoss : MonoBehaviour
 
         	float healthBarWidth = hp / maxHP;
     	    healthBar.gameObject.transform.Find("bar").guiTexture.pixelInset = new Rect(-4f, -6f, 60 * healthBarWidth, 10);
+			
+			//GUI.BeginGroup(new Rect(500,400,healthBarWidth,10));
+			//GUI.EndGroup();
+				
+			/*
+			 	GUI.BeginGroup(new Rect(80,20,rectHP.width, 40.0f));
+				GUI.DrawTexture(new Rect(-rectHP.width * range, 0.0f, rectHP.width, 40.0f),texHP);
+				GUI.EndGroup();
+			*/
 	    }
 
         if (healthBar != null && this.GetComponent<AIStates>().EnemyState == AIStates.states.Death)
@@ -89,12 +97,13 @@ public class AIBoss : MonoBehaviour
 	        Destroy(this.healthBar);
         }
     }
+	
+	void OnGUI(){
+		//GUI.DrawTexture(new Rect(500,400,healthBarWidth,10),healthBar.GetComponent<GUITexture>().texture);
+	}
 
-    protected void defend(Transform player)
-    {
-
-        if (player != null)
-        {
+    /*protected void defend(Transform player){
+        if (player != null){
             if (canDodge && player.GetComponent<UnitPlayer>().projectile != null 
                 && player.GetComponent<UnitPlayer>().projectile.isReadByBoss == false 
                 && !isRotating
@@ -108,8 +117,8 @@ public class AIBoss : MonoBehaviour
                     {
                         Debug.Log("left");
                         isRotating = true;
-                        tempX = 0;
-                        direction = "left";
+                        //tempX = 0;
+                       // direction = "left";
                         player.GetComponent<UnitPlayer>().projectile.isReadByBoss = true;
                     }
                 }
@@ -119,8 +128,8 @@ public class AIBoss : MonoBehaviour
                     {
                         Debug.Log("right");
                         isRotating = true;
-                        tempX = 0;
-                        direction = "right";
+                        //tempX = 0;
+                        //direction = "right";
                         player.GetComponent<UnitPlayer>().projectile.isReadByBoss = true;
 
                     }
@@ -130,13 +139,13 @@ public class AIBoss : MonoBehaviour
 
             if (isRotating)
             {
-                this.GetComponent<AIStates>().EnemyState = AIStates.states.Jump;
-                dodge(direction);
+                //this.GetComponent<AIStates>().EnemyState = AIStates.states.Jump;
+                //dodge(direction);
             }
         }
-    }
+    }*/
 
-    void dodge(string direction)
+    /*void dodge(string direction)
     {
         tempX += this.GetComponent<AIPathCustom>().speed * rotateSpeed / 8;
         if (tempX < dodgeAngle)
@@ -162,13 +171,6 @@ public class AIBoss : MonoBehaviour
             this.GetComponent<AIPathCustom>().SearchPathAgain();
             return;
         }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-    	if (other.tag == "Sidewalls" && isRotating){
-            
-		}
-    } 
+    }*/
 
 }

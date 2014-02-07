@@ -664,6 +664,13 @@ public class AIPathCustom : MonoBehaviour, ICombat
     }
 
 	public void Die(){
+		if(gameObject.layer == 10){
+			if(GameManager.Get().chanceDrop(0)){
+				GetComponent<UnitEnemy>().dropItems(0);	
+			}else if (GameManager.Get().chanceDrop(1)){
+				GetComponent<UnitEnemy>().dropItems(1);
+			}
+		}
 		dead = true;
 		AnimControl.EnemyState = AIStates.states.Death;
 		canSearch = false;

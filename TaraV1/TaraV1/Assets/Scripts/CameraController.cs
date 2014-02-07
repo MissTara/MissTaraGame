@@ -115,19 +115,19 @@ public class CameraController : MonoBehaviour {
 
 		if (GameManager.isPaused && LevelLoader.Get().boolSetNewLevel == true)
 			return;
-		if(LevelLoader.Get().bossLevel)
-			dstPos = new Vector3(cameraSelf.position.x,GameObject.Find("bossView").transform.position.y,cameraTarget.position.z);
-		else
+		//if(LevelLoader.Get().bossLevel)
+			//dstPos = new Vector3(cameraSelf.position.x,GameObject.Find("bossView").transform.position.y,cameraTarget.position.z);
+		//else
 			dstPos = new Vector3(cameraSelf.position.x,cameraTarget.position.y,cameraTarget.position.z);
 		
 		if (Vector3.Distance(cameraSelf.position, dstPos) > 0.5f && !Locked)
         {
 			if(LevelLoader.Get().bossLevel){ 
-				if((cameraTarget.position.z - oldZ) < 0.0f && GameObject.Find("bossView").transform.position.z > -30.0f){
-					GameObject.Find("bossView").transform.position += new Vector3(0.0f, 0.0f,-Time.deltaTime * 2);
+				if((cameraTarget.position.z - oldZ) < 0.0f){
+					//GameObject.Find("bossView").transform.position += new Vector3(0.0f, 0.0f,-Time.deltaTime * 2);
 					cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 5);
-				}else if ((cameraTarget.position.z - oldZ) > 0.0f && GameObject.Find("bossView").transform.position.z < -25.0f){
-					GameObject.Find("bossView").transform.position += new Vector3(0.0f, 0.0f,Time.deltaTime * 2);
+				}else if ((cameraTarget.position.z - oldZ) > 0.0f){
+//					GameObject.Find("bossView").transform.position += new Vector3(0.0f, 0.0f,Time.deltaTime * 2);
             		cameraSelf.position = Vector3.Lerp(cameraSelf.position, dstPos, Time.deltaTime * 5);
 				}
 			}else{

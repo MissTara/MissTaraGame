@@ -137,10 +137,8 @@ public class Unit : MonoBehaviour {
 		// Stop updating while pausing
 		if (GameManager.isPaused)
 			return;
-		if (dead && !deadAlready)
+		if (dead && !deadAlready && gameObject.layer != 10)
 			die ();
-		else if (!dead && deadAlready)
-			revive();
 		// Determine speed
 		if (run && canRun && controller.isGrounded)
 			move *= speedRun;

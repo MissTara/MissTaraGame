@@ -16,8 +16,6 @@ public class script_HUD : MonoBehaviour {
 	float intHPFlow, intHPRange;
 	private float range = 0.0f;
 	public float rangeBunny = 1.0f;
-	public int ammo = 5;
-	private int maxAmmo = 10;
 	// Use this for initialization
 	void Start () {
 		// Load Textures
@@ -76,12 +74,6 @@ public class script_HUD : MonoBehaviour {
                 range = (((float)player.CurHP / (float)player.MaxHP) - 1.0f) * -1.0f;
             }
         }
-	}
-	public void changeAmmo(int ammount){
-		if(ammo + ammount >= maxAmmo)
-			ammo = maxAmmo;
-		else
-			ammo += ammount;	
 	}
 	
 	IEnumerator bunnyGuage(){

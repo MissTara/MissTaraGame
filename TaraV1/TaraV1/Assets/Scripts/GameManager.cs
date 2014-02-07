@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 			_isPaused = value;
 		}
 	}
+	public int dropChanceHealth = 0;
+	public int dropChanceAmmo = 0;
 	
 	//public static int Coins = 0; Deprecated
 	
@@ -51,9 +53,7 @@ public class GameManager : MonoBehaviour
 				MainPlayer.gainHealth(3);
 			break;
 		case 2:						// Gain Ammo
-			if (true){
-				
-			}
+				MainPlayer.changeAmmo(3);
 			break;
 		case 3:						// Set Check Point
 			setCheckPoint();
@@ -276,8 +276,23 @@ public class GameManager : MonoBehaviour
 	void CreateFPSMonitor(){
 		Instantiate(RM.preFPSMonitor);
 	}
-	void CreateCurriencies(){
-		
+	
+	public bool chanceDrop(int which){
+		int dropper = UnityEngine.Random.Range(0,10);
+		if (which == 0){
+			if(dropper <= dropChanceHealth){
+				dropChanceHealth = 0;
+				return true;
+			}
+		}else if (which == 1){
+			if(dropper <= dropChanceAmmo){
+				dropChanceAmmo = 0;
+				return true;
+			}
+		}
+		dropChanceHealth++;
+		dropChanceAmmo++;
+		return false;
 	}
 	void Update(){
 		// Spawn Enemy if you're allowed to

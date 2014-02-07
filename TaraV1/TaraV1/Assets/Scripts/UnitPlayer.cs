@@ -83,6 +83,8 @@ public class UnitPlayer : Unit,ICombat {
     private bool specialAtkButtonDown,invinsible = false;
 	public ColliderWeapon wepFistRight, wepFistLeft, wepHead;
 	public script_HUD HUD;
+	public int ammo = 5;
+	private int maxAmmo = 10;
 	// Use this for initialization
 	void Awake(){
 		GameManager.isPaused = false;
@@ -300,11 +302,11 @@ public class UnitPlayer : Unit,ICombat {
 		if (!invinsible){
 			int BaseAttack = weapon.BaseDamage;
 			BattleCore.elements Ele = weapon.Element;
-			PopoutNum pop = PopoutNum.Get();
+			//PopoutNum pop = PopoutNum.Get();
 			int Damage = BattleCore.CalculateDamage(BaseAttack,Ele,this.Armour.BaseArmour,this.Armour.Element);
-			if (pop != null){
+			/*if (pop != null){
 				pop.popupText(this.transform.position,Damage, (int)Ele);
-			}
+			}*/
 			CurHP-= Damage;
 			transparency = 0.5f;
 			if (CurHP == 0){
@@ -327,15 +329,14 @@ public class UnitPlayer : Unit,ICombat {
         transparency = 0.5f;
         if (CurHP == 0)
         {
-            // Death
+            //Death
             GameManager.GameOver();
             CameraController.Get().fadeIn = false;
             CameraController.Get().fadeOut = true;
             GameManager.isPaused = true;
             dead = true;
         }
-        else
-        {
+        else{
             invinsible = true;
             StartCoroutine("invinsiTime");
         }
@@ -345,13 +346,15 @@ public class UnitPlayer : Unit,ICombat {
 		if (GameManager.isPaused)
 			return;
 		if (transparency > 0){
-			GUI.color = new Color(GUI.color.r,GUI.color.g,GUI.color.b,transparency) ;
+			if(true)
+				GUI.color = new Color(GUI.color.r,GUI.color.g,GUI.color.b,transparency);
+			else
+				GUI.color = new Color(0,255,0,transparency);
 			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height), ResourceManager.Get().tex_HurtScreen);
 			transparency = Mathf.Max(0, transparency - 0.05f);
 		}
 	}
-	protected override void die ()
-	{
+	protected override void die (){
 		print("Player Die");
 	}
 	public void AddImpact(Vector3 dir, float force){}
@@ -361,15 +364,22 @@ public class UnitPlayer : Unit,ICombat {
 	public void UpdateShooting(){
 	// Shoot System
 	// Once we're ready to make ammo limited, add this: && HUD.ammo > 0
-		if ((Input.GetKeyDown(KeyCode.Space)|| script_vcontroller.isJump())&& HUD.ammo > 0){
+		if ((Input.GetKeyDown(KeyCode.Space)|| script_vcontroller.isJump())&& ammo > 0){
 			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), this.transform.rotation) as GameObject;
             if (bullet != null){
                 projectile = bullet.GetComponentInChildren<ColliderProjectile>();
 				if(GetComponent<CharacterController>().velocity != Vector3.zero)
 					projectile.speed += speedMove;
             }
-				HUD.changeAmmo(-1);
+				ammo--;
 		}
+	}
+	
+	public void changeAmmo(int ammount){
+		if(ammo + ammount >= maxAmmo)
+			ammo = maxAmmo;
+		else
+			ammo += ammount;	
 	}
 	
 	IEnumerator invinsiTime(){

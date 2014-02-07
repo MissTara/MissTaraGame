@@ -67,24 +67,11 @@ public class ColliderPickup : MonoBehaviour
 	private float degree = 0f;
 	private bool isDestorying = false;
 	void Start(){
-        /*if (particleStandBy != null)
-        {
-            Instantiate(particleStandBy, this.transform.position, this.transform.rotation);
-
-            emitter = particleStandBy.Find("SparkleParticlesSecondary").GetComponent(typeof(ParticleEmitter)) as ParticleEmitter;
-
-            if (emitter != null)
-            {
-                emitter.emit = true;
-            }
-        }*/
-		
 		if (spawnNum != mobSpawn.Length){
 			print("Mob array does not match the enemy spawn count.");
 			this.enabled = false;
 			return;
 		}
-
 	}
 	void OnTriggerEnter(Collider other){
 		if (!Active)
@@ -211,14 +198,14 @@ public class ColliderPickup : MonoBehaviour
 			Activated = true;
 		}
 		
-		if (!StaticItem){
+		/*if (!StaticItem){
 			renderer.enabled = false;
 			Destroy (gameObject, audioPickupSE.length);
-		}
+		}*/
 		
 	}
 	IEnumerator bossIntro(){
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(3.0f);
 		startBossScene();
 	}
 	
@@ -230,7 +217,7 @@ public class ColliderPickup : MonoBehaviour
 		foreach(GameObject dancer in ((Level)this.transform.parent.GetComponent(typeof(Level))).dancers){
 			dancer.GetComponent<GogoDancer>().cutsceneOver();
 		}
-		CameraController.Get().cameraTarget = GameObject.Find("bossView").transform;
+		LevelLoader.Get().bossSceneOver();
 		bossSceneDone  = true;
 	}
 }
