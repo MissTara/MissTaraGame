@@ -170,7 +170,7 @@ public class LevelLoader : MonoBehaviour
                     {
                         enemy.GetComponent<AIPathCustom>().target = mainPlayer.transform;
                     }
-					if(bossLevel && !sceneDone && levelToLoad.GetComponent<Level>().levelNumber == 1.1)
+					if(bossLevel && !sceneDone && levelToLoad.GetComponent<Level>().levelNumber == 1.1f)
 						CameraController.Get().cameraTarget = GameObject.Find("bossView").transform;
 					else 
 						CameraController.Get().cameraTarget = mainPlayer.transform;
@@ -197,6 +197,11 @@ public class LevelLoader : MonoBehaviour
     }
 	
 	public void bossSceneOver(){
+		StartCoroutine("bossScene");
+	}
+	
+	IEnumerator bossScene(){
+		yield return new WaitForSeconds(1.0f);	
 		mainPlayer.transform.localPosition = new Vector3(0,0,-10);
 		Bunny.transform.localPosition = new Vector3(0,0,0);
 		sceneDone = true;

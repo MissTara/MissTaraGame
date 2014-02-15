@@ -12,9 +12,9 @@ public class AnimationTriggers : MonoBehaviour {
 	private void AlienAttack(){
 		GameObject bullet;
 		if(this.tag == "GunAlien")
-			bullet = Instantiate(ResourceManager.Get().preEnemyBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.left *2), this.transform.rotation) as GameObject;
+			bullet = Instantiate(ResourceManager.Get().preGunLazer,this.transform.position + this.transform.TransformDirection(Vector3.up * 3), this.transform.rotation) as GameObject;
 		else
-			bullet = Instantiate(ResourceManager.Get().preEnemyBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.left *2), this.transform.rotation) as GameObject; // + this.transform.TransformDirection(Vector3.forward)
+			bullet = Instantiate(ResourceManager.Get().prePlasma,this.transform.position + this.transform.TransformDirection(Vector3.up * 4) + this.transform.InverseTransformDirection(Vector3.forward * 2), this.transform.rotation) as GameObject;
 			if (bullet != null){
 				projectile = GetComponent<ColliderProjectile>();
 			}

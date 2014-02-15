@@ -161,6 +161,8 @@ public class AIPathCustom : MonoBehaviour, ICombat
      * in the awake stage (or rather before start on frame 0).
      */
     private bool startHasRun = false;
+	
+	public bool canBeHit = true;
 
     /** Initializes reference variables.
      * If you override this function you should in most cases call base.Awake () at the start of it.
@@ -613,19 +615,29 @@ public class AIPathCustom : MonoBehaviour, ICombat
 	}
 	public void onAttack(Vector3 contactPoint){}
 	public void hurt(ItemWeapon weapon){ 
-		if (!dead){
-			AnimControl.EnemyState = AIStates.states.Hit;
-			int damage = BattleCore.CalculateDamage(weapon.BaseDamage,weapon.Element,BaseArmour,Element);
-			PopoutNum pop = PopoutNum.Get();
-			if (pop != null){
-				pop.popupText(this.transform.position,damage,(int)weapon.Element);
+		if (!dead && canBeHit){
+			if(AnimControl.EnemyState == AIStates.states.Attack && this.tag == "Bear" ||
+			   AnimControl.EnemyState == AIStates.states.Attack && this.tag == "Bat" ||
+			   AnimControl.EnemyState == AIStates.states.Attack && this.tag == "Hover" ||
+			   AnimControl.EnemyState == AIStates.states.Attack && this.tag == "Sword" ||
+				AnimControl.EnemyState == AIStates.states.Attack && this.tag == "MechBoss" ||
+				AnimControl.EnemyState == AIStates.states.Attack && this.tag == "CaptainBoss" ||
+				AnimControl.EnemyState == AIStates.states.Attack && this.tag == "Queen"
+			   ){}else{
+					AnimControl.EnemyState = AIStates.states.Hit;
+					if(this.tag != "Sword" || this.tag != "Wolf")
+						animation.Play("Hit");
+					canMove = false;
+					canSearch = false;
 			}
-			else
-				print("AIPathCustom->No Popup in the scene");
+			int damage = BattleCore.CalculateDamage(weapon.BaseDamage,weapon.Element,BaseArmour,Element);
 			CurHP -= damage;
+			canBeHit = false;
 			if (CurHP == 0){
 				GameObject.Find("CameraSelf").GetComponentInChildren<script_HUD>().StartCoroutine("bunnyGuage");
 				Die();
+			}else{
+				StartCoroutine("resetHit");	
 			}
 		}
 	}
@@ -686,6 +698,11 @@ public class AIPathCustom : MonoBehaviour, ICombat
 	public void EnemyUpdate(){
 		if (dead && !AnimControl.animation.isPlaying)
 			LateDie();
+	}
+	
+	IEnumerator resetHit(){
+		yield return new WaitForSeconds(1.0f);
+		canBeHit = true;	
 	}
 	public void dropItems(){
 		

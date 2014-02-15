@@ -135,15 +135,18 @@ public class AIStates : MonoBehaviour
         else if (EnemyState == states.Dance){
             if (!died){
                 animation.Play("GunAlienDance");
-
                 if (!animation.IsPlaying("GunAlienDance"))
                     EnemyState = states.Death;
             }
         }
 
-        if (hitted == true && !died){
-            animation.Play("GunAlienHurt");
-            hitted = false;
+        if (EnemyState == states.Hit && !died){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("GunAlienIdle");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
         }
     }
 
@@ -214,10 +217,14 @@ public class AIStates : MonoBehaviour
         else
 			controller.Move(dir * speed * Time.deltaTime);
 		
-		if (hitted && !died){
-			animation.Play("BatHit");
-			hitted = false;
-		}
+        if (EnemyState == states.Hit && !died && !attacking){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("BatFly");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
+        }
     }
 	
 	IEnumerator batAttack(){
@@ -273,9 +280,13 @@ public class AIStates : MonoBehaviour
                     EnemyState = states.Death;
             }
         }
-        if (hitted == true && !died){
-            animation.Play("BearHit");
-            hitted = false;
+        if (EnemyState == states.Hit && !died && !attacking){
+			if(!animation.IsPlaying("Hit")){
+					animation.Play("BearIdle");
+					EnemyState = states.Idle;
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+			}
         }
 	}
 	
@@ -317,10 +328,6 @@ public class AIStates : MonoBehaviour
     	        if (!animation.IsPlaying("WolfDance"))
           	        EnemyState = states.Death;
 	        }
-	    }
-        if (hitted == true && !died){
-           	animation.Play("WolfHit");
-            hitted = false;
 	    }
 	}
 	
@@ -365,9 +372,13 @@ public class AIStates : MonoBehaviour
             }
         }
 
-        if (hitted == true && !died){
-            animation.Play("AlienHurt");
-            hitted = false;
+        if (EnemyState == states.Hit && !died){
+			if(!animation.IsPlaying("Hit")){
+					animation.Play("AlienIdle");
+					EnemyState = states.Idle;
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+			}
         }
     }
 	
@@ -409,14 +420,61 @@ public class AIStates : MonoBehaviour
           	        EnemyState = states.Death;
 	        }
 	    }
-        if (hitted == true && !died){
-           	animation.Play("HoverHit");
-            hitted = false;
-	    }
+        if (EnemyState == states.Hit && !died && !attacking){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("HoverIdle");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
+        }
 	}
 	
 	private void playSlime(){
-		
+		if (EnemyState == states.Attack && !died && !attackWait){
+			if(!attacking){					//If he isnt already attacking, start doing so
+				AIPathing.canMove = false;
+				AIPathing.canSearch = false;
+				animation.Play("SlimeAttack");
+		        delay = Time.time;
+				attacking = true;
+			}else{							//Once the attack animation is done
+				if(!animation.IsPlaying("SlimeAttack")){
+					animation.Stop("SlimeAttack");
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+					EnemyState = states.Run;
+					attacking = false;
+				}
+			}
+    	}
+		else if (EnemyState == states.Idle)
+            animation.Play("SlimeIdle");
+	    else if (EnemyState == states.Run)
+    	    animation.Play("SlimeWalk");
+        else if (EnemyState == states.Death){
+    	    if (!died){
+            	animation.Stop();
+                animation.Play("SlimeDead");
+	            Debug.Log(states.Death.ToString());
+    	        died = true;
+        	}
+       	}
+	    else if (EnemyState == states.Dance){
+            if (!died){
+               	animation.Play("SlimeIdle");
+    	        if (!animation.IsPlaying("SlimeIdle"))
+          	        EnemyState = states.Death;
+	        }
+	    }
+        if (EnemyState == states.Hit && !died){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("SlimeIdle");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
+		}
 	}
 	
 	private void playSword(){
@@ -455,10 +513,6 @@ public class AIStates : MonoBehaviour
     	        if (!animation.IsPlaying("SwordDance"))
           	        EnemyState = states.Death;
 	        }
-	    }
-        if (hitted == true && !died){
-           	animation.Play("SwordHit");
-            hitted = false;
 	    }
 	}
 	
@@ -499,10 +553,14 @@ public class AIStates : MonoBehaviour
           	        EnemyState = states.Death;
 	        }
 	    }
-        if (hitted == true && !died){
-           	animation.Play("SpearHit");
-            hitted = false;
-	    }
+        if (EnemyState == states.Hit && !died){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("SpearIdle");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
+        }
 	}
 	
 	private void playDoggy(){
@@ -542,10 +600,14 @@ public class AIStates : MonoBehaviour
           	        EnemyState = states.Death;
 	        }
 	    }
-        if (hitted == true && !died){
-           	animation.Play("DogHit");
-            hitted = false;
-	    }
+        if (EnemyState == states.Hit && !died){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("DogIdle");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
+        }
 	}
 	
 	private void playLarva(){
@@ -591,10 +653,14 @@ public class AIStates : MonoBehaviour
           	        EnemyState = states.Death;
 	        }
 	    }
-        if (hitted == true && !died){
-           	animation.Play("LarvaHit");
-            hitted = false;
-	    }
+        if (EnemyState == states.Hit && !died){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("LarvaIdle");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
+        }
 	}
 	
 	private void playHelmet(){
@@ -634,10 +700,14 @@ public class AIStates : MonoBehaviour
           	        EnemyState = states.Death;
 	        }
 	    }
-        if (hitted == true && !died){
-           	animation.Play("HelmetHit");
-            hitted = false;
-	    }
+        if (EnemyState == states.Hit && !died){
+			if(!animation.IsPlaying("Hit")){
+				animation.Play("HelmetIdle");
+				EnemyState = states.Idle;
+				AIPathing.canMove = true;
+				AIPathing.canSearch = true;
+			}
+        }
 	}
 	
 	private void PlayMechBoss(){
@@ -703,10 +773,17 @@ public class AIStates : MonoBehaviour
     	        died = true;
         	}
        	}
-	    else if (EnemyState == states.Dance){
-			 if (!died)
-				animation.Play("MechDance");
-	    }
+	    if (EnemyState == states.Hit && !died && !attacking){
+			animation.Play("MechHit");
+			AIPathing.canMove = false;
+			AIPathing.canSearch = false;
+				if(!animation.IsPlaying("MechHit")){
+					animation.Play("MechIdle");
+					EnemyState = states.Idle;
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+			}
+        }
         else if (EnemyState == states.Jump)
             animation.Play("MechJump");
 	}
@@ -783,10 +860,17 @@ public class AIStates : MonoBehaviour
     	        died = true;
         	}
        	}
-	    else if (EnemyState == states.Dance){
-			 if (!died)
-				animation.Play("captainBossDance");
-	    }
+        if (EnemyState == states.Hit && !died && !attacking){
+			animation.Play("captainBossHit");
+			AIPathing.canMove = false;
+			AIPathing.canSearch = false;
+				if(!animation.IsPlaying("captainBossHit")){
+					animation.Play("captainBossIdle");
+					EnemyState = states.Idle;
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+			}
+        }
 	}
 	
 	private void playQueen(){
@@ -818,6 +902,17 @@ public class AIStates : MonoBehaviour
     	        died = true;
         	}
        	}
+		if (EnemyState == states.Hit && !died && !attacking){
+			animation.Play("QueenHit");
+			AIPathing.canMove = false;
+			AIPathing.canSearch = false;
+				if(!animation.IsPlaying("QueenHit")){
+					animation.Play("QueenIdle");
+					EnemyState = states.Idle;
+					AIPathing.canMove = true;
+					AIPathing.canSearch = true;
+			}
+        }
 	    else if (EnemyState == states.Dance){
 			 if (!died)
 				animation.Play("QueenDance");

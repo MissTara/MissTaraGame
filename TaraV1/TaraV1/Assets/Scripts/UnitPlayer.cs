@@ -346,10 +346,7 @@ public class UnitPlayer : Unit,ICombat {
 		if (GameManager.isPaused)
 			return;
 		if (transparency > 0){
-			if(true)
-				GUI.color = new Color(GUI.color.r,GUI.color.g,GUI.color.b,transparency);
-			else
-				GUI.color = new Color(0,255,0,transparency);
+			GUI.color = new Color(GUI.color.r,GUI.color.g,GUI.color.b,transparency);
 			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height), ResourceManager.Get().tex_HurtScreen);
 			transparency = Mathf.Max(0, transparency - 0.05f);
 		}
@@ -365,7 +362,7 @@ public class UnitPlayer : Unit,ICombat {
 	// Shoot System
 	// Once we're ready to make ammo limited, add this: && HUD.ammo > 0
 		if ((Input.GetKeyDown(KeyCode.Space)|| script_vcontroller.isJump())&& ammo > 0){
-			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 3), this.transform.rotation) as GameObject;
+			GameObject bullet = Instantiate(ResourceManager.Get().preBullet,this.transform.position + this.transform.TransformDirection(Vector3.up * 3) + this.transform.TransformDirection(Vector3.forward * 2) + this.transform.InverseTransformDirection(Vector3.left * 1.7f), this.transform.rotation) as GameObject;
             if (bullet != null){
                 projectile = bullet.GetComponentInChildren<ColliderProjectile>();
 				if(GetComponent<CharacterController>().velocity != Vector3.zero)

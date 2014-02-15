@@ -26,28 +26,29 @@ public class ColliderProjectile : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawnPos = transform.position;
-		maxRange = 10;
 		Weapon = new ItemWeapon(BattleCore.elements.Fire , 1);
         isReadByBoss = false;
         killTime = TIME;
+		if(this.gameObject.layer == 10){
+			maxRange = 30;
+			speed = 30;
+		}
+		else
+			maxRange = 10;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
 		if (Vector3.Distance(this.transform.position, spawnPos) > maxRange){
 			Dispose();
 		}
-        //if (isActive){
-        //    //this.transform.Translate(direction.normalized * speed * Time.deltaTime);
-        //    print(rigidbody);
-        //    if (rigidbody != null){
-        //        print("Force Appliedx");
-        //        //rigidbody.AddForce();
-        //        rigidbody.AddForce(impact * Time.deltaTime);
-				
-        //    }
-        //}
+        if (isActive){
+            print(rigidbody);
+            if (rigidbody != null){
+                print("Force Appliedx");
+                rigidbody.AddForce(impact * Time.deltaTime);
+            }
+        }
 
         if (killTime <= 0)
         {
@@ -59,20 +60,18 @@ public class ColliderProjectile : MonoBehaviour {
         }
 
         if (this.gameObject != null)
-            transform.position += transform.up * speed * Time.deltaTime;
+			if(this.gameObject.layer == 10)
+            	transform.position += transform.forward * speed * Time.deltaTime;
+			else
+				transform.position += transform.up * speed * Time.deltaTime;
 	}
 	void OnTriggerStay(Collider other){
 			ICombat combatOther = other.GetComponent(typeof(ICombat)) as ICombat;
 			if (combatOther == null){return;}
 			if (factionsHostile.Count > 0 && BattleCore.isHostile(factionsHostile,combatOther.FactionSelf)){
-				onAttack(other.ClosestPointOnBounds(other.transform.position));
 				combatOther.hurt(Weapon);
 				Dispose();
-				//combatOther.AddImpact((other.transform.position - this.transform.position),500);
 			}
-	}
-	void onAttack(Vector3 contactPoint){
-		Instantiate(ResourceManager.Get().particleAttack, contactPoint,Quaternion.identity);
 	}
     //public void Activate( float Speed, float MaxRange){
     //    this.spawnPos = this.transform.position;

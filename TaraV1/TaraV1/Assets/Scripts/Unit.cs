@@ -202,6 +202,11 @@ public class Unit : MonoBehaviour {
 			Destroy(AI);
 		}
 		controller.enabled = false;
+		
+		if(this.tag == "MechBoss"){
+			
+			
+		}
 	}
 	protected virtual void revive(){
 		// Reset
